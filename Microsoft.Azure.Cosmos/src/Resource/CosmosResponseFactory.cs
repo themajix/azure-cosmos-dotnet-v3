@@ -80,14 +80,14 @@ namespace Microsoft.Azure.Cosmos
             });
         }
 
-        internal Task<CosmosStoredProcedureResponse> CreateStoredProcedureResponse(
+        internal Task<CosmosJavaScriptResponse> CreateStoredProcedureResponse(
             CosmosStoredProcedure storedProcedure,
             Task<CosmosResponseMessage> cosmosResponseMessageTask)
         {
             return this.MessageHelper(cosmosResponseMessageTask, (cosmosResponseMessage) =>
             {
                 CosmosStoredProcedureSettings settings = this.ToObjectInternal<CosmosStoredProcedureSettings>(cosmosResponseMessage);
-                return new CosmosStoredProcedureResponse(
+                return new CosmosJavaScriptResponse(
                     cosmosResponseMessage.StatusCode,
                     cosmosResponseMessage.Headers,
                     settings,

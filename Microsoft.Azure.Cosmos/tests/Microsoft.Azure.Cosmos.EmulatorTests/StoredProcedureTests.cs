@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
     public sealed class StoredProcedureTests : BaseCosmosClientHelper
     {
         private CosmosContainer container = null;
-        private CosmosStoredProcedureRequestOptions requestOptions = new CosmosStoredProcedureRequestOptions();
+        private CosmosJavaScriptExecuteRequestOptions requestOptions = new CosmosJavaScriptExecuteRequestOptions();
 
         [TestInitialize]
         public async Task TestInitialize()

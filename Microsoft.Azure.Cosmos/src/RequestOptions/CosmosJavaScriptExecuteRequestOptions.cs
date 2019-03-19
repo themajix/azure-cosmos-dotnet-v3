@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Cosmos
     /// <summary>
     /// The cosmos stored procedure request options
     /// </summary>
-    public class CosmosStoredProcedureRequestOptions : CosmosRequestOptions
+    public class CosmosJavaScriptExecuteRequestOptions : CosmosRequestOptions
     {
         /// <summary>
         ///  Gets or sets the <see cref="EnableScriptLogging"/> for the current request in the Azure Cosmos DB service.

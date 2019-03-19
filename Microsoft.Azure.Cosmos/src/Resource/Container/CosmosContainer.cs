@@ -42,10 +42,8 @@ namespace Microsoft.Azure.Cosmos
         {
             this.Database = database;
             this.Items = new CosmosItems(this);
-            this.StoredProcedures = new CosmosStoredProcedures(this);
+            this.JavaScripts = new CosmosJavaScripts(this);
             this.DocumentClient = this.Database.Client.DocumentClient;
-            this.Triggers = new CosmosTriggers(this);
-            this.UserDefinedFunctions = new CosmosUserDefinedFunctions(this);
         }
 
         /// <summary>
@@ -81,44 +79,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public virtual CosmosStoredProcedures StoredProcedures { get; }
-
-
-        /// <summary>
-        /// Operations for creating, reading/querying all triggers
-        /// </summary>
-        /// <example>
-        /// <code language="c#">
-        /// <![CDATA[
-        /// CosmosTriggerSettings settings = new CosmosTriggerSettings
-        ///{
-        ///    Id = "testSProcId",
-        ///    Body = "function() { { var x = 42; } }"
-        ///};
-        ///
-        /// CosmosTriggerResponse response = await cosmosContainer.Triggers.CreateTriggerAsync(settings);
-        /// ]]>
-        /// </code>
-        /// </example>
-        internal CosmosTriggers Triggers { get; }
-
-        /// <summary>
-        /// Operations for creating, reading/querying all user defined functions
-        /// </summary>
-        /// <example>
-        /// <code language="c#">
-        /// <![CDATA[
-        ///  CosmosUserDefinedFunctionSettings settings = new CosmosUserDefinedFunctionSettings
-        ///  {
-        ///      Id = "testUserDefinedFunId",
-        ///      Body = "function() { { var x = 42; } }",
-        ///  };
-        ///
-        /// CosmosUserDefinedFunctionsResponse response = await cosmosContainer.UserDefinedFunctions.CreateUserDefinedFunctionAsync(settings);
-        /// ]]>
-        /// </code>
-        /// </example>
-        internal CosmosUserDefinedFunctions UserDefinedFunctions { get; }
+        public virtual CosmosJavaScripts JavaScripts { get; }
 
         internal DocumentClient DocumentClient { get; private set; }
 
