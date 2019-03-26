@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Cosmos.Services.Management.Tests.LinqProviderTests
     using Newtonsoft.Json.Linq;
 
     [TestClass]
-    [TestCategory("Quarantine")]
+    [TestCategory(TestTypeCategory.Quarantine)]
     public class LinqAggregateFunctionBaselineTests : BaselineTests<LinqAggregateInput, LinqAggregateOutput>
     {
         private static DocumentClient client;

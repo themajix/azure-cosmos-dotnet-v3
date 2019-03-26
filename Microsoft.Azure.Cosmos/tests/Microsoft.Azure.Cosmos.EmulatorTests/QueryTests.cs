@@ -33,6 +33,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
     using Newtonsoft.Json.Linq;
 
     [TestClass]
+    [TestCategory(TestTypeCategory.Query)]
     public class QueryTests
     {
         private DocumentClient client;
@@ -1946,7 +1947,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         }
 
         //Query metrics are not on by default anymore, but turned on hin Feed options. This to be quarantined until a recent FI from master to direct and sdk is completed
-        [TestCategory("Quarantine")]
+        [TestCategory(TestTypeCategory.Quarantine)]
         [TestMethod]
         public void TestQueryMetricsHeaders()
         {

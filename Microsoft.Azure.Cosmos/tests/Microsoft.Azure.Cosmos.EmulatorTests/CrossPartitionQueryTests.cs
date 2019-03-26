@@ -620,7 +620,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         //"SELECT c._ts, c.id, c.TicketNumber, c.PosCustomerNumber, c.CustomerId, c.CustomerUserId, c.ContactEmail, c.ContactPhone, c.StoreCode, c.StoreUid, c.PoNumber, c.OrderPlacedOn, c.OrderType, c.OrderStatus, c.Customer.UserFirstName, c.Customer.UserLastName, c.Customer.Name, c.UpdatedBy, c.UpdatedOn, c.ExpirationDate, c.TotalAmountFROM c ORDER BY c._ts"' created an ArgumentOutofRangeException since ServiceInterop was returning DISP_E_BUFFERTOOSMALL in the case of an invalid query that is also really long.
         /// This test case just double checks that you get the appropriate document client exception instead of just failing.
         /// </summary>
-        [TestCategory("Quarantine")] //until serviceInterop enabled again
+        [TestCategory(TestTypeCategory.Quarantine)] //until serviceInterop enabled again
         [TestMethod]
         public async Task TestQueryCrossParitionPartitionProviderInvalid()
         {
@@ -3024,7 +3024,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             public string Children;
         }
 
-        [TestCategory("Quarantine")] //until serviceInterop enabled again
+        [TestCategory(TestTypeCategory.Quarantine)] //until serviceInterop enabled again
         [TestMethod]
         public async Task TestQueryCrossPartitionWithContinuations()
         {
@@ -3873,7 +3873,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         /// is set to zero to avoid these cases.
         /// </summary>
         /// <returns></returns>
-        [TestCategory("Quarantine")] //until serviceInterop enabled again
+        [TestCategory(TestTypeCategory.Quarantine)] //until serviceInterop enabled again
         [TestMethod]
         public async Task TestResponseLengthOverMultiplePartitions()
         {

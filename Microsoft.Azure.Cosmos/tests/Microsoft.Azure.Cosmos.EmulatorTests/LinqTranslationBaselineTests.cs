@@ -23,9 +23,10 @@ namespace Microsoft.Azure.Cosmos.Services.Management.Tests.LinqProviderTests
     using System.Text;
     using System.Configuration;
     using Newtonsoft.Json.Linq;
+    using Microsoft.Azure.Cosmos.SDK.EmulatorTests;
 
     [TestClass]
-    [TestCategory("Quarantine")]
+    [TestCategory(TestTypeCategory.Quarantine)]
     public class LinqTranslationBaselineTests : BaselineTests<LinqTestInput, LinqTestOutput>
     {
         private static IQueryable<DataObject> query;

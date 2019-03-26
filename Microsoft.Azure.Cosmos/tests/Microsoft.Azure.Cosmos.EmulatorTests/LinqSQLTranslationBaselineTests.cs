@@ -19,9 +19,10 @@ namespace Microsoft.Azure.Cosmos.Services.Management.Tests
     using System.Text.RegularExpressions;
     using System.Text;
     using Newtonsoft.Json.Linq;
+    using Microsoft.Azure.Cosmos.SDK.EmulatorTests;
 
     [TestClass]
-    [TestCategory("Quarantine")]
+    [TestCategory(TestTypeCategory.Quarantine)]
     public class LinqSQLTranslationBaselineTest : BaselineTests<LinqTestInput, LinqTestOutput>
     {
         static Expression Lambda<T, S>(Expression<Func<T, S>> func)

@@ -455,7 +455,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         }
 
         [TestMethod]
-        [TestCategory("Quarantine") /* Used to filter out quarantined tests in gated runs */]
+        [TestCategory(TestTypeCategory.Quarantine) /* Used to filter out quarantined tests in gated runs */]
         public void TestClientWithNoFailover()
         {
             TestClientWithNoFailoverAsync().Wait();
@@ -513,7 +513,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         }
 
         [TestMethod]
-        [TestCategory("Quarantine") /* Used to filter out quarantined tests in gated runs */]
+        [TestCategory(TestTypeCategory.Quarantine) /* Used to filter out quarantined tests in gated runs */]
         public void TestClientWithPreferredRegion()
         {
             TestClientWithPreferredRegionAsync().Wait();
@@ -648,7 +648,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         }
 
         [TestMethod]
-        [TestCategory("Quarantine") /* Used to filter out quarantined tests in gated runs */]
+        [TestCategory(TestTypeCategory.Quarantine) /* Used to filter out quarantined tests in gated runs */]
         public void TestDocumentClientMemoryLeakDirectTCP()
         {
             ConnectionPolicy connectionPolicy = new ConnectionPolicy
@@ -662,7 +662,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         }
 
         [TestMethod]
-        [TestCategory("Quarantine") /* Used to filter out quarantined tests in gated runs */]
+        [TestCategory(TestTypeCategory.Quarantine) /* Used to filter out quarantined tests in gated runs */]
         public void TestDocumentClientMemoryLeakDirectHttps()
         {
             ConnectionPolicy connectionPolicy = new ConnectionPolicy
@@ -676,7 +676,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         }
 
         [TestMethod]
-        [TestCategory("Quarantine") /* Used to filter out quarantined tests in gated runs */]
+        [TestCategory(TestTypeCategory.Quarantine) /* Used to filter out quarantined tests in gated runs */]
         public void TestDocumentClientMemoryLeakGatewayHttps()
         {
             ConnectionPolicy connectionPolicy = new ConnectionPolicy
@@ -731,7 +731,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         }
 
         [TestMethod]
-        [TestCategory("Quarantine") /* Used to filter out quarantined tests in gated runs */]
+        [TestCategory(TestTypeCategory.Quarantine) /* Used to filter out quarantined tests in gated runs */]
         public void TestDatabaseAccountRegionList()
         {
             TestDatabaseAccountRegionListAsync().Wait();
@@ -831,21 +831,21 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         }
 
         [TestMethod]
-        [TestCategory("Quarantine") /* Used to filter out quarantined in gated runs */]
+        [TestCategory(TestTypeCategory.Quarantine) /* Used to filter out quarantined in gated runs */]
         public void TestFailoverAPIs()
         {
             this.ValidateFailoverAPIs().Wait();
         }
 
         [TestMethod]
-        [TestCategory("Quarantine") /* Used to filter out quarantined tests in gated runs */]
+        [TestCategory(TestTypeCategory.Quarantine) /* Used to filter out quarantined tests in gated runs */]
         public void TestGeoCollectionCRUD()
         {
             ValidateCollectionCRUDAsync().Wait();
         }
 
         [TestMethod]
-        [TestCategory("Quarantine") /* Used to filter out quarantined tests in gated runs */]
+        [TestCategory(TestTypeCategory.Quarantine) /* Used to filter out quarantined tests in gated runs */]
         public void TestGeoPartitionedCollectionCRUD()
         {
             ValidatePartitionedCollectionCRUDAsync().Wait();
