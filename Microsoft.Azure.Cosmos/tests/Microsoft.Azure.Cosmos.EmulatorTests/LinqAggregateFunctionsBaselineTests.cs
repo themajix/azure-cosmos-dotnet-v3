@@ -23,6 +23,7 @@ namespace Microsoft.Azure.Cosmos.Services.Management.Tests.LinqProviderTests
 
     [TestClass]
     [TestCategory(TestTypeCategory.Quarantine)]
+    [TestCategory(TestTypeCategory.Query)]
     public class LinqAggregateFunctionBaselineTests : BaselineTests<LinqAggregateInput, LinqAggregateOutput>
     {
         private static DocumentClient client;

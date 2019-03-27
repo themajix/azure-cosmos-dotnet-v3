@@ -6,6 +6,7 @@
 namespace Microsoft.Azure.Cosmos.Test.Management.Tests.LinqProviderTests
 {
     using Microsoft.Azure.Cosmos.Linq;
+    using Microsoft.Azure.Cosmos.SDK.EmulatorTests;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Services.Management.Tests.BaselineTest;
     using System;
