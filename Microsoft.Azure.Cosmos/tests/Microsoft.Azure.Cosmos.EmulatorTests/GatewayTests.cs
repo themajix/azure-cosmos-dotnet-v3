@@ -31,6 +31,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
     using BulkInsertStoredProcedureResult = Microsoft.Azure.Cosmos.Interop.Mongo.BulkInsertStoredProcedureResult;
 
     [TestClass]
+    [TestCategory(TestTypeCategory.Gateway)]
     public class GatewayTests
     {
         internal readonly Uri baseUri;
