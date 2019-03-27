@@ -33,6 +33,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
     /// Tests for CrossPartitionQueryTests.
     /// </summary>
     [TestClass]
+    [TestCategory(TestTypeCategory.Query)]
     public class CrossPartitionQueryTests
     {
         private static readonly string[] NoDocuments = new string[] { };

@@ -15,6 +15,7 @@ namespace Microsoft.Azure.Cosmos.Test.Management.Tests.LinqProviderTests
     using static LinqConstantFoldingBaselineTests;
 
     [TestClass]
+    [TestCategory(TestTypeCategory.Query)]
     public class LinqConstantFoldingBaselineTests : BaselineTests<LinqExpressionInput, LinqExpressionOutput>
     {
         [TestMethod]

@@ -23,6 +23,7 @@ namespace Microsoft.Azure.Cosmos.Services.Management.Tests.LinqProviderTests
     /// </summary>
     [TestClass]
     [TestCategory(TestTypeCategory.Quarantine)]
+    [TestCategory(TestTypeCategory.Query)]
     public class LinqAttributeContractBaselineTests : BaselineTests<LinqTestInput, LinqTestOutput>
     {
         private static Func<bool, IQueryable<Datum>> getQuery;

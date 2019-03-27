@@ -17,6 +17,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
     using Newtonsoft.Json;
 
     [TestClass]
+    [TestCategory(TestTypeCategory.Query)]
     public class SpatialTest
     {
         private class SpatialSampleClass

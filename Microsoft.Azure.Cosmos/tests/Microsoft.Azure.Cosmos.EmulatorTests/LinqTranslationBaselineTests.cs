@@ -27,6 +27,7 @@ namespace Microsoft.Azure.Cosmos.Services.Management.Tests.LinqProviderTests
 
     [TestClass]
     [TestCategory(TestTypeCategory.Quarantine)]
+    [TestCategory(TestTypeCategory.Query)]
     public class LinqTranslationBaselineTests : BaselineTests<LinqTestInput, LinqTestOutput>
     {
         private static IQueryable<DataObject> query;

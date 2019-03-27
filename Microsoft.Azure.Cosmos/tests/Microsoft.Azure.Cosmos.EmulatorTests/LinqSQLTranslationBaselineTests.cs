@@ -23,6 +23,7 @@ namespace Microsoft.Azure.Cosmos.Services.Management.Tests
 
     [TestClass]
     [TestCategory(TestTypeCategory.Quarantine)]
+    [TestCategory(TestTypeCategory.Query)]
     public class LinqSQLTranslationBaselineTest : BaselineTests<LinqTestInput, LinqTestOutput>
     {
         static Expression Lambda<T, S>(Expression<Func<T, S>> func)

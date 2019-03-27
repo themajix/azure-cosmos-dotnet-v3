@@ -12,6 +12,7 @@
     using System.Threading.Tasks;
 
     [TestClass]
+    [TestCategory(TestTypeCategory.Query)]
     public class CosmosSpatialTests
     {
         private CosmosContainer Container = null;
