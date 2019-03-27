@@ -17,6 +17,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
+    [TestCategory(TestTypeCategory.Gateway)]
     public class HeadersValidationTests
     {
         [ClassInitialize]
