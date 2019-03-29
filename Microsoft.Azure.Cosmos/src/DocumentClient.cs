@@ -915,6 +915,28 @@ namespace Microsoft.Azure.Cosmos
                 }
             }
 #endif
+
+            // ConnectionPolicy always overrides appconfig
+            if (this.ConnectionPolicy.IdleTcpConnectionTimeout.HasValue)
+            {
+                this.idleConnectionTimeoutInSeconds = (int)this.ConnectionPolicy.IdleTcpConnectionTimeout?.TotalSeconds;
+            }
+
+            if (this.ConnectionPolicy.OpenTcpConnectionTimeout != null)
+            {
+                this.openConnectionTimeoutInSeconds = (int)this.ConnectionPolicy.OpenTcpConnectionTimeout?.TotalSeconds;
+            }
+
+            if (this.ConnectionPolicy.MaxRequestsPerTcpConnection.HasValue)
+            {
+                this.maxRequestsPerRntbdChannel = this.ConnectionPolicy.MaxRequestsPerTcpConnection.Value;
+            }
+
+            if (this.ConnectionPolicy.MaxTcpConnectionsPerEndpoint.HasValue)
+            {
+                this.maxRntbdChannels = this.ConnectionPolicy.MaxTcpConnectionsPerEndpoint.Value;
+            }
+
             this.ServiceEndpoint = serviceEndpoint.OriginalString.EndsWith("/", StringComparison.Ordinal) ? serviceEndpoint : new Uri(serviceEndpoint.OriginalString + "/");
 
             this.connectionPolicy = connectionPolicy ?? ConnectionPolicy.Default;

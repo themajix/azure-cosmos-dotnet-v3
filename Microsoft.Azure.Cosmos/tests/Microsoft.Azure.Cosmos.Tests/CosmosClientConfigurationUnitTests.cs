@@ -34,6 +34,10 @@ namespace Microsoft.Azure.Cosmos.Tests
             ApiType apiType = ApiType.Sql;
             int maxRetryAttemptsOnThrottledRequests = 9999;
             TimeSpan maxRetryWaitTime = TimeSpan.FromHours(6);
+            TimeSpan idleTcpConnectionTimeout = new TimeSpan(0, 10, 0);
+            TimeSpan openTcpConnectionTimeout = new TimeSpan(0, 0, 5);
+            int maxRequestsPerTcpConnection = 30;
+            int maxTcpConnectionsPerEndpoint = 65535;
 
             CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder(
                 accountEndPoint: endpoint,
@@ -60,6 +64,10 @@ namespace Microsoft.Azure.Cosmos.Tests
             Assert.AreEqual(Protocol.Tcp, policy.ConnectionProtocol);
             Assert.AreEqual(configuration.MaxConnectionLimit, policy.MaxConnectionLimit);
             Assert.AreEqual(configuration.RequestTimeout, policy.RequestTimeout);
+            Assert.IsNull(policy.IdleTcpConnectionTimeout);
+            Assert.IsNull(policy.OpenTcpConnectionTimeout);
+            Assert.IsNull(policy.MaxRequestsPerTcpConnection);
+            Assert.IsNull(policy.MaxTcpConnectionsPerEndpoint);
 
             cosmosClientBuilder.UseCurrentRegion(region)
                 .UseConnectionModeGateway(maxConnections)
@@ -67,7 +75,11 @@ namespace Microsoft.Azure.Cosmos.Tests
                 .UseUserAgentSuffix(userAgentSuffix)
                 .AddCustomHandlers(preProcessHandler)
                 .UseApiType(apiType)
-                .UseThrottlingRetryOptions(maxRetryWaitTime, maxRetryAttemptsOnThrottledRequests);
+                .UseThrottlingRetryOptions(maxRetryWaitTime, maxRetryAttemptsOnThrottledRequests)
+                .UseIdleTcpConnectionTimeout(idleTcpConnectionTimeout)
+                .UseOpenTcpConnectionTimeout(openTcpConnectionTimeout)
+                .UseMaxRequestsPerTcpConnection(maxRequestsPerTcpConnection)
+                .UseMaxTcpConnectionsPerEndpoint(maxTcpConnectionsPerEndpoint);
 
             cosmosClient = cosmosClientBuilder.Build(new MockDocumentClient());
             configuration = cosmosClient.Configuration;
@@ -82,6 +94,10 @@ namespace Microsoft.Azure.Cosmos.Tests
             Assert.AreEqual(apiType, configuration.ApiType);
             Assert.AreEqual(maxRetryAttemptsOnThrottledRequests, configuration.MaxRetryAttemptsOnThrottledRequests);
             Assert.AreEqual(maxRetryWaitTime, configuration.MaxRetryWaitTimeOnThrottledRequests);
+            Assert.AreEqual(idleTcpConnectionTimeout, configuration.IdleTcpConnectionTimeout);
+            Assert.AreEqual(openTcpConnectionTimeout, configuration.OpenTcpConnectionTimeout);
+            Assert.AreEqual(maxRequestsPerTcpConnection, configuration.MaxRequestsPerTcpConnection);
+            Assert.AreEqual(maxTcpConnectionsPerEndpoint, configuration.MaxTcpConnectionsPerEndpoint);
 
             //Verify GetConnectionPolicy returns the correct values
             policy = configuration.GetConnectionPolicy();
@@ -94,6 +110,10 @@ namespace Microsoft.Azure.Cosmos.Tests
             Assert.IsTrue(policy.UseMultipleWriteLocations);
             Assert.AreEqual(maxRetryAttemptsOnThrottledRequests, policy.RetryOptions.MaxRetryAttemptsOnThrottledRequests);
             Assert.AreEqual((int)maxRetryWaitTime.TotalSeconds, policy.RetryOptions.MaxRetryWaitTimeInSeconds);
+            Assert.AreEqual(idleTcpConnectionTimeout, policy.IdleTcpConnectionTimeout);
+            Assert.AreEqual(openTcpConnectionTimeout, policy.OpenTcpConnectionTimeout);
+            Assert.AreEqual(maxRequestsPerTcpConnection, policy.MaxRequestsPerTcpConnection);
+            Assert.AreEqual(maxTcpConnectionsPerEndpoint, policy.MaxTcpConnectionsPerEndpoint);
         }
 
         [TestMethod]
