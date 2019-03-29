@@ -237,17 +237,6 @@ namespace Microsoft.Azure.Cosmos
         public virtual TimeSpan? MaxRetryWaitTimeOnThrottledRequests { get; internal set; }
 
         /// <summary>
-        /// A JSON serializer used by the CosmosClient to serialize or de-serialize cosmos request/responses.
-        /// If no custom JSON converter was set it uses the default <see cref="CosmosDefaultJsonSerializer"/>
-        /// </summary>
-        [JsonConverter(typeof(ClientConfigurationJsonConverter))]
-        public virtual CosmosJsonSerializer CosmosJsonSerializer
-        {
-            get => this.cosmosJsonSerializer ?? (this.cosmosJsonSerializer = new CosmosDefaultJsonSerializer());
-            internal set => this.cosmosJsonSerializer = value ?? throw new NullReferenceException(nameof(this.CosmosJsonSerializer));
-        }
-
-        /// <summary>
         /// (Direct/TCP) Controls the amount of idle time after which unused connections are closed.
         /// </summary>
         /// <value>
@@ -291,6 +280,17 @@ namespace Microsoft.Azure.Cosmos
         /// The default value is 65,535. Value must be greater than or equal to 16.
         /// </value>
         public virtual int? MaxTcpConnectionsPerEndpoint { get; internal set; }
+
+        /// <summary>
+        /// A JSON serializer used by the CosmosClient to serialize or de-serialize cosmos request/responses.
+        /// If no custom JSON converter was set it uses the default <see cref="CosmosDefaultJsonSerializer"/>
+        /// </summary>
+        [JsonConverter(typeof(ClientConfigurationJsonConverter))]
+        public virtual CosmosJsonSerializer CosmosJsonSerializer
+        {
+            get => this.cosmosJsonSerializer ?? (this.cosmosJsonSerializer = new CosmosDefaultJsonSerializer());
+            internal set => this.cosmosJsonSerializer = value ?? throw new NullReferenceException(nameof(this.CosmosJsonSerializer));
+        }
 
         /// <summary>
         /// Gets or sets the connection protocol when connecting to the Azure Cosmos service.
