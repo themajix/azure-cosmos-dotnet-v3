@@ -75,11 +75,7 @@ namespace Microsoft.Azure.Cosmos.Tests
                 .UseUserAgentSuffix(userAgentSuffix)
                 .AddCustomHandlers(preProcessHandler)
                 .UseApiType(apiType)
-                .UseThrottlingRetryOptions(maxRetryWaitTime, maxRetryAttemptsOnThrottledRequests)
-                .UseIdleTcpConnectionTimeout(idleTcpConnectionTimeout)
-                .UseOpenTcpConnectionTimeout(openTcpConnectionTimeout)
-                .UseMaxRequestsPerTcpConnection(maxRequestsPerTcpConnection)
-                .UseMaxTcpConnectionsPerEndpoint(maxTcpConnectionsPerEndpoint);
+                .UseThrottlingRetryOptions(maxRetryWaitTime, maxRetryAttemptsOnThrottledRequests);
 
             cosmosClient = cosmosClientBuilder.Build(new MockDocumentClient());
             configuration = cosmosClient.Configuration;
@@ -94,10 +90,7 @@ namespace Microsoft.Azure.Cosmos.Tests
             Assert.AreEqual(apiType, configuration.ApiType);
             Assert.AreEqual(maxRetryAttemptsOnThrottledRequests, configuration.MaxRetryAttemptsOnThrottledRequests);
             Assert.AreEqual(maxRetryWaitTime, configuration.MaxRetryWaitTimeOnThrottledRequests);
-            Assert.AreEqual(idleTcpConnectionTimeout, configuration.IdleTcpConnectionTimeout);
-            Assert.AreEqual(openTcpConnectionTimeout, configuration.OpenTcpConnectionTimeout);
-            Assert.AreEqual(maxRequestsPerTcpConnection, configuration.MaxRequestsPerTcpConnection);
-            Assert.AreEqual(maxTcpConnectionsPerEndpoint, configuration.MaxTcpConnectionsPerEndpoint);
+            
 
             //Verify GetConnectionPolicy returns the correct values
             policy = configuration.GetConnectionPolicy();
@@ -110,6 +103,29 @@ namespace Microsoft.Azure.Cosmos.Tests
             Assert.IsTrue(policy.UseMultipleWriteLocations);
             Assert.AreEqual(maxRetryAttemptsOnThrottledRequests, policy.RetryOptions.MaxRetryAttemptsOnThrottledRequests);
             Assert.AreEqual((int)maxRetryWaitTime.TotalSeconds, policy.RetryOptions.MaxRetryWaitTimeInSeconds);
+
+            //Verify Direct Mode settings
+            cosmosClientBuilder = new CosmosClientBuilder(
+                accountEndPoint: endpoint,
+                accountKey: key);
+            cosmosClientBuilder.UseConnectionModeDirect(
+                idleTcpConnectionTimeout,
+                openTcpConnectionTimeout,
+                maxRequestsPerTcpConnection,
+                maxTcpConnectionsPerEndpoint
+            );
+
+            cosmosClient = cosmosClientBuilder.Build(new MockDocumentClient());
+            configuration = cosmosClient.Configuration;
+
+            //Verify all the values are updated
+            Assert.AreEqual(idleTcpConnectionTimeout, configuration.IdleTcpConnectionTimeout);
+            Assert.AreEqual(openTcpConnectionTimeout, configuration.OpenTcpConnectionTimeout);
+            Assert.AreEqual(maxRequestsPerTcpConnection, configuration.MaxRequestsPerTcpConnection);
+            Assert.AreEqual(maxTcpConnectionsPerEndpoint, configuration.MaxTcpConnectionsPerEndpoint);
+
+            //Verify GetConnectionPolicy returns the correct values
+            policy = configuration.GetConnectionPolicy();
             Assert.AreEqual(idleTcpConnectionTimeout, policy.IdleTcpConnectionTimeout);
             Assert.AreEqual(openTcpConnectionTimeout, policy.OpenTcpConnectionTimeout);
             Assert.AreEqual(maxRequestsPerTcpConnection, policy.MaxRequestsPerTcpConnection);
