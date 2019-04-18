@@ -166,7 +166,10 @@ namespace Microsoft.Azure.Cosmos
         /// For more information, see <see href="https://docs.microsoft.com/en-us/azure/documentdb/documentdb-performance-tips#direct-connection">Connection policy: Use direct connection mode</see>.
         /// </remarks>
         /// <seealso cref="CosmosClientConfiguration.ConnectionMode"/>
-        public virtual CosmosClientBuilder UseConnectionModeDirect(TimeSpan? idleTcpConnectionTimeout = null, TimeSpan? openTcpConnectionTimeout = null, int? maxRequestsPerTcpConnection = null, int? maxTcpConnectionsPerEndpoint = null)
+        public virtual CosmosClientBuilder UseConnectionModeDirect(TimeSpan? idleTcpConnectionTimeout = null, 
+            TimeSpan? openTcpConnectionTimeout = null, 
+            int? maxRequestsPerTcpConnection = null, 
+            int? maxTcpConnectionsPerEndpoint = null)
         {
             this.cosmosClientConfiguration.IdleTcpConnectionTimeout = idleTcpConnectionTimeout;
             this.cosmosClientConfiguration.OpenTcpConnectionTimeout = openTcpConnectionTimeout;
