@@ -10,10 +10,13 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Net;
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Azure.Cosmos.Json;
+    using Microsoft.Azure.Cosmos.Query;
+    using Microsoft.Azure.Cosmos.Routing;
     using Microsoft.Azure.Documents;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Newtonsoft.Json;
@@ -408,7 +411,9 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                         Assert.IsTrue(iter.Count <= 5);
                         totalRequstCharge += iter.RequestCharge;
 
-                        ToDoActivity response = this.jsonSerializer.FromStream<ToDoActivity[]>(iter.Content).First();
+                        ToDoActivity[] activities = this.jsonSerializer.FromStream<ToDoActivity[]>(iter.Content);
+                        Assert.AreEqual(1, activities.Length);
+                        ToDoActivity response = activities.First();
                         resultList.Add(response);
                     }
                 }
@@ -480,6 +485,74 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                 {
                     CosmosResponseMessage deleteResponse = await this.Container.Items.DeleteItemStreamAsync(delete.status, delete.id);
                     deleteResponse.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Validate that if the EPK is set in the options that only a single range is selected.
+        /// </summary>
+        [TestMethod]
+        public async Task ItemEpkQueryValidation()
+        {
+            IList<ToDoActivity> deleteList = new List<ToDoActivity>();
+            CosmosContainer container = null;
+            try
+            {
+                // Create a container large enough to have at least 2 partitions
+                var containerResponse = await this.database.Containers.CreateContainerAsync(
+                    id: Guid.NewGuid().ToString(),
+                    partitionKeyPath: "/pk",
+                    throughput: 15000);
+                container = containerResponse;
+
+                // Get all the partition key ranges to verify there is more than one partition
+                IRoutingMapProvider routingMapProvider = await this.cosmosClient.DocumentClient.GetPartitionKeyRangeCacheAsync();
+                IReadOnlyList<PartitionKeyRange> ranges = await routingMapProvider.TryGetOverlappingRangesAsync(
+                    containerResponse.Resource.ResourceId,
+                    new Documents.Routing.Range<string>("00", "FF", isMaxInclusive: true, isMinInclusive: true));
+                
+                // If this fails the RUs of the container needs to be increased to ensure at least 2 partitions.
+                Assert.IsTrue(ranges.Count > 1, " RUs of the container needs to be increased to ensure at least 2 partitions.");
+
+                FeedOptions options = new FeedOptions()
+                {
+                    Properties = new Dictionary<string, object>()
+                    {
+                        {"x-ms-effective-partition-key-string", "AA" }
+                    }
+                };
+
+                // Create a bad expression. It will not be called. Expression is not allowed to be null.
+                IQueryable<int> queryable = new List<int>().AsQueryable();
+                Expression expression = queryable.Expression;
+
+                DocumentQueryExecutionContextBase.InitParams inputParams = new DocumentQueryExecutionContextBase.InitParams(
+                    new DocumentQueryClient(this.cosmosClient.DocumentClient),
+                    ResourceType.Document,
+                    typeof(object),
+                    expression,
+                    options,
+                    container.LinkUri.OriginalString,
+                    false,
+                    Guid.NewGuid());
+
+                DefaultDocumentQueryExecutionContext defaultDocumentQueryExecutionContext = new DefaultDocumentQueryExecutionContext(inputParams, true);
+
+                // There should only be one range since the EPK option is set.
+                List<PartitionKeyRange> partitionKeyRanges = await DocumentQueryExecutionContextFactory.GetTargetPartitionKeyRanges(
+                    queryExecutionContext: defaultDocumentQueryExecutionContext,
+                    partitionedQueryExecutionInfo: null,
+                    collection: containerResponse,
+                    feedOptions: options);
+
+                Assert.IsTrue(partitionKeyRanges.Count == 1, "Only 1 partition key range should be selected since the EPK option is set.");
+            }
+            finally
+            {
+                if(container != null)
+                {
+                    await container.DeleteAsync();
                 }
             }
         }
@@ -561,11 +634,14 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             {
                 deleteList = await CreateRandomItems(6, randomPartitionKey: false);
 
-                CosmosSqlQueryDefinition sql = new CosmosSqlQueryDefinition("select * from toDoActivity t where t.taskNum = @task").UseParameter("@task", deleteList.First().taskNum);
+                ToDoActivity toDoActivity = deleteList.First();
+                CosmosSqlQueryDefinition sql = new CosmosSqlQueryDefinition(
+                    "select * from toDoActivity t where t.status = @status")
+                    .UseParameter("@status", toDoActivity.status);
 
                 // Test max size at 1
                 CosmosResultSetIterator<ToDoActivity> setIterator =
-                    this.Container.Items.CreateItemQuery<ToDoActivity>(sql, "TBD", maxItemCount: 1);
+                    this.Container.Items.CreateItemQuery<ToDoActivity>(sql, toDoActivity.status, maxItemCount: 1);
                 while (setIterator.HasMoreResults)
                 {
                     CosmosQueryResponse<ToDoActivity> iter = await setIterator.FetchNextSetAsync();
@@ -574,7 +650,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
 
                 // Test max size at 2
                 CosmosResultSetIterator<ToDoActivity> setIteratorMax2 =
-                    this.Container.Items.CreateItemQuery<ToDoActivity>(sql, "TBD", maxItemCount: 2);
+                    this.Container.Items.CreateItemQuery<ToDoActivity>(sql, toDoActivity.status, maxItemCount: 2);
                 while (setIteratorMax2.HasMoreResults)
                 {
                     CosmosQueryResponse<ToDoActivity> iter = await setIteratorMax2.FetchNextSetAsync();
