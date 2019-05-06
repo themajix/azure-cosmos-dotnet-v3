@@ -96,6 +96,11 @@ namespace Microsoft.Azure.Cosmos
         public virtual ConsistencyLevel? ConsistencyLevel { get; set; }
 
         /// <summary>
+        /// PartitonKey value to be used for the request
+        /// </summary>
+        public virtual object PartitonKey { get; set; }
+
+        /// <summary>
         /// Fill the CosmosRequestMessage headers with the set properties
         /// </summary>
         /// <param name="request">The <see cref="CosmosRequestMessage"/></param>

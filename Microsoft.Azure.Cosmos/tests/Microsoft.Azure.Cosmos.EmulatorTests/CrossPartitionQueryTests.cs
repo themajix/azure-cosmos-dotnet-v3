@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         [TestCleanup]
         public async Task Cleanup()
         {
-            await this.database.DeleteAsync();
+            await this.database.DeleteDatabaseAsync();
         }
 
         private static string GetApiVersion()
@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             {
                 foreach (CosmosDatabaseSettings db in await allDatabases.FetchNextSetAsync())
                 {
-                    await this.Client.Databases[db.Id].DeleteAsync();
+                    await this.Client.Databases[db.Id].DeleteDatabaseAsync();
                 }
             }
         }

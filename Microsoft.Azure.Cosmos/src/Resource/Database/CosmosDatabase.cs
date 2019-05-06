@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Cosmos
         /// Doing a read of a resource is the most efficient way to get a resource from the Database. If you know the resource's ID, do a read instead of a query by ID.
         /// </para>
         /// </remarks>
-        public abstract Task<CosmosDatabaseResponse> ReadAsync(
+        public abstract Task<CosmosDatabaseResponse> ReadDatabaseAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken));
 
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract Task<CosmosDatabaseResponse> DeleteAsync(
+        public abstract Task<CosmosDatabaseResponse> DeleteDatabaseAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken));
 
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Cosmos
         /// <returns>
         /// A <see cref="Task"/> containing a <see cref="CosmosResponseMessage"/> containing the read resource record.
         /// </returns>
-        public abstract Task<CosmosResponseMessage> ReadStreamAsync(
+        public abstract Task<CosmosResponseMessage> ReadDatabaseStreamAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken));
 
@@ -169,7 +169,7 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="requestOptions">(Optional) The options for the container request <see cref="CosmosRequestOptions"/></param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>A <see cref="Task"/> containing a <see cref="CosmosResponseMessage"/> which will contain information about the request issued.</returns>
-        public abstract Task<CosmosResponseMessage> DeleteStreamAsync(
+        public abstract Task<CosmosResponseMessage> DeleteDatabaseStreamAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken));
     }

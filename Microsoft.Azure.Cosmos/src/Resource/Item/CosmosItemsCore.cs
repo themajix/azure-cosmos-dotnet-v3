@@ -47,18 +47,19 @@ namespace Microsoft.Azure.Cosmos
         }
 
         public override Task<CosmosItemResponse<T>> CreateItemAsync<T>(
-            object partitionKey,
             T item,
             CosmosItemRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Task<CosmosResponseMessage> response = this.CreateItemStreamAsync(
-                partitionKey: partitionKey,
-                streamPayload: this.ClientContext.JsonSerializer.ToStream<T>(item),
-                requestOptions: requestOptions,
-                cancellationToken: cancellationToken);
+            throw new NotImplementedException("partitonKey");
 
-            return this.ClientContext.ResponseFactory.CreateItemResponse<T>(response);
+            ////Task<CosmosResponseMessage> response = this.CreateItemStreamAsync(
+            ////    partitionKey: ,
+            ////    streamPayload: this.ClientContext.JsonSerializer.ToStream<T>(item),
+            ////    requestOptions: requestOptions,
+            ////    cancellationToken: cancellationToken);
+
+            ////return this.ClientContext.ResponseFactory.CreateItemResponse<T>(response);
         }
 
         public override Task<CosmosResponseMessage> ReadItemStreamAsync(
@@ -107,18 +108,19 @@ namespace Microsoft.Azure.Cosmos
         }
 
         public override Task<CosmosItemResponse<T>> UpsertItemAsync<T>(
-            object partitionKey,
             T item,
             CosmosItemRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Task<CosmosResponseMessage> response = this.UpsertItemStreamAsync(
-                partitionKey: partitionKey,
-                streamPayload: this.ClientContext.JsonSerializer.ToStream<T>(item),
-                requestOptions: requestOptions,
-                cancellationToken: cancellationToken);
+            throw new NotImplementedException("partitonKey");
 
-            return this.ClientContext.ResponseFactory.CreateItemResponse<T>(response);
+            ////Task<CosmosResponseMessage> response = this.UpsertItemStreamAsync(
+            ////    partitionKey: partitionKey,
+            ////    streamPayload: this.ClientContext.JsonSerializer.ToStream<T>(item),
+            ////    requestOptions: requestOptions,
+            ////    cancellationToken: cancellationToken);
+
+            ////return this.ClientContext.ResponseFactory.CreateItemResponse<T>(response);
         }
 
         public override Task<CosmosResponseMessage> ReplaceItemStreamAsync(
@@ -138,20 +140,20 @@ namespace Microsoft.Azure.Cosmos
         }
 
         public override Task<CosmosItemResponse<T>> ReplaceItemAsync<T>(
-            object partitionKey,
-            string id,
             T item,
             CosmosItemRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Task<CosmosResponseMessage> response = this.ReplaceItemStreamAsync(
-               partitionKey: partitionKey,
-               id: id,
-               streamPayload: this.ClientContext.JsonSerializer.ToStream<T>(item),
-               requestOptions: requestOptions,
-               cancellationToken: cancellationToken);
+            throw new NotImplementedException("partitonKey");
 
-            return this.ClientContext.ResponseFactory.CreateItemResponse<T>(response);
+            ////Task<CosmosResponseMessage> response = this.ReplaceItemStreamAsync(
+            ////   partitionKey: partitionKey,
+            ////   id: id,
+            ////   streamPayload: this.ClientContext.JsonSerializer.ToStream<T>(item),
+            ////   requestOptions: requestOptions,
+            ////   cancellationToken: cancellationToken);
+
+            ////return this.ClientContext.ResponseFactory.CreateItemResponse<T>(response);
         }
 
         public override Task<CosmosResponseMessage> DeleteItemStreamAsync(

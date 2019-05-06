@@ -32,7 +32,7 @@ namespace HeroScenarios
 
                 try
                 {
-                    return await this.containerItems.CreateItemAsync<TwoPersonGame>(gameDay, newGame, cancellationToken: cancellationToken);
+                    return await this.containerItems.CreateItemAsync<TwoPersonGame>(newGame, cancellationToken: cancellationToken);
                 }
                 // Concurrent write conflict
                 catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
@@ -62,7 +62,7 @@ namespace HeroScenarios
                 try
                 {
                     CosmosItemResponse<TwoPersonGame> gameReplaceResponse = await this.containerItems
-                        .UpsertItemAsync<TwoPersonGame>(gameId, game, options, cancellationToken: cancellationToken);
+                        .UpsertItemAsync<TwoPersonGame>(game, options, cancellationToken: cancellationToken);
                     return gameReplaceResponse.Resource;
                 }
                 catch (CosmosException ex) 

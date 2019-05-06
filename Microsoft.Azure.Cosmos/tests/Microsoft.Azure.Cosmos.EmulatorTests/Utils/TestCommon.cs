@@ -1405,7 +1405,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         {
             await TestCommon.DeleteDatabaseCollectionAsync(client, database);
 
-            await TestCommon.AsyncRetryRateLimiting(() => database.DeleteAsync());
+            await TestCommon.AsyncRetryRateLimiting(() => database.DeleteDatabaseAsync());
         }
 
         public static async Task DeleteDatabaseCollectionAsync(CosmosClient client, CosmosDatabase database)

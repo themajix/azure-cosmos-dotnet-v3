@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
 
             Assert.IsTrue(databaseSettings.LastModified.Value > new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), databaseSettings.LastModified.Value.ToString());
 
-            response = await response.Database.DeleteAsync(cancellationToken: this.cancellationToken);
+            response = await response.Database.DeleteDatabaseAsync(cancellationToken: this.cancellationToken);
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             CosmosDatabaseResponse response = await this.CreateDatabaseHelper();
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 
-            response = await response.Database.DeleteAsync(cancellationToken: this.cancellationToken);
+            response = await response.Database.DeleteDatabaseAsync(cancellationToken: this.cancellationToken);
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 
@@ -79,14 +79,14 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         {
             CosmosDatabase database = await this.CreateDatabaseStreamHelper();
 
-            using (CosmosResponseMessage response = await database.ReadStreamAsync())
+            using (CosmosResponseMessage response = await database.ReadDatabaseStreamAsync())
             {
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.IsNotNull(response.Headers);
                 Assert.IsTrue(response.Headers.RequestCharge > 0);
             }
 
-            using (CosmosResponseMessage response = await database.DeleteStreamAsync())
+            using (CosmosResponseMessage response = await database.DeleteDatabaseStreamAsync())
             {
                 Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
                 Assert.IsNotNull(response.Headers);
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                 Assert.IsTrue(response.Headers.RequestCharge > 0);
             }
 
-            using (CosmosResponseMessage response = await this.cosmosClient.Databases[databaseSettings.Id].DeleteStreamAsync())
+            using (CosmosResponseMessage response = await this.cosmosClient.Databases[databaseSettings.Id].DeleteDatabaseStreamAsync())
             {
                 Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
                 Assert.IsNotNull(response.Headers);
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                 DefaultTrace.TraceInformation(hre.ToString());
             }
 
-            response = await response.Database.DeleteAsync(cancellationToken: this.cancellationToken);
+            response = await response.Database.DeleteDatabaseAsync(cancellationToken: this.cancellationToken);
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 
@@ -150,7 +150,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         {
             string databaseName = Guid.NewGuid().ToString();
 
-            CosmosDatabaseResponse cosmosDatabaseResponse = await this.cosmosClient.Databases[databaseName].ReadAsync(cancellationToken: this.cancellationToken);
+            CosmosDatabaseResponse cosmosDatabaseResponse = await this.cosmosClient.Databases[databaseName].ReadDatabaseAsync(cancellationToken: this.cancellationToken);
             CosmosDatabase cosmosDatabase = cosmosDatabaseResponse;
             CosmosDatabaseSettings cosmosDatabaseSettings = cosmosDatabaseResponse;
             Assert.IsNotNull(cosmosDatabase);
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             Assert.IsNotNull(cosmosDatabase);
             Assert.IsNotNull(cosmosDatabaseSettings);
 
-            cosmosDatabaseResponse = await cosmosDatabase.DeleteAsync(cancellationToken: this.cancellationToken);
+            cosmosDatabaseResponse = await cosmosDatabase.DeleteDatabaseAsync(cancellationToken: this.cancellationToken);
             cosmosDatabase = cosmosDatabaseResponse;
             cosmosDatabaseSettings = cosmosDatabaseResponse;
             Assert.IsNotNull(cosmosDatabase);
@@ -172,7 +172,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         [TestMethod]
         public async Task DropNonExistingDatabase()
         {
-            CosmosDatabaseResponse response = await this.cosmosClient.Databases[Guid.NewGuid().ToString()].DeleteAsync(cancellationToken: this.cancellationToken);
+            CosmosDatabaseResponse response = await this.cosmosClient.Databases[Guid.NewGuid().ToString()].DeleteDatabaseAsync(cancellationToken: this.cancellationToken);
 
             string activityId = response.ActivityId;
             double? ru = response.RequestCharge;
@@ -183,13 +183,13 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         public async Task ReadDatabase()
         {
             CosmosDatabaseResponse createResponse = await this.CreateDatabaseHelper();
-            CosmosDatabaseResponse readResponse = await createResponse.Database.ReadAsync(cancellationToken: this.cancellationToken);
+            CosmosDatabaseResponse readResponse = await createResponse.Database.ReadDatabaseAsync(cancellationToken: this.cancellationToken);
 
             Assert.AreEqual(createResponse.Database.Id, readResponse.Database.Id);
             Assert.AreEqual(createResponse.Resource.Id, readResponse.Resource.Id);
             Assert.AreNotEqual(createResponse.ActivityId, readResponse.ActivityId);
             ValidateHeaders(readResponse);
-            await createResponse.Database.DeleteAsync(cancellationToken: this.cancellationToken);
+            await createResponse.Database.DeleteDatabaseAsync(cancellationToken: this.cancellationToken);
         }
 
         [TestMethod]
@@ -213,7 +213,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             int? readThroughput = await cosmosDatabase.ReadProvisionedThroughputAsync();
             Assert.IsNull(readThroughput);
 
-            await cosmosDatabase.DeleteAsync();
+            await cosmosDatabase.DeleteDatabaseAsync();
         }
 
         [TestMethod]
@@ -238,7 +238,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             Assert.IsNull(readThroughput);
 
             await container.DeleteContainerAsync();
-            await cosmosDatabase.DeleteAsync();
+            await cosmosDatabase.DeleteDatabaseAsync();
         }
 
         [TestMethod]
@@ -274,7 +274,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             {
                 foreach (CosmosDatabase database in deleteList)
                 {
-                    await database.DeleteAsync(cancellationToken: this.cancellationToken);
+                    await database.DeleteDatabaseAsync(cancellationToken: this.cancellationToken);
                 }
             }
 

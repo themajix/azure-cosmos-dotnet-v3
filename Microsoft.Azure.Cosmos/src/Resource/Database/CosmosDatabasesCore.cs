@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Cosmos
         {
             // Doing a Read before Create will give us better latency for existing databases
             CosmosDatabase database = this[id];
-            CosmosDatabaseResponse cosmosDatabaseResponse = await database.ReadAsync(cancellationToken: cancellationToken);
+            CosmosDatabaseResponse cosmosDatabaseResponse = await database.ReadDatabaseAsync(cancellationToken: cancellationToken);
             if (cosmosDatabaseResponse.StatusCode != HttpStatusCode.NotFound)
             {
                 return cosmosDatabaseResponse;
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.Cosmos
 
             // This second Read is to handle the race condition when 2 or more threads have Read the database and only one succeeds with Create
             // so for the remaining ones we should do a Read instead of throwing Conflict exception
-            return await database.ReadAsync(cancellationToken: cancellationToken);
+            return await database.ReadDatabaseAsync(cancellationToken: cancellationToken);
         }
 
         public override CosmosFeedIterator<CosmosDatabaseSettings> GetDatabaseIterator(

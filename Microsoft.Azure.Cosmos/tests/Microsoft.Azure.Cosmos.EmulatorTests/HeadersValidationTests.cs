@@ -512,7 +512,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             }
             finally
             {
-                await db.DeleteAsync();
+                await db.DeleteDatabaseAsync();
             }
         }
 
@@ -592,7 +592,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             }
             finally
             {
-                await db.DeleteAsync();
+                await db.DeleteDatabaseAsync();
             }
         }
 

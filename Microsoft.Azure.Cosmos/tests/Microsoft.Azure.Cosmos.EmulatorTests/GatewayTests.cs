@@ -1392,7 +1392,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             //Script cannot timeout.
             CosmosStoredProcedure storedProcedure = await collection.StoredProcedures.CreateStoredProcedureAsync("scriptId", script);
             string result = await storedProcedure.ExecuteAsync<object ,string >(partitionKey : documentDefinition.Id, input : null);
-            await database.DeleteAsync();
+            await database.DeleteDatabaseAsync();
         }
 
         [TestMethod]
@@ -1442,7 +1442,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             {
                 Assert.Fail("Exception should not have occurred. {0}", exception.InnerException.ToString());
             }
-            await database.DeleteAsync();
+            await database.DeleteDatabaseAsync();
         }
 
         [TestMethod]
@@ -1482,7 +1482,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             }
 
             Assert.AreEqual(input, result);
-            await database.DeleteAsync();
+            await database.DeleteDatabaseAsync();
         }
 
         /*
@@ -3098,7 +3098,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             // This tests the implicit operator for ReadDocumentAsync
            CustomerPOCO  doc1 = await collection.ReadItemAsync<CustomerPOCO>(partitionKey: poco.id, id: poco.id);
             Assert.IsNotNull(doc1.id);
-            await database.DeleteAsync();
+            await database.DeleteDatabaseAsync();
 
         }
 
@@ -3338,7 +3338,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             queriedDocuments = collection.CreateItemQuery<Document>(sqlQueryText: @"select * from root r where r.StringField=""222""", maxConcurrency: 1, requestOptions: new CosmosQueryRequestOptions { EnableCrossPartitionQuery = true });
             Assert.AreEqual(0, await GetCountFromIterator(queriedDocuments));
 
-            await database.DeleteAsync();
+            await database.DeleteDatabaseAsync();
         }
 
         public static string DumpFullExceptionMessage(Exception e)

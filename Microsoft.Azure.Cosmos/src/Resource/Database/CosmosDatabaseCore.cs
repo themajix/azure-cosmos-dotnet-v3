@@ -39,22 +39,22 @@ namespace Microsoft.Azure.Cosmos
 
         internal virtual Uri LinkUri { get; }
 
-        public override Task<CosmosDatabaseResponse> ReadAsync(
+        public override Task<CosmosDatabaseResponse> ReadDatabaseAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
-            Task<CosmosResponseMessage> response = this.ReadStreamAsync(
+            Task<CosmosResponseMessage> response = this.ReadDatabaseStreamAsync(
                         requestOptions: requestOptions,
                         cancellationToken: cancellationToken);
 
             return this.clientContext.ResponseFactory.CreateDatabaseResponse(this, response);
         }
 
-        public override Task<CosmosDatabaseResponse> DeleteAsync(
+        public override Task<CosmosDatabaseResponse> DeleteDatabaseAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
-            Task<CosmosResponseMessage> response = this.DeleteStreamAsync(
+            Task<CosmosResponseMessage> response = this.DeleteDatabaseStreamAsync(
                         requestOptions: requestOptions,
                         cancellationToken: cancellationToken);
 
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Cosmos
             }
         }
 
-        public override Task<CosmosResponseMessage> ReadStreamAsync(
+        public override Task<CosmosResponseMessage> ReadDatabaseStreamAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Cosmos
                 cancellationToken);
         }
 
-        public override Task<CosmosResponseMessage> DeleteStreamAsync(
+        public override Task<CosmosResponseMessage> DeleteDatabaseStreamAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -123,7 +123,7 @@ namespace Microsoft.Azure.Cosmos
 
         internal Task<string> GetRID(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.ReadAsync(cancellationToken: cancellationToken)
+            return this.ReadDatabaseAsync(cancellationToken: cancellationToken)
                 .ContinueWith(task =>
                 {
                     CosmosDatabaseResponse response = task.Result;

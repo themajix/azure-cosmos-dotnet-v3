@@ -95,14 +95,14 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                 string resourceRandom2Id = "randomToDelete2" + suffix;
 
                 // Delete database if exist:
-                CosmosDatabase databaseToDelete = await client.Databases[databaseId].DeleteAsync();
+                CosmosDatabase databaseToDelete = await client.Databases[databaseId].DeleteDatabaseAsync();
 
                 //1. Database CRUD
                 CosmosDatabase database = await client.Databases.CreateDatabaseAsync(resourceRandomId);
-                database = await database.DeleteAsync();
+                database = await database.DeleteDatabaseAsync();
 
                 database = await client.Databases.CreateDatabaseAsync(databaseId);
-                database = await database.ReadAsync();
+                database = await database.ReadDatabaseAsync();
 
                 // database = await client.ReadDatabaseByIdPrivateAsync(databaseId, null);
 
@@ -394,7 +394,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                 //}
 
                 // after all finish, delete the databaseAccount.
-                await database.DeleteAsync();
+                await database.DeleteDatabaseAsync();
 
             }
             catch (NotFoundException ex)
@@ -943,7 +943,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                 Assert.AreEqual(docIgnore.Id, documentId);
             }
 
-            await database.DeleteAsync();
+            await database.DeleteDatabaseAsync();
             // Test #2: Try name for all resources
             List<string> nameList = new List<string>(new string[]{
                                     longestName,
@@ -964,7 +964,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                 documentDefinition.SetPropertyValue("pk", "test");
                 Document doc = await coll.CreateItemAsync<Document>("test", documentDefinition);
 
-                await db.DeleteAsync();
+                await db.DeleteDatabaseAsync();
             }
 
             await TestCommon.DeleteAllDatabasesAsync();
@@ -1061,7 +1061,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             }
             finally
             {
-                await database.DeleteAsync();
+                await database.DeleteDatabaseAsync();
             }
         }
 
