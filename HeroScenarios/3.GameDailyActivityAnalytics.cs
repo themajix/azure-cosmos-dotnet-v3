@@ -32,9 +32,11 @@
             }
         }
 
-        private async Task ProcessChanges(IReadOnlyList<TwoPersonGame> changes, CancellationToken cancellationToken)
+        private async Task ProcessChanges(IReadOnlyCollection<TwoPersonGame> changes, CancellationToken cancellationToken)
         {
             // Process the changes for analytics
+            await Task.Yield();
+
             throw new NotImplementedException();
         }
     }
