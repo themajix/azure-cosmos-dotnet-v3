@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             // Insert document and then query
             string testPartitionId = Guid.NewGuid().ToString();
             var payload = new { id = testPartitionId, user = testPartitionId };
-            CosmosItemResponse<dynamic> createItemResponse = await this.container.Items.CreateItemAsync<dynamic>(testPartitionId, payload);
+            CosmosItemResponse<dynamic> createItemResponse = await this.container.CreateItemAsync<dynamic>(testPartitionId, payload);
             Assert.AreEqual(HttpStatusCode.Created, createItemResponse.StatusCode);
 
             CosmosStoredProcedure storedProcedure = storedProcedureResponse;
@@ -216,7 +216,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             // Insert document and then query
             string testPartitionId = Guid.NewGuid().ToString();
             var payload = new { id = testPartitionId, user = testPartitionId };
-            CosmosItemResponse<dynamic> createItemResponse = await this.container.Items.CreateItemAsync<dynamic>(testPartitionId, payload);
+            CosmosItemResponse<dynamic> createItemResponse = await this.container.CreateItemAsync<dynamic>(testPartitionId, payload);
             Assert.AreEqual(HttpStatusCode.Created, createItemResponse.StatusCode);
 
             CosmosStoredProcedure storedProcedure = storedProcedureResponse.StoredProcedure;

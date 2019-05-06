@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                         ""id"": ""{i}""
                     }}";
 
-                using (CosmosResponseMessage createResponse = await this.Container.Items.CreateItemStreamAsync(
+                using (CosmosResponseMessage createResponse = await this.Container.CreateItemStreamAsync(
                         i.ToString(),
                         CosmosReadFeedTests.GenerateStreamFromString(item),
                         requestOptions: new CosmosItemRequestOptions()))
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             }
 
             string lastKnownContinuationToken = null;
-            CosmosFeedIterator iter = this.Container.Database.Containers[this.Container.Id].Items
+            CosmosFeedIterator iter = this.Container.Database.Containers[this.Container.Id]
                                 .GetItemStreamIterator(maxItemCount, continuationToken: lastKnownContinuationToken);
             int count = 0;
             List<string> forwardOrder = new List<string>();
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             {
                 if (useStatelessIteration)
                 {
-                    iter = this.Container.Database.Containers[this.Container.Id].Items
+                    iter = this.Container.Database.Containers[this.Container.Id]
                                         .GetItemStreamIterator(maxItemCount, continuationToken: lastKnownContinuationToken);
                 }
 
@@ -113,13 +113,13 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             List<string> reverseOrder = new List<string>();
 
             lastKnownContinuationToken = null;
-            iter = this.Container.Database.Containers[this.Container.Id].Items
+            iter = this.Container.Database.Containers[this.Container.Id]
                     .GetItemStreamIterator(maxItemCount, continuationToken: lastKnownContinuationToken, requestOptions: requestOptions);
             while (iter.HasMoreResults)
             {
                 if (useStatelessIteration)
                 {
-                    iter = this.Container.Database.Containers[this.Container.Id].Items
+                    iter = this.Container.Database.Containers[this.Container.Id]
                             .GetItemStreamIterator(maxItemCount, continuationToken: lastKnownContinuationToken, requestOptions: requestOptions);
                 }
 

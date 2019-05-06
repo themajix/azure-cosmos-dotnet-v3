@@ -86,14 +86,14 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             };
 
             CosmosContainer cosmosContainer = containerResponse;
-            containerResponse = await cosmosContainer.ReplaceAsync(settings);
+            containerResponse = await cosmosContainer.ReplaceContainerAsync(settings);
             Assert.AreEqual(HttpStatusCode.OK, containerResponse.StatusCode);
             Assert.AreEqual(containerName, containerResponse.Resource.Id);
             Assert.AreEqual(partitionKeyPath, containerResponse.Resource.PartitionKey.Paths.First());
             Assert.AreEqual(Cosmos.IndexingMode.None, containerResponse.Resource.IndexingPolicy.IndexingMode);
             Assert.IsFalse(containerResponse.Resource.IndexingPolicy.Automatic);
 
-            containerResponse = await cosmosContainer.ReadAsync();
+            containerResponse = await cosmosContainer.ReadContainerAsync();
             Assert.AreEqual(HttpStatusCode.OK, containerResponse.StatusCode);
             Assert.AreEqual(containerName, containerResponse.Resource.Id);
             Assert.AreEqual(Cosmos.PartitionKeyDefinitionVersion.V2, containerResponse.Resource.PartitionKeyDefinitionVersion);
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             Assert.AreEqual(Cosmos.IndexingMode.None, containerResponse.Resource.IndexingPolicy.IndexingMode);
             Assert.IsFalse(containerResponse.Resource.IndexingPolicy.Automatic);
 
-            containerResponse = await containerResponse.Container.DeleteAsync();
+            containerResponse = await containerResponse.Container.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
         }
 
@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             Assert.AreEqual(containerName, containerResponse.Resource.Id);
             Assert.AreEqual(partitionKeyPath, containerResponse.Resource.PartitionKey.Paths.First());
 
-            containerResponse = await containerResponse.Container.DeleteAsync();
+            containerResponse = await containerResponse.Container.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
         }
 
@@ -156,7 +156,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                 Assert.AreEqual(HttpStatusCode.Created, containerResponse.StatusCode);
             }
 
-            using (CosmosResponseMessage containerResponse = await this.cosmosDatabase.Containers[containerName].DeleteStreamAsync())
+            using (CosmosResponseMessage containerResponse = await this.cosmosDatabase.Containers[containerName].DeleteContainerStreamAsync())
             {
                 Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
             }
@@ -260,7 +260,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             Assert.AreEqual(containerName, containerResponse.Resource.Id);
             Assert.AreEqual(partitionKeyPath, containerResponse.Resource.PartitionKey.Paths.First());
 
-            containerResponse = await containerResponse.Container.DeleteAsync();
+            containerResponse = await containerResponse.Container.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
         }
 
@@ -291,7 +291,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             Assert.IsTrue(containerIds.Count > 0, "The iterator did not find any containers.");
             Assert.IsTrue(containerIds.Contains(containerName), "The iterator did not find the created container");
 
-            containerResponse = await containerResponse.Container.DeleteAsync();
+            containerResponse = await containerResponse.Container.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
         }
 
@@ -334,7 +334,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             Assert.IsTrue(containerIds.Count > 0, "The iterator did not find any containers.");
             Assert.IsTrue(containerIds.Contains(containerName), "The iterator did not find the created container");
 
-            containerResponse = await containerResponse.Container.DeleteAsync();
+            containerResponse = await containerResponse.Container.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
         }
 
@@ -344,7 +344,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             string containerName = Guid.NewGuid().ToString();
             CosmosContainer cosmosContainer = this.cosmosDatabase.Containers[containerName];
 
-            CosmosContainerResponse containerResponse = await cosmosContainer.DeleteAsync();
+            CosmosContainerResponse containerResponse = await cosmosContainer.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NotFound, containerResponse.StatusCode);
         }
 
@@ -361,7 +361,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             int? readThroughput = await cosmosContainer.ReadProvisionedThroughputAsync();
             Assert.IsNotNull(readThroughput);
 
-            containerResponse = await cosmosContainer.DeleteAsync();
+            containerResponse = await cosmosContainer.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
         }
 
@@ -385,16 +385,16 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
 
             Assert.AreEqual(timeToLiveInSeconds, responseSettings.DefaultTimeToLive);
 
-            CosmosContainerResponse readResponse = await cosmosContainer.ReadAsync();
+            CosmosContainerResponse readResponse = await cosmosContainer.ReadContainerAsync();
             Assert.AreEqual(HttpStatusCode.Created, containerResponse.StatusCode);
             Assert.AreEqual(timeToLiveInSeconds, readResponse.Resource.DefaultTimeToLive);
 
             JObject itemTest = JObject.FromObject(new { id = Guid.NewGuid().ToString(), users = "testUser42" });
-            CosmosItemResponse<JObject> createResponse = await cosmosContainer.Items.CreateItemAsync<JObject>(partitionKey: itemTest["users"].ToString(), item: itemTest);
+            CosmosItemResponse<JObject> createResponse = await cosmosContainer.CreateItemAsync<JObject>(partitionKey: itemTest["users"].ToString(), item: itemTest);
             JObject responseItem = createResponse;
             Assert.IsNull(responseItem["ttl"]);
 
-            containerResponse = await cosmosContainer.DeleteAsync();
+            containerResponse = await cosmosContainer.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
         }
 
@@ -416,7 +416,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             Assert.IsNotNull(replaceThroughput);
             Assert.AreEqual(readThroughput.Value + 1000, replaceThroughput);
 
-            containerResponse = await cosmosContainer.DeleteAsync();
+            containerResponse = await cosmosContainer.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
         }
 
@@ -429,7 +429,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
 
             await cosmosContainer.ReadProvisionedThroughputAsync();
 
-            CosmosContainerResponse containerResponse = await cosmosContainer.DeleteAsync();
+            CosmosContainerResponse containerResponse = await cosmosContainer.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NotFound, containerResponse.StatusCode);
         }
 
@@ -439,7 +439,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             string containerName = Guid.NewGuid().ToString();
             string partitionKeyPath = "/users";
 
-            CosmosContainerResponse containerResponse = await this.cosmosDatabase.Containers[containerName].ReadAsync();
+            CosmosContainerResponse containerResponse = await this.cosmosDatabase.Containers[containerName].ReadContainerAsync();
             CosmosContainer cosmosContainer = containerResponse;
             CosmosContainerSettings cosmosContainerSettings = containerResponse;
 
@@ -453,7 +453,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             Assert.IsNotNull(cosmosContainer);
             Assert.IsNotNull(cosmosContainerSettings);
 
-            containerResponse = await cosmosContainer.DeleteAsync();
+            containerResponse = await cosmosContainer.DeleteContainerAsync();
             cosmosContainer = containerResponse;
             cosmosContainerSettings = containerResponse;
             Assert.IsNotNull(cosmosContainer);
@@ -498,27 +498,27 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
 
             //verify removing the ttl property path
             setting.TimeToLivePropertyPath = null;
-            containerResponse = await cosmosContainer.ReplaceAsync(setting);
+            containerResponse = await cosmosContainer.ReplaceContainerAsync(setting);
             cosmosContainer = containerResponse;
             Assert.AreEqual(timeToLivetimeToLiveInSeconds, containerResponse.Resource.DefaultTimeToLive);
             Assert.IsNull(containerResponse.Resource.TimeToLivePropertyPath);
 
             //adding back the ttl property path
             setting.TimeToLivePropertyPath = "/creationDate";
-            containerResponse = await cosmosContainer.ReplaceAsync(setting);
+            containerResponse = await cosmosContainer.ReplaceContainerAsync(setting);
             cosmosContainer = containerResponse;
             Assert.AreEqual(containerResponse.Resource.TimeToLivePropertyPath, "/creationDate");
 
             //Creating an item and reading before expiration
             var payload = new { id = "testId", user = "testUser", creationDate = ToEpoch(DateTime.UtcNow) };
-            CosmosItemResponse<dynamic> createItemResponse = await cosmosContainer.Items.CreateItemAsync<dynamic>(payload.user, payload);
+            CosmosItemResponse<dynamic> createItemResponse = await cosmosContainer.CreateItemAsync<dynamic>(payload.user, payload);
             Assert.IsNotNull(createItemResponse.Resource);
             Assert.AreEqual(createItemResponse.StatusCode, HttpStatusCode.Created);
-            CosmosItemResponse<dynamic> readItemResponse = await cosmosContainer.Items.ReadItemAsync<dynamic>(payload.user, payload.id);
+            CosmosItemResponse<dynamic> readItemResponse = await cosmosContainer.ReadItemAsync<dynamic>(payload.user, payload.id);
             Assert.IsNotNull(readItemResponse.Resource);
             Assert.AreEqual(readItemResponse.StatusCode, HttpStatusCode.OK);
 
-            containerResponse = await cosmosContainer.DeleteAsync();
+            containerResponse = await cosmosContainer.DeleteContainerAsync();
             Assert.AreEqual(HttpStatusCode.NoContent, containerResponse.StatusCode);
         }
     }

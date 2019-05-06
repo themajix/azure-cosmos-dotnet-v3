@@ -237,7 +237,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             readThroughput = await container.ReadProvisionedThroughputAsync();
             Assert.IsNull(readThroughput);
 
-            await container.DeleteAsync();
+            await container.DeleteContainerAsync();
             await cosmosDatabase.DeleteAsync();
         }
 

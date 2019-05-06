@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Cosmos
             CosmosStoredProcedureRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            CosmosItemsCore.ValidatePartitionKey(partitionKey, requestOptions);
+            CosmosContainerCore.ValidatePartitionKey(partitionKey, requestOptions);
 
             Stream parametersStream;
             if (input != null && !input.GetType().IsArray)

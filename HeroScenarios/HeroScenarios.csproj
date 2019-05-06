@@ -54,6 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Hierarchy.cd" />
+    <None Include="PocoResponseTypes.cd" />
+    <None Include="StreamResponseTypes.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.Cosmos\src\Microsoft.Azure.Cosmos.csproj">

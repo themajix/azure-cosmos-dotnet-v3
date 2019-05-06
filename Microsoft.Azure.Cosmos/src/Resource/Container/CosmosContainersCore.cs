@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Cosmos
             this.ValidateContainerSettings(containerSettings);
 
             CosmosContainer cosmosContainer = this[containerSettings.Id];
-            CosmosContainerResponse cosmosContainerResponse = await cosmosContainer.ReadAsync(cancellationToken: cancellationToken);
+            CosmosContainerResponse cosmosContainerResponse = await cosmosContainer.ReadContainerAsync(cancellationToken: cancellationToken);
             if (cosmosContainerResponse.StatusCode != HttpStatusCode.NotFound)
             {
                 return cosmosContainerResponse;
@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Cosmos
 
             // This second Read is to handle the race condition when 2 or more threads have Read the database and only one succeeds with Create
             // so for the remaining ones we should do a Read instead of throwing Conflict exception
-            return await cosmosContainer.ReadAsync(cancellationToken: cancellationToken);
+            return await cosmosContainer.ReadContainerAsync(cancellationToken: cancellationToken);
         }
 
         public override Task<CosmosContainerResponse> CreateContainerIfNotExistsAsync(

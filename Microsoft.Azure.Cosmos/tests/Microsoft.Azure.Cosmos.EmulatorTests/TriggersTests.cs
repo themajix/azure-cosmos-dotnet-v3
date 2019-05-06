@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                PreTriggers = new List<string>(){cosmosTrigger.Id },
             };
 
-            CosmosItemResponse<dynamic> createdItem = await this.container.Items.CreateItemAsync<dynamic>(item.status, item, options);
+            CosmosItemResponse<dynamic> createdItem = await this.container.CreateItemAsync<dynamic>(item.status, item, options);
             
             double itemTax = createdItem.Resource.tax;
             Assert.AreEqual(item.cost * .20, itemTax);

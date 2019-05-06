@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Tests
             object partitionKey = "1";
             DocumentServiceLeaseCore leaseToUpdate = new DocumentServiceLeaseCore();
 
-            Mock<CosmosItems> mockedItems = new Mock<CosmosItems>();
+            Mock<CosmosContainerCore> mockedItems = new Mock<CosmosContainerCore>();
             mockedItems.Setup(i => i.ReplaceItemAsync<DocumentServiceLeaseCore>(
                 It.Is<object>((pk) => pk == partitionKey),
                 It.Is<string>((id) => id == itemId),
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Tests
             object partitionKey = "1";
             DocumentServiceLeaseCore leaseToUpdate = new DocumentServiceLeaseCore();
 
-            Mock<CosmosItems> mockedItems = new Mock<CosmosItems>();
+            Mock<CosmosContainerCore> mockedItems = new Mock<CosmosContainerCore>();
             mockedItems.Setup(i => i.ReadItemAsync<DocumentServiceLeaseCore>(
                 It.Is<object>((pk) => pk == partitionKey),
                 It.Is<string>((id) => id == itemId),
@@ -123,7 +123,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Tests
             object partitionKey = "1";
             DocumentServiceLeaseCore leaseToUpdate = new DocumentServiceLeaseCore();
 
-            Mock<CosmosItems> mockedItems = new Mock<CosmosItems>();
+            Mock<CosmosContainerCore> mockedItems = new Mock<CosmosContainerCore>();
             mockedItems.Setup(i => i.ReadItemAsync<DocumentServiceLeaseCore>(
                 It.Is<object>((pk) => pk == partitionKey),
                 It.Is<string>((id) => id == itemId),
@@ -160,7 +160,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Tests
             object partitionKey = "1";
             DocumentServiceLeaseCore leaseToUpdate = new DocumentServiceLeaseCore();
 
-            Mock<CosmosItems> mockedItems = new Mock<CosmosItems>();
+            Mock<CosmosContainerCore> mockedItems = new Mock<CosmosContainerCore>();
             mockedItems.Setup(i => i.ReadItemAsync<DocumentServiceLeaseCore>(
                 It.Is<object>((pk) => pk == partitionKey),
                 It.Is<string>((id) => id == itemId),
@@ -203,7 +203,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Tests
             object partitionKey = "1";
             DocumentServiceLeaseCore leaseToUpdate = new DocumentServiceLeaseCore();
 
-            Mock<CosmosItems> mockedItems = new Mock<CosmosItems>();
+            Mock<CosmosContainerCore> mockedItems = new Mock<CosmosContainerCore>();
             mockedItems.Setup(i => i.ReadItemAsync<DocumentServiceLeaseCore>(
                 It.Is<object>((pk) => pk == partitionKey),
                 It.Is<string>((id) => id == itemId),
@@ -251,7 +251,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Tests
             object partitionKey = "1";
             DocumentServiceLeaseCore leaseToUpdate = new DocumentServiceLeaseCore();
 
-            Mock<CosmosItems> mockedItems = new Mock<CosmosItems>();
+            Mock<CosmosContainerCore> mockedItems = new Mock<CosmosContainerCore>();
             mockedItems.Setup(i => i.ReadItemAsync<DocumentServiceLeaseCore>(
                 It.Is<object>((pk) => pk == partitionKey),
                 It.Is<string>((id) => id == itemId),
@@ -286,12 +286,12 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Tests
             });
         }
 
-        private static CosmosContainerCore GetMockedContainer(CosmosItems mockedItems)
+        private static CosmosContainerCore GetMockedContainer(CosmosContainerCore mockedItems)
         {
             Mock<CosmosContainerCore> mockedContainer = new Mock<CosmosContainerCore>();
             mockedContainer.Setup(c => c.LinkUri).Returns(new Uri("/dbs/myDb/colls/myColl", UriKind.Relative));
             //mockedContainer.Setup(c => c.Client).Returns(DocumentServiceLeaseUpdaterCosmosTests.GetMockedClient());
-            mockedContainer.Setup(c => c.Items).Returns(mockedItems);
+            mockedContainer.Setup(c => c).Returns(mockedItems);
             return mockedContainer.Object;
         }
 

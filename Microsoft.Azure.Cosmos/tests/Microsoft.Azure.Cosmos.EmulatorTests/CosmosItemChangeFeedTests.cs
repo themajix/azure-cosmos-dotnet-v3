@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             int visitedPkRanges = 0;
 
             await this.CreateRandomItems(batchSize, randomPartitionKey: true);
-            CosmosItemsCore itemsCore = (CosmosItemsCore)this.Container.Items;
+            CosmosContainerCore itemsCore = (CosmosContainerCore)this.Container;
             CosmosFeedIterator setIterator = itemsCore.GetStandByFeedIterator(requestOptions: new CosmosChangeFeedRequestOptions() { StartTime = DateTime.MinValue });
 
             while (setIterator.HasMoreResults)
@@ -154,7 +154,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
 
             string corruptedTokenSerialized = JsonConvert.SerializeObject(corruptedTokens);
 
-            CosmosItemsCore itemsCore = (CosmosItemsCore)this.Container.Items;
+            CosmosContainerCore itemsCore = (CosmosContainerCore)this.Container;
             CosmosFeedIterator setIteratorNew =
                 itemsCore.GetStandByFeedIterator(corruptedTokenSerialized);
 
@@ -171,7 +171,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
         public async Task StandByFeedIterator_WithMaxItemCount()
         {
             await this.CreateRandomItems(2, randomPartitionKey: true);
-            CosmosItemsCore itemsCore = (CosmosItemsCore)this.Container.Items;
+            CosmosContainerCore itemsCore = (CosmosContainerCore)this.Container;
             CosmosFeedIterator setIterator = itemsCore.GetStandByFeedIterator(maxItemCount: 1, requestOptions: new CosmosChangeFeedRequestOptions() { StartTime = DateTime.MinValue });
 
             while (setIterator.HasMoreResults)
@@ -206,7 +206,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             int expected = 25;
             int iterations = 0;
             await this.CreateRandomItems(expected, randomPartitionKey: true);
-            CosmosItemsCore itemsCore = (CosmosItemsCore)this.Container.Items;
+            CosmosContainerCore itemsCore = this.Container;
             string continuationToken = null;
             int count = 0;
             while (true)
@@ -278,7 +278,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
 
                     createdList.Add(temp);
 
-                    await this.Container.Items.CreateItemAsync<ToDoActivity>(partitionKey: temp.status, item: temp);
+                    await this.Container.CreateItemAsync<ToDoActivity>(partitionKey: temp.status, item: temp);
                 }
             }
 
