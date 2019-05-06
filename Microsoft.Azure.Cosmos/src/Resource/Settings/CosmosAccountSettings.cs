@@ -7,7 +7,6 @@ namespace Microsoft.Azure.Cosmos
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using Microsoft.Azure.Cosmos.Internal;
     using Microsoft.Azure.Documents;
     using Newtonsoft.Json;
 
@@ -71,7 +70,28 @@ namespace Microsoft.Azure.Cosmos
         /// </para>
         /// </remarks>
         [JsonProperty(PropertyName = Constants.Properties.Id)]
-        public virtual string Id { get; set; }
+        public virtual string Id { get; private set; }
+
+        /// <summary>
+        /// Gets the entity tag associated with the resource from the Azure Cosmos DB service.
+        /// </summary>
+        /// <value>
+        /// The entity tag associated with the resource.
+        /// </value>
+        /// <remarks>
+        /// ETags are used for concurrency checking when updating resources. 
+        /// </remarks>
+        [JsonProperty(PropertyName = Constants.Properties.ETag)]
+        public virtual string ETag { get; protected internal set; }
+
+        /// <summary>
+        /// Gets the <see cref="ConsistencySetting"/> from the Azure Cosmos DB service.
+        /// </summary>
+        /// <value>
+        /// The ConsistencySetting.
+        /// </value>
+        [JsonProperty(PropertyName = Constants.Properties.UserConsistencyPolicy)]
+        public virtual CosmosConsistencySettings ConsistencySetting { get; internal set; }
 
         /// <summary>
         /// Gets or sets the Resource Id associated with the resource in the Azure Cosmos DB service.
@@ -85,19 +105,7 @@ namespace Microsoft.Azure.Cosmos
         /// These resource ids are used when building up SelfLinks, a static addressable Uri for each resource within a database account.
         /// </remarks>
         [JsonProperty(PropertyName = Constants.Properties.RId)]
-        public virtual string ResourceId { get; protected internal set; }
-
-        /// <summary>
-        /// Gets the entity tag associated with the resource from the Azure Cosmos DB service.
-        /// </summary>
-        /// <value>
-        /// The entity tag associated with the resource.
-        /// </value>
-        /// <remarks>
-        /// ETags are used for concurrency checking when updating resources. 
-        /// </remarks>
-        [JsonProperty(PropertyName = Constants.Properties.ETag)]
-        public virtual string ETag { get; protected internal set; }
+        internal virtual string ResourceId { get; private set; }
 
         [JsonProperty(PropertyName = Constants.Properties.WritableLocations)]
         internal Collection<CosmosAccountLocation> WriteLocationsInternal
@@ -196,15 +204,6 @@ namespace Microsoft.Azure.Cosmos
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets the <see cref="ConsistencySetting"/> from the Azure Cosmos DB service.
-        /// </summary>
-        /// <value>
-        /// The ConsistencySetting.
-        /// </value>
-        [JsonProperty(PropertyName = Constants.Properties.UserConsistencyPolicy)]
-        public virtual CosmosConsistencySettings ConsistencySetting { get; internal set; }
 
         /// <summary>
         /// Gets the self-link for Address Routing Table in the databaseAccount
