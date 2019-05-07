@@ -14,6 +14,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
     using System.Threading.Tasks;
     using Microsoft.Azure.Cosmos.Linq;
     using Microsoft.Azure.Cosmos.Routing;
+    using Microsoft.Azure.Cosmos.Scripts;
     using Microsoft.Azure.Cosmos.Services.Management.Tests;
     using Microsoft.Azure.Cosmos.Services.Management.Tests.LinqProviderTests;
     using Microsoft.Azure.Documents;
@@ -258,17 +259,19 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                         Body = "function() {var x = 10;}",
                     };
 
-                    CosmosStoredProcedure storedProcedure1 = await container.StoredProcedures.CreateStoredProcedureAsync(id: myStoredProcedure.Id, body: myStoredProcedure.Body);
-                    myStoredProcedure.Body = "function() {var x = 5;}";
-                    storedProcedure1 = await storedProcedure1.ReplaceAsync(body: myStoredProcedure.Body);
-                    storedProcedure1 = await storedProcedure1.DeleteAsync();
+                    CosmosScripts cosmosScripts = container.GetScripts();
 
-                    storedProcedure1 = await container.StoredProcedures.CreateStoredProcedureAsync(id: myStoredProcedure.Id, body: myStoredProcedure.Body);
-                    storedProcedure1 = await storedProcedure1.ReadAsync();
+                    CosmosStoredProcedureSettings storedProcedure1 = await cosmosScripts.CreateStoredProcedureAsync(id: myStoredProcedure.Id, body: myStoredProcedure.Body);
+                    myStoredProcedure.Body = "function() {var x = 5;}";
+                    storedProcedure1 = await cosmosScripts.ReplaceStoredProcedureAsync(id: myStoredProcedure.Id, body: myStoredProcedure.Body);
+                    await cosmosScripts.DeleteStoredProcedureAsync(myStoredProcedure.Id);
+
+                    storedProcedure1 = await cosmosScripts.CreateStoredProcedureAsync(id: myStoredProcedure.Id, body: myStoredProcedure.Body);
+                    storedProcedure1 = await cosmosScripts.ReadStoredProcedureAsync(myStoredProcedure.Id);
 
                     // 
                     // read databaseCollection feed.
-                    CosmosFeedIterator<CosmosStoredProcedureSettings> storedProcedureIter = container.StoredProcedures.GetStoredProcedureIterator();
+                    CosmosFeedIterator<CosmosStoredProcedureSettings> storedProcedureIter = cosmosScripts.GetStoredProcedureIterator();
                     List<CosmosStoredProcedureSettings> storedProcedures = new List<CosmosStoredProcedureSettings>();
                     while (storedProcedureIter.HasMoreResults)
                     {

@@ -8,6 +8,7 @@ namespace Microsoft.Azure.Cosmos
     using System;
     using System.Net;
     using System.Threading.Tasks;
+    using Microsoft.Azure.Cosmos.Scripts;
 
     internal class CosmosResponseFactory
     {
@@ -72,24 +73,31 @@ namespace Microsoft.Azure.Cosmos
             });
         }
 
-        internal Task<CosmosStoredProcedureResponse> CreateStoredProcedureResponse(
-            CosmosStoredProcedure storedProcedure,
-            Task<CosmosResponseMessage> cosmosResponseMessageTask)
+        internal Task<CosmosStoredProcedureExecuteResponse<T>> CreateStoredProcedureExecuteResponse<T>(Task<CosmosResponseMessage> cosmosResponseMessageTask)
         {
             return this.MessageHelper(cosmosResponseMessageTask, (cosmosResponseMessage) =>
             {
-                CosmosStoredProcedureSettings settings = this.ToObjectInternal<CosmosStoredProcedureSettings>(cosmosResponseMessage);
-                return new CosmosStoredProcedureResponse(
+                T item = this.ToObjectInternal<T>(cosmosResponseMessage);
+                return new CosmosStoredProcedureExecuteResponse<T>(
                     cosmosResponseMessage.StatusCode,
                     cosmosResponseMessage.Headers,
-                    settings,
-                    storedProcedure);
+                    item);
             });
         }
 
-        internal Task<CosmosTriggerResponse> CreateTriggerResponse(
-            CosmosTrigger trigger,
-            Task<CosmosResponseMessage> cosmosResponseMessageTask)
+        internal Task<CosmosStoredProcedureResponse> CreateStoredProcedureResponse(Task<CosmosResponseMessage> cosmosResponseMessageTask)
+        {
+            return this.MessageHelper(cosmosResponseMessageTask, (cosmosResponseMessage) =>
+            {
+                CosmosStoredProcedureSettings cosmosStoredProcedure = this.ToObjectInternal<CosmosStoredProcedureSettings>(cosmosResponseMessage);
+                return new CosmosStoredProcedureResponse(
+                    cosmosResponseMessage.StatusCode,
+                    cosmosResponseMessage.Headers,
+                    cosmosStoredProcedure);
+            });
+        }
+
+        internal Task<CosmosTriggerResponse> CreateTriggerResponse(Task<CosmosResponseMessage> cosmosResponseMessageTask)
         {
             return this.MessageHelper(cosmosResponseMessageTask, (cosmosResponseMessage) =>
             {
@@ -97,14 +105,11 @@ namespace Microsoft.Azure.Cosmos
                 return new CosmosTriggerResponse(
                     cosmosResponseMessage.StatusCode,
                     cosmosResponseMessage.Headers,
-                    settings,
-                    trigger);
+                    settings);
             });
         }
 
-        internal Task<CosmosUserDefinedFunctionResponse> CreateUserDefinedFunctionResponse(
-            CosmosUserDefinedFunction userDefinedFunction,
-            Task<CosmosResponseMessage> cosmosResponseMessageTask)
+        internal Task<CosmosUserDefinedFunctionResponse> CreateUserDefinedFunctionResponse(Task<CosmosResponseMessage> cosmosResponseMessageTask)
         {
             return this.MessageHelper(cosmosResponseMessageTask, (cosmosResponseMessage) =>
             {
@@ -112,8 +117,7 @@ namespace Microsoft.Azure.Cosmos
                 return new CosmosUserDefinedFunctionResponse(
                     cosmosResponseMessage.StatusCode,
                     cosmosResponseMessage.Headers,
-                    settings,
-                    userDefinedFunction);
+                    settings);
             });
         }
 
