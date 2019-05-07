@@ -74,8 +74,6 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.LeaseManagement
             try
             {
                 CosmosItemResponse<DocumentServiceLeaseCore> response = await this.container.ReplaceItemAsync<DocumentServiceLeaseCore>(
-                    partitionKey,
-                    itemId, 
                     lease, 
                     this.CreateIfMatchOptions(lease)).ConfigureAwait(false);
 
@@ -105,8 +103,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.LeaseManagement
 
         private CosmosItemRequestOptions CreateIfMatchOptions(DocumentServiceLease lease)
         {
-            var ifMatchCondition = new AccessCondition { Type = AccessConditionType.IfMatch, Condition = lease.ConcurrencyToken };
-            return new CosmosItemRequestOptions { AccessCondition = ifMatchCondition };
+            return new CosmosItemRequestOptions { IfMatchEtag = lease.ConcurrencyToken };
         }
     }
 }

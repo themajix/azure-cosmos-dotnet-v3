@@ -7,7 +7,10 @@ namespace Microsoft.Azure.Cosmos
     using System.Threading;
     using System.Threading.Tasks;
 
-    public abstract partial class CosmosContainer
+    /// <summary>
+    /// Cosmos conflicts
+    /// </summary>
+    public abstract class CosmosConflicts
     {
         /// <summary>
         /// Delete a conflict from the Azure Cosmos service as an asynchronous operation.
@@ -15,7 +18,7 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="partitionKey">The partition key for the item.</param>
         /// <param name="id">The conflict id.</param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
-        /// <seealso cref="CosmosConflict"/>
+        /// <seealso cref="CosmosConflictSettings"/>
         public abstract Task<CosmosResponseMessage> DeleteConflictAsync(
             object partitionKey,
             string id,
@@ -27,14 +30,14 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="partitionKey">The partition key for the item.</param>
         /// <param name="cosmosConflict">The conflict for which we want to read the item.</param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
-        /// <seealso cref="CosmosConflict"/>
+        /// <seealso cref="CosmosConflictSettings"/>
         public abstract Task<CosmosResponseMessage> ReadConflictSourceItemAsync(
             object partitionKey,
-            CosmosConflict cosmosConflict,
+            CosmosConflictSettings cosmosConflict,
             CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Obtains an iterator to go through the <see cref="CosmosConflict"/> on an Azure Cosmos container.
+        /// Obtains an iterator to go through the <see cref="CosmosConflictSettings"/> on an Azure Cosmos container.
         /// </summary>
         /// <param name="maxItemCount">(Optional) The max item count to return as part of the query</param>
         /// <param name="continuationToken">(Optional) The continuation token in the Azure Cosmos DB service.</param>
@@ -50,7 +53,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<CosmosConflict> GetConflictsIterator(
+        public abstract CosmosFeedIterator<CosmosConflictSettings> GetConflictsIterator(
             int? maxItemCount = null,
             string continuationToken = null);
 

@@ -1,0 +1,658 @@
+<pre><span style=" color: blue;">namespace</span> Microsoft.Azure.Cosmos
+{
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> ChangeFeedProcessor
+  {
+    <span style=" color: blue;">protected</span> ChangeFeedProcessor();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task</span> StartAsync();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task</span> StopAsync();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> ChangeFeedProcessorBuilder
+  {
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ChangeFeedProcessor</span> Build();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ChangeFeedProcessorBuilder</span> WithCosmosLeaseContainer(<span style=" color: #2B91AF;">CosmosContainer</span> leaseContainer);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ChangeFeedProcessorBuilder</span> WithInstanceName(<span style=" color: blue;">string</span> instanceName);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ChangeFeedProcessorBuilder</span> WithLeaseConfiguration(<span style=" color: #2B91AF;">Nullable&lt;TimeSpan&gt;</span> acquireInterval=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;TimeSpan&gt;</span>), <span style=" color: #2B91AF;">Nullable&lt;TimeSpan&gt;</span> expirationInterval=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;TimeSpan&gt;</span>), <span style=" color: #2B91AF;">Nullable&lt;TimeSpan&gt;</span> renewInterval=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;TimeSpan&gt;</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ChangeFeedProcessorBuilder</span> WithMaxItems(<span style=" color: blue;">int</span> maxItemCount);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ChangeFeedProcessorBuilder</span> WithPollInterval(<span style=" color: #2B91AF;">TimeSpan</span> pollInterval);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ChangeFeedProcessorBuilder</span> WithStartTime(<span style=" color: #2B91AF;">DateTime</span> startTime);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CompositePath
+  {
+    <span style=" color: blue;">public</span> CompositePath();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CompositePathSortOrder</span> Order { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Path { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> CompositePathSortOrder
+  {
+    Ascending = 0,
+    Descending = 1,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> ConflictResolutionMode
+  {
+    Custom = 1,
+    LastWriterWins = 0,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> ConflictResolutionPolicy
+  {
+    <span style=" color: blue;">public</span> ConflictResolutionPolicy();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ConflictResolutionPath { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ConflictResolutionProcedure { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ConflictResolutionMode</span> Mode { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> ConnectionMode
+  {
+    Direct = 1,
+    Gateway = 0,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> ConsistencyLevel
+  {
+    BoundedStaleness = 1,
+    ConsistentPrefix = 4,
+    Eventual = 3,
+    Session = 2,
+    Strong = 0,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosAccountConsistency
+  {
+    <span style=" color: blue;">public</span> CosmosAccountConsistency();
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">ConsistencyLevel</span> DefaultConsistencyLevel { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">int</span> MaxStalenessIntervalInSeconds { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">int</span> MaxStalenessPrefix { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosAccountLocation
+  {
+    <span style=" color: blue;">public</span> CosmosAccountLocation();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> DatabaseAccountEndpoint { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Name { <span style=" color: blue;">get</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosAccountSettings
+  {
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosAccountConsistency</span> ConsistencySetting { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ETag { <span style=" color: blue;">get</span>; <span style=" color: blue;">protected</span> <span style=" color: blue;">internal</span> <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">IEnumerable&lt;CosmosAccountLocation&gt;</span> ReadableLocations { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">IEnumerable&lt;CosmosAccountLocation&gt;</span> WritableLocations { <span style=" color: blue;">get</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosClient : <span style=" color: #2B91AF;">IDisposable</span>
+  {
+    <span style=" color: blue;">public</span> CosmosClient(<span style=" color: blue;">string</span> connectionString);
+    <span style=" color: blue;">public</span> CosmosClient(<span style=" color: blue;">string</span> accountEndPoint, <span style=" color: blue;">string</span> accountKey);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClientConfiguration</span> Configuration { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosDatabases</span> Databases { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">void</span> Dispose();
+    <span style=" color: blue;">protected</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">void</span> Dispose(<span style=" color: blue;">bool</span> disposing);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Task&lt;CosmosAccountSettings&gt;</span> GetAccountSettingsAsync();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosClientBuilder
+  {
+    <span style=" color: blue;">public</span> CosmosClientBuilder(<span style=" color: blue;">string</span> connectionString);
+    <span style=" color: blue;">public</span> CosmosClientBuilder(<span style=" color: blue;">string</span> accountEndPoint, <span style=" color: blue;">string</span> accountKey);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClientBuilder</span> AddCustomHandlers(<span style=" color: blue;">params</span> <span style=" color: #2B91AF;">CosmosRequestHandler[]</span> handlers);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClient</span> Build();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClientBuilder</span> UseConnectionModeDirect();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClientBuilder</span> UseConnectionModeGateway(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxConnectionLimit=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClientBuilder</span> UseCurrentRegion(<span style=" color: blue;">string</span> cosmosRegion);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClientBuilder</span> UseCustomJsonSerializer(<span style=" color: #2B91AF;">CosmosJsonSerializer</span> cosmosJsonSerializer);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClientBuilder</span> UseRequestTimeout(<span style=" color: #2B91AF;">TimeSpan</span> requestTimeout);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClientBuilder</span> UseThrottlingRetryOptions(<span style=" color: #2B91AF;">TimeSpan</span> maxRetryWaitTimeOnThrottledRequests, <span style=" color: blue;">int</span> maxRetryAttemptsOnThrottledRequests);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosClientBuilder</span> UseUserAgentSuffix(<span style=" color: blue;">string</span> userAgentSuffix);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosClientConfiguration
+  {
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Uri</span> AccountEndPoint { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ConnectionMode</span> ConnectionMode { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosJsonSerializer</span> CosmosJsonSerializer { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> CurrentRegion { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ReadOnlyCollection&lt;CosmosRequestHandler&gt;</span> CustomHandlers { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">int</span> MaxConnectionLimit { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> MaxRetryAttemptsOnThrottledRequests { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;TimeSpan&gt;</span> MaxRetryWaitTimeOnThrottledRequests { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">TimeSpan</span> RequestTimeout { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> UserAgentSuffix { <span style=" color: blue;">get</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosConflicts
+  {
+    <span style=" color: blue;">protected</span> CosmosConflicts();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> DeleteConflictAsync(<span style=" color: blue;">object</span> partitionKey, <span style=" color: blue;">string</span> id, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator&lt;CosmosConflictSettings&gt;</span> GetConflictsIterator(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator</span> GetConflictsStreamIterator(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> ReadConflictSourceItemAsync(<span style=" color: blue;">object</span> partitionKey, <span style=" color: #2B91AF;">CosmosConflictSettings</span> cosmosConflict, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosConflictSettings
+  {
+    <span style=" color: blue;">public</span> CosmosConflictSettings();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">OperationKind</span> OperationKind { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">T</span> GetResource&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">CosmosJsonSerializer</span> cosmosJsonSerializer=<span style=" color: blue;">null</span>);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosContainer
+  {
+    <span style=" color: blue;">protected</span> CosmosContainer();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosDatabase</span> Database { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosStoredProcedures</span> StoredProcedures { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">ChangeFeedProcessorBuilder</span> CreateChangeFeedProcessorBuilder(<span style=" color: blue;">string</span> workflowName, <span style=" color: #2B91AF;">Func&lt;long, CancellationToken, Task&gt;</span> estimationDelegate, <span style=" color: #2B91AF;">Nullable&lt;TimeSpan&gt;</span> estimationPeriod=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;TimeSpan&gt;</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">ChangeFeedProcessorBuilder</span> CreateChangeFeedProcessorBuilder&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: blue;">string</span> workflowName, <span style=" color: #2B91AF;">Func&lt;IReadOnlyCollection&lt;T&gt;, CancellationToken, Task&gt;</span> onChangesDelegate);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosItemResponse&lt;T&gt;&gt;</span> CreateItemAsync&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">T</span> item, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator</span> CreateItemQueryAsStream(<span style=" color: #2B91AF;">CosmosSqlQueryDefinition</span> sqlQueryDefinition, <span style=" color: blue;">int</span> maxConcurrency, <span style=" color: blue;">object</span> partitionKey=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CosmosQueryRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator</span> CreateItemQueryAsStream(<span style=" color: blue;">string</span> sqlQueryText, <span style=" color: blue;">int</span> maxConcurrency, <span style=" color: blue;">object</span> partitionKey=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CosmosQueryRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator&lt;T&gt;</span> CreateItemQuery&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">CosmosSqlQueryDefinition</span> sqlQueryDefinition, <span style=" color: blue;">int</span> maxConcurrency, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CosmosQueryRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator&lt;T&gt;</span> CreateItemQuery&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">CosmosSqlQueryDefinition</span> sqlQueryDefinition, <span style=" color: blue;">object</span> partitionKey, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CosmosQueryRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator&lt;T&gt;</span> CreateItemQuery&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: blue;">string</span> sqlQueryText, <span style=" color: blue;">int</span> maxConcurrency, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CosmosQueryRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator&lt;T&gt;</span> CreateItemQuery&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: blue;">string</span> sqlQueryText, <span style=" color: blue;">object</span> partitionKey, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CosmosQueryRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> CreateItemStreamAsync(<span style=" color: blue;">object</span> partitionKey, <span style=" color: #2B91AF;">Stream</span> streamPayload, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosContainerResponse&gt;</span> DeleteContainerAsync(<span style=" color: #2B91AF;">CosmosContainerRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> DeleteContainerStreamAsync(<span style=" color: #2B91AF;">CosmosContainerRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosItemResponse&lt;T&gt;&gt;</span> DeleteItemAsync&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: blue;">object</span> partitionKey, <span style=" color: blue;">string</span> id, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> DeleteItemStreamAsync(<span style=" color: blue;">object</span> partitionKey, <span style=" color: blue;">string</span> id, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator&lt;T&gt;</span> GetItemIterator&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator</span> GetItemStreamIterator(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosContainerResponse&gt;</span> ReadContainerAsync(<span style=" color: #2B91AF;">CosmosContainerRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> ReadContainerStreamAsync(<span style=" color: #2B91AF;">CosmosContainerRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosItemResponse&lt;T&gt;&gt;</span> ReadItemAsync&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: blue;">object</span> partitionKey, <span style=" color: blue;">string</span> id, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> ReadItemStreamAsync(<span style=" color: blue;">object</span> partitionKey, <span style=" color: blue;">string</span> id, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;Nullable&lt;int&gt;&gt;</span> ReadProvisionedThroughputAsync(<span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosContainerResponse&gt;</span> ReplaceContainerAsync(<span style=" color: #2B91AF;">CosmosContainerSettings</span> containerSettings, <span style=" color: #2B91AF;">CosmosContainerRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> ReplaceContainerStreamAsync(<span style=" color: #2B91AF;">Stream</span> streamPayload, <span style=" color: #2B91AF;">CosmosContainerRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosItemResponse&lt;T&gt;&gt;</span> ReplaceItemAsync&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">T</span> item, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> ReplaceItemStreamAsync(<span style=" color: blue;">object</span> partitionKey, <span style=" color: blue;">string</span> id, <span style=" color: #2B91AF;">Stream</span> streamPayload, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task</span> ReplaceProvisionedThroughputAsync(<span style=" color: blue;">int</span> throughput, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosItemResponse&lt;T&gt;&gt;</span> UpsertItemAsync&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">T</span> item, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> UpsertItemStreamAsync(<span style=" color: blue;">object</span> partitionKey, <span style=" color: #2B91AF;">Stream</span> streamPayload, <span style=" color: #2B91AF;">CosmosItemRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosContainerRequestOptions : <span style=" color: #2B91AF;">CosmosRequestOptions</span>
+  {
+    <span style=" color: blue;">public</span> CosmosContainerRequestOptions();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> PopulateQuotaInfo { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">void</span> FillRequestOptions(<span style=" color: #2B91AF;">CosmosRequestMessage</span> request);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosContainerResponse : <span style=" color: #2B91AF;">CosmosResponse&lt;CosmosContainerSettings&gt;</span>
+  {
+    <span style=" color: blue;">public</span> CosmosContainerResponse();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosContainer</span> Container { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> implicit operator <span style=" color: #2B91AF;">CosmosContainer</span> (<span style=" color: #2B91AF;">CosmosContainerResponse</span> response);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosContainers
+  {
+    <span style=" color: blue;">protected</span> CosmosContainers();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosContainer</span> this[<span style=" color: blue;">string</span> id] { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosContainerResponse&gt;</span> CreateContainerAsync(<span style=" color: #2B91AF;">CosmosContainerSettings</span> containerSettings, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> throughput=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosContainerResponse&gt;</span> CreateContainerAsync(<span style=" color: blue;">string</span> id, <span style=" color: blue;">string</span> partitionKeyPath, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> throughput=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosContainerResponse&gt;</span> CreateContainerIfNotExistsAsync(<span style=" color: #2B91AF;">CosmosContainerSettings</span> containerSettings, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> throughput=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosContainerResponse&gt;</span> CreateContainerIfNotExistsAsync(<span style=" color: blue;">string</span> id, <span style=" color: blue;">string</span> partitionKeyPath, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> throughput=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> CreateContainerStreamAsync(<span style=" color: #2B91AF;">Stream</span> streamPayload, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> throughput=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator&lt;CosmosContainerSettings&gt;</span> GetContainerIterator(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator</span> GetContainerStreamIterator(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CosmosQueryRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosContainerSettings
+  {
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> <span style=" color: blue;">readonly</span> <span style=" color: blue;">object</span> NonePartitionKeyValue;
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> <span style=" color: blue;">readonly</span> <span style=" color: blue;">string</span> SystemKeyName;
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> <span style=" color: blue;">readonly</span> <span style=" color: blue;">string</span> SystemKeyPath;
+    <span style=" color: blue;">public</span> CosmosContainerSettings();
+    <span style=" color: blue;">public</span> CosmosContainerSettings(<span style=" color: blue;">string</span> id, <span style=" color: blue;">string</span> partitionKeyPath);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">ConflictResolutionPolicy</span> ConflictResolutionPolicy { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> DefaultTimeToLive { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ETag { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">IndexingPolicy</span> IndexingPolicy { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;DateTime&gt;</span> LastModified { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;PartitionKeyDefinitionVersion&gt;</span> PartitionKeyDefinitionVersion { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> PartitionKeyPath { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> TimeToLivePropertyPath { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">UniqueKeyPolicy</span> UniqueKeyPolicy { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">protected</span> <span style=" color: blue;">internal</span> <span style=" color: blue;">static</span> <span style=" color: #2B91AF;">CosmosContainerSettings</span> CreateWithResourceId(<span style=" color: blue;">string</span> resoruceId);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosDatabase
+  {
+    <span style=" color: blue;">protected</span> CosmosDatabase();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosContainers</span> Containers { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosDatabaseResponse&gt;</span> DeleteDatabaseAsync(<span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> DeleteDatabaseStreamAsync(<span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosDatabaseResponse&gt;</span> ReadDatabaseAsync(<span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> ReadDatabaseStreamAsync(<span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;Nullable&lt;int&gt;&gt;</span> ReadProvisionedThroughputAsync(<span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task</span> ReplaceProvisionedThroughputAsync(<span style=" color: blue;">int</span> throughput, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosDatabaseResponse : <span style=" color: #2B91AF;">CosmosResponse&lt;CosmosDatabaseSettings&gt;</span>
+  {
+    <span style=" color: blue;">public</span> CosmosDatabaseResponse();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosDatabase</span> Database { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> implicit operator <span style=" color: #2B91AF;">CosmosDatabase</span> (<span style=" color: #2B91AF;">CosmosDatabaseResponse</span> response);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosDatabases
+  {
+    <span style=" color: blue;">protected</span> CosmosDatabases();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosDatabase</span> this[<span style=" color: blue;">string</span> id] { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosDatabaseResponse&gt;</span> CreateDatabaseAsync(<span style=" color: blue;">string</span> id, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> throughput=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosDatabaseResponse&gt;</span> CreateDatabaseIfNotExistsAsync(<span style=" color: blue;">string</span> id, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> throughput=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> CreateDatabaseStreamAsync(<span style=" color: #2B91AF;">Stream</span> streamPayload, <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> throughput=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator&lt;CosmosDatabaseSettings&gt;</span> GetDatabaseIterator(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosDatabaseSettings
+  {
+    <span style=" color: blue;">public</span> CosmosDatabaseSettings();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ETag { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;DateTime&gt;</span> LastModified { <span style=" color: blue;">get</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosException : <span style=" color: #2B91AF;">Exception</span>
+  {
+    <span style=" color: blue;">public</span> CosmosException(<span style=" color: blue;">string</span> message, <span style=" color: #2B91AF;">HttpStatusCode</span> statusCode, <span style=" color: blue;">int</span> subStatusCode, <span style=" color: blue;">string</span> activityId, <span style=" color: blue;">double</span> requestCharge);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ActivityId { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">double</span> RequestCharge { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ResponseBody { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">HttpStatusCode</span> StatusCode { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">int</span> SubStatusCode { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">string</span> ToString();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> TryGetHeader(<span style=" color: blue;">string</span> headerName, <span style=" color: blue;">out</span> <span style=" color: blue;">string</span> value);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosFeedIterator
+  {
+    <span style=" color: blue;">protected</span> CosmosFeedIterator();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> HasMoreResults { <span style=" color: blue;">get</span>; <span style=" color: blue;">protected</span> <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> FetchNextSetAsync(<span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosFeedIterator&lt;<span style=" color: #2B91AF;">T</span>&gt;
+  {
+    <span style=" color: blue;">protected</span> CosmosFeedIterator();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> HasMoreResults { <span style=" color: blue;">get</span>; <span style=" color: blue;">protected</span> <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosFeedResponse&lt;T&gt;&gt;</span> FetchNextSetAsync(<span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosFeedResponse&lt;<span style=" color: #2B91AF;">T</span>&gt; : <span style=" color: #2B91AF;">IEnumerable</span>, <span style=" color: #2B91AF;">IEnumerable&lt;T&gt;</span>
+  {
+    <span style=" color: blue;">public</span> CosmosFeedResponse();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">string</span> Continuation { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">int</span> Count { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">IEnumerator&lt;T&gt;</span> GetEnumerator();
+    <span style=" color: #2B91AF;">IEnumerator</span> System.Collections.IEnumerable.GetEnumerator();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosItemRequestOptions : <span style=" color: #2B91AF;">CosmosRequestOptions</span>
+  {
+    <span style=" color: blue;">public</span> CosmosItemRequestOptions();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;ConsistencyLevel&gt;</span> ConsistencyLevel { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;IndexingDirective&gt;</span> IndexingDirective { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">object</span> PartitonKey { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> SessionToken { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">void</span> FillRequestOptions(<span style=" color: #2B91AF;">CosmosRequestMessage</span> request);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosItemResponse&lt;<span style=" color: #2B91AF;">T</span>&gt; : <span style=" color: #2B91AF;">CosmosResponse&lt;T&gt;</span>
+  {
+    <span style=" color: blue;">public</span> CosmosItemResponse();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> SessionToken { <span style=" color: blue;">get</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosJsonSerializer
+  {
+    <span style=" color: blue;">protected</span> CosmosJsonSerializer();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">T</span> FromStream&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">Stream</span> stream);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Stream</span> ToStream&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">T</span> input);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosMessageHeadersBase : <span style=" color: #2B91AF;">IEnumerable</span>
+  {
+    <span style=" color: blue;">public</span> CosmosMessageHeadersBase();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> this[<span style=" color: blue;">string</span> headerName] { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">void</span> Add(<span style=" color: blue;">string</span> headerName, <span style=" color: #2B91AF;">IEnumerable&lt;string&gt;</span> values);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">void</span> Add(<span style=" color: blue;">string</span> headerName, <span style=" color: blue;">string</span> value);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">string[]</span> AllKeys();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Get(<span style=" color: blue;">string</span> headerName);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">IEnumerator&lt;string&gt;</span> GetEnumerator();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">T</span> GetHeaderValue&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: blue;">string</span> headerName);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> GetValueOrDefault(<span style=" color: blue;">string</span> headerName);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">void</span> Remove(<span style=" color: blue;">string</span> headerName);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">void</span> Set(<span style=" color: blue;">string</span> headerName, <span style=" color: blue;">string</span> value);
+    <span style=" color: #2B91AF;">IEnumerator</span> System.Collections.IEnumerable.GetEnumerator();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> TryGetValue(<span style=" color: blue;">string</span> headerName, <span style=" color: blue;">out</span> <span style=" color: blue;">string</span> value);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosQueryRequestOptions : <span style=" color: #2B91AF;">CosmosRequestOptions</span>
+  {
+    <span style=" color: blue;">public</span> CosmosQueryRequestOptions();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;ConsistencyLevel&gt;</span> ConsistencyLevel { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;bool&gt;</span> EnableLowPrecisionOrderBy { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;bool&gt;</span> EnableScanInQuery { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> MaxBufferedItemCount { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> MaxItemCount { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> RequestContinuation { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> ResponseContinuationTokenLimitInKb { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> SessionToken { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">void</span> FillRequestOptions(<span style=" color: #2B91AF;">CosmosRequestMessage</span> request);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosRequestHandler
+  {
+    <span style=" color: blue;">protected</span> CosmosRequestHandler();
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">CosmosRequestHandler</span> InnerHandler { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> SendAsync(<span style=" color: #2B91AF;">CosmosRequestMessage</span> request, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosRequestMessage : <span style=" color: #2B91AF;">IDisposable</span>
+  {
+    <span style=" color: blue;">public</span> CosmosRequestMessage();
+    <span style=" color: blue;">public</span> CosmosRequestMessage(<span style=" color: #2B91AF;">HttpMethod</span> method, <span style=" color: #2B91AF;">Uri</span> requestUri);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Stream</span> Content { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosRequestMessageHeaders</span> Headers { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">HttpMethod</span> Method { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Dictionary&lt;string, object&gt;</span> Properties { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Uri</span> RequestUri { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">void</span> Dispose();
+    <span style=" color: blue;">protected</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">void</span> Dispose(<span style=" color: blue;">bool</span> disposing);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosRequestMessageHeaders : <span style=" color: #2B91AF;">CosmosMessageHeadersBase</span>
+  {
+    <span style=" color: blue;">public</span> CosmosRequestMessageHeaders();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosRequestOptions
+  {
+    <span style=" color: blue;">public</span> CosmosRequestOptions();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> IfMatchEtag { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> IfNoneMatchEtag { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">void</span> FillRequestOptions(<span style=" color: #2B91AF;">CosmosRequestMessage</span> request);
+    <span style=" color: blue;">protected</span> <span style=" color: blue;">static</span> <span style=" color: blue;">void</span> SetConsistencyLevel(<span style=" color: #2B91AF;">CosmosRequestMessage</span> request, <span style=" color: #2B91AF;">Nullable&lt;ConsistencyLevel&gt;</span> consistencyLevel);
+    <span style=" color: blue;">protected</span> <span style=" color: blue;">static</span> <span style=" color: blue;">void</span> SetSessionToken(<span style=" color: #2B91AF;">CosmosRequestMessage</span> request, <span style=" color: blue;">string</span> sessionToken);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosResponseMessage : <span style=" color: #2B91AF;">IDisposable</span>
+  {
+    <span style=" color: blue;">public</span> CosmosResponseMessage();
+    <span style=" color: blue;">public</span> CosmosResponseMessage(<span style=" color: #2B91AF;">HttpStatusCode</span> statusCode, <span style=" color: #2B91AF;">CosmosRequestMessage</span> requestMessage=<span style=" color: blue;">null</span>, <span style=" color: blue;">string</span> errorMessage=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Stream</span> Content { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ErrorMessage { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosResponseMessageHeaders</span> Headers { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> IsSuccessStatusCode { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosRequestMessage</span> RequestMessage { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">HttpStatusCode</span> StatusCode { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">void</span> Dispose();
+    <span style=" color: blue;">protected</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">void</span> Dispose(<span style=" color: blue;">bool</span> disposing);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosResponseMessage</span> EnsureSuccessStatusCode();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosResponseMessageHeaders : <span style=" color: #2B91AF;">CosmosMessageHeadersBase</span>, <span style=" color: #2B91AF;">IEnumerable</span>
+  {
+    <span style=" color: blue;">public</span> CosmosResponseMessageHeaders();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ActivityId { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ContentLength { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ContentType { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Continuation { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ETag { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Location { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">double</span> RequestCharge { <span style=" color: blue;">get</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosResponse&lt;<span style=" color: #2B91AF;">T</span>&gt;
+  {
+    <span style=" color: blue;">public</span> CosmosResponse();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ActivityId { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ETag { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosResponseMessageHeaders</span> Headers { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">double</span> RequestCharge { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">T</span> Resource { <span style=" color: blue;">get</span>; <span style=" color: blue;">protected</span> <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">HttpStatusCode</span> StatusCode { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> implicit operator <span style=" color: #2B91AF;">T</span> (<span style=" color: #2B91AF;">CosmosResponse&lt;T&gt;</span> response);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosSqlQueryDefinition
+  {
+    <span style=" color: blue;">public</span> CosmosSqlQueryDefinition(<span style=" color: blue;">string</span> query);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosSqlQueryDefinition</span> UseParameter(<span style=" color: blue;">string</span> name, <span style=" color: blue;">object</span> value);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosStoredProcedure
+  {
+    <span style=" color: blue;">protected</span> CosmosStoredProcedure();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosStoredProcedureResponse&gt;</span> DeleteAsync(<span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosItemResponse&lt;TOutput&gt;&gt;</span> ExecuteAsync&lt;<span style=" color: #2B91AF;">TInput</span>, <span style=" color: #2B91AF;">TOutput</span>&gt;(<span style=" color: blue;">object</span> partitionKey, <span style=" color: #2B91AF;">TInput</span> input, <span style=" color: #2B91AF;">CosmosStoredProcedureRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosStoredProcedureResponse&gt;</span> ReadAsync(<span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosStoredProcedureResponse&gt;</span> ReplaceAsync(<span style=" color: blue;">string</span> body, <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosStoredProcedureRequestOptions : <span style=" color: #2B91AF;">CosmosRequestOptions</span>
+  {
+    <span style=" color: blue;">public</span> CosmosStoredProcedureRequestOptions();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;ConsistencyLevel&gt;</span> ConsistencyLevel { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> EnableScriptLogging { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> SessionToken { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">void</span> FillRequestOptions(<span style=" color: #2B91AF;">CosmosRequestMessage</span> request);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosStoredProcedureResponse : <span style=" color: #2B91AF;">CosmosResponse&lt;CosmosStoredProcedureSettings&gt;</span>
+  {
+    <span style=" color: blue;">public</span> CosmosStoredProcedureResponse();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ScriptLog { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> SessionToken { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">CosmosStoredProcedure</span> StoredProcedure { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> implicit operator <span style=" color: #2B91AF;">CosmosStoredProcedure</span> (<span style=" color: #2B91AF;">CosmosStoredProcedureResponse</span> response);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosStoredProcedures
+  {
+    <span style=" color: blue;">protected</span> CosmosStoredProcedures();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosStoredProcedure</span> this[<span style=" color: blue;">string</span> id] { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosStoredProcedureResponse&gt;</span> CreateStoredProcedureAsync(<span style=" color: blue;">string</span> id, <span style=" color: blue;">string</span> body, <span style=" color: #2B91AF;">CosmosRequestOptions</span> requestOptions=<span style=" color: blue;">null</span>, <span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
+    <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">CosmosFeedIterator&lt;CosmosStoredProcedureSettings&gt;</span> GetStoredProcedureIterator(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span> maxItemCount=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">Nullable&lt;int&gt;</span>), <span style=" color: blue;">string</span> continuationToken=<span style=" color: blue;">null</span>);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosStoredProcedureSettings
+  {
+    <span style=" color: blue;">public</span> CosmosStoredProcedureSettings();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Body { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ETag { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Nullable&lt;DateTime&gt;</span> LastModified { <span style=" color: blue;">get</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosUserDefinedFunctionSettings
+  {
+    <span style=" color: blue;">public</span> CosmosUserDefinedFunctionSettings();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">string</span> Body { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> ETag { <span style=" color: blue;">get</span>; <span style=" color: blue;">protected</span> <span style=" color: blue;">internal</span> <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> DataType
+  {
+    LineString = 3,
+    MultiPolygon = 5,
+    Number = 0,
+    Point = 2,
+    Polygon = 4,
+    String = 1,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> ExcludedPath
+  {
+    <span style=" color: blue;">public</span> ExcludedPath();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Path { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> IncludedPath
+  {
+    <span style=" color: blue;">public</span> IncludedPath();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Path { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> IndexingDirective
+  {
+    Default = 0,
+    Exclude = 2,
+    Include = 1,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> IndexingMode
+  {
+    Consistent = 0,
+    Lazy = 1,
+    None = 2,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> IndexingPolicy
+  {
+    <span style=" color: blue;">public</span> IndexingPolicy();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> Automatic { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Collection&lt;Collection&lt;CompositePath&gt;&gt;</span> CompositeIndexes { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Collection&lt;ExcludedPath&gt;</span> ExcludedPaths { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Collection&lt;IncludedPath&gt;</span> IncludedPaths { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">IndexingMode</span> IndexingMode { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Collection&lt;SpatialPath&gt;</span> SpatialIndexes { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> IndexKind
+  {
+    Hash = 0,
+    Range = 1,
+    Spatial = 2,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> OperationKind
+  {
+    Create = 1,
+    Delete = 3,
+    Invalid = 0,
+    Read = 4,
+    Replace = 2,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> PartitionKeyDefinitionVersion
+  {
+    V1 = 1,
+    V2 = 2,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> SpatialPath
+  {
+    <span style=" color: blue;">public</span> SpatialPath();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Path { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Collection&lt;SpatialType&gt;</span> SpatialTypes { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> SpatialType
+  {
+    LineString = 1,
+    MultiPolygon = 3,
+    Point = 0,
+    Polygon = 2,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> TriggerType : <span style=" color: blue;">byte</span>
+  {
+    Post = (<span style=" color: blue;">byte</span>)1,
+    Pre = (<span style=" color: blue;">byte</span>)0,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> UniqueKey
+  {
+    <span style=" color: blue;">public</span> UniqueKey();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Collection&lt;string&gt;</span> Paths { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> UniqueKeyPolicy
+  {
+    <span style=" color: blue;">public</span> UniqueKeyPolicy();
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">Collection&lt;UniqueKey&gt;</span> UniqueKeys { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+}
+<span style=" color: blue;">namespace</span> Microsoft.Azure.Cosmos.Spatial
+{
+  <span style=" color: blue;">public</span> <span style=" color: blue;">sealed</span> <span style=" color: blue;">class</span> BoundingBox : <span style=" color: #2B91AF;">IEquatable&lt;BoundingBox&gt;</span>
+  {
+    <span style=" color: blue;">public</span> BoundingBox(<span style=" color: #2B91AF;">Position</span> min, <span style=" color: #2B91AF;">Position</span> max);
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">Position</span> Max { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">Position</span> Min { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: #2B91AF;">BoundingBox</span> other);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: blue;">object</span> obj);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">int</span> GetHashCode();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> Crs
+  {
+    <span style=" color: blue;">protected</span> Crs(<span style=" color: #2B91AF;">CrsType</span> type);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> <span style=" color: #2B91AF;">Crs</span> Default { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">CrsType</span> Type { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> <span style=" color: #2B91AF;">Crs</span> Unspecified { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> <span style=" color: #2B91AF;">LinkedCrs</span> Linked(<span style=" color: blue;">string</span> href);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> <span style=" color: #2B91AF;">LinkedCrs</span> Linked(<span style=" color: blue;">string</span> href, <span style=" color: blue;">string</span> type);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">static</span> <span style=" color: #2B91AF;">NamedCrs</span> Named(<span style=" color: blue;">string</span> name);
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> CrsType
+  {
+    Linked = 1,
+    Named = 0,
+    Unspecified = 2,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> Geometry
+  {
+    <span style=" color: blue;">protected</span> Geometry(<span style=" color: #2B91AF;">GeometryType</span> type, <span style=" color: #2B91AF;">GeometryParams</span> geometryParams);
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">IDictionary&lt;string, object&gt;</span> AdditionalProperties { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">BoundingBox</span> BoundingBox { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">Crs</span> Crs { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">GeometryType</span> Type { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: blue;">object</span> obj);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">int</span> GetHashCode();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> GeometryParams
+  {
+    <span style=" color: blue;">public</span> GeometryParams();
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">IDictionary&lt;string, object&gt;</span> AdditionalProperties { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">BoundingBox</span> BoundingBox { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">Crs</span> Crs { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> GeometryShape
+  {
+    GeometryCollection = 6,
+    LineString = 2,
+    MultiLineString = 3,
+    MultiPoint = 1,
+    MultiPolygon = 5,
+    Point = 0,
+    Polygon = 4,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">enum</span> GeometryType
+  {
+    GeometryCollection = 6,
+    LineString = 2,
+    MultiLineString = 3,
+    MultiPoint = 1,
+    MultiPolygon = 5,
+    Point = 0,
+    Polygon = 4,
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">sealed</span> <span style=" color: blue;">class</span> LinearRing : <span style=" color: #2B91AF;">IEquatable&lt;LinearRing&gt;</span>
+  {
+    <span style=" color: blue;">public</span> LinearRing(<span style=" color: #2B91AF;">IList&lt;Position&gt;</span> coordinates);
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">ReadOnlyCollection&lt;Position&gt;</span> Positions { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: #2B91AF;">LinearRing</span> other);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: blue;">object</span> obj);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">int</span> GetHashCode();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">sealed</span> <span style=" color: blue;">class</span> LineString : <span style=" color: #2B91AF;">Geometry</span>, <span style=" color: #2B91AF;">IEquatable&lt;LineString&gt;</span>
+  {
+    <span style=" color: blue;">public</span> LineString(<span style=" color: #2B91AF;">IList&lt;Position&gt;</span> coordinates);
+    <span style=" color: blue;">public</span> LineString(<span style=" color: #2B91AF;">IList&lt;Position&gt;</span> coordinates, <span style=" color: #2B91AF;">GeometryParams</span> geometryParams);
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">ReadOnlyCollection&lt;Position&gt;</span> Positions { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: #2B91AF;">LineString</span> other);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: blue;">object</span> obj);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">int</span> GetHashCode();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">sealed</span> <span style=" color: blue;">class</span> LinkedCrs : <span style=" color: #2B91AF;">Crs</span>, <span style=" color: #2B91AF;">IEquatable&lt;LinkedCrs&gt;</span>
+  {
+    <span style=" color: blue;">public</span> <span style=" color: blue;">string</span> Href { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">string</span> HrefType { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: #2B91AF;">LinkedCrs</span> other);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: blue;">object</span> obj);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">int</span> GetHashCode();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">sealed</span> <span style=" color: blue;">class</span> NamedCrs : <span style=" color: #2B91AF;">Crs</span>, <span style=" color: #2B91AF;">IEquatable&lt;NamedCrs&gt;</span>
+  {
+    <span style=" color: blue;">public</span> <span style=" color: blue;">string</span> Name { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: #2B91AF;">NamedCrs</span> other);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: blue;">object</span> obj);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">int</span> GetHashCode();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">sealed</span> <span style=" color: blue;">class</span> Point : <span style=" color: #2B91AF;">Geometry</span>, <span style=" color: #2B91AF;">IEquatable&lt;Point&gt;</span>
+  {
+    <span style=" color: blue;">public</span> Point(<span style=" color: #2B91AF;">Position</span> position);
+    <span style=" color: blue;">public</span> Point(<span style=" color: #2B91AF;">Position</span> position, <span style=" color: #2B91AF;">GeometryParams</span> geometryParams);
+    <span style=" color: blue;">public</span> Point(<span style=" color: blue;">double</span> longitude, <span style=" color: blue;">double</span> latitude);
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">Position</span> Position { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: #2B91AF;">Point</span> other);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: blue;">object</span> obj);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">int</span> GetHashCode();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">sealed</span> <span style=" color: blue;">class</span> Polygon : <span style=" color: #2B91AF;">Geometry</span>, <span style=" color: #2B91AF;">IEquatable&lt;Polygon&gt;</span>
+  {
+    <span style=" color: blue;">public</span> Polygon(<span style=" color: #2B91AF;">IList&lt;LinearRing&gt;</span> rings);
+    <span style=" color: blue;">public</span> Polygon(<span style=" color: #2B91AF;">IList&lt;LinearRing&gt;</span> rings, <span style=" color: #2B91AF;">GeometryParams</span> geometryParams);
+    <span style=" color: blue;">public</span> Polygon(<span style=" color: #2B91AF;">IList&lt;Position&gt;</span> externalRingPositions);
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">ReadOnlyCollection&lt;LinearRing&gt;</span> Rings { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: #2B91AF;">Polygon</span> other);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: blue;">object</span> obj);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">int</span> GetHashCode();
+  }
+  <span style=" color: blue;">public</span> <span style=" color: blue;">sealed</span> <span style=" color: blue;">class</span> Position : <span style=" color: #2B91AF;">IEquatable&lt;Position&gt;</span>
+  {
+    <span style=" color: blue;">public</span> Position(<span style=" color: #2B91AF;">IList&lt;double&gt;</span> coordinates);
+    <span style=" color: blue;">public</span> Position(<span style=" color: blue;">double</span> longitude, <span style=" color: blue;">double</span> latitude);
+    <span style=" color: blue;">public</span> Position(<span style=" color: blue;">double</span> longitude, <span style=" color: blue;">double</span> latitude, <span style=" color: #2B91AF;">Nullable&lt;double&gt;</span> altitude);
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">Nullable&lt;double&gt;</span> Altitude { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: #2B91AF;">ReadOnlyCollection&lt;double&gt;</span> Coordinates { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">double</span> Latitude { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">double</span> Longitude { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: #2B91AF;">Position</span> other);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">bool</span> Equals(<span style=" color: blue;">object</span> obj);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">override</span> <span style=" color: blue;">int</span> GetHashCode();
+  }
+}
+</pre>

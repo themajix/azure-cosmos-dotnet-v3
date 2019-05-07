@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Cosmos
     /// <summary> 
     /// Specifies a path within a JSON document to be excluded while indexing data for the Azure Cosmos DB service.
     /// </summary>
-    public sealed class ExcludedPath 
+    public class ExcludedPath 
     {
         /// <summary>
         /// Gets or sets the path to be excluded from indexing in the Azure Cosmos DB service.
@@ -19,6 +19,6 @@ namespace Microsoft.Azure.Cosmos
         /// The path to be excluded from indexing.
         /// </value>
         [JsonProperty(PropertyName = Constants.Properties.Path)]
-        public string Path { get; set; }
+        public virtual string Path { get; set; }
     }
 }

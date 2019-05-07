@@ -32,10 +32,9 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Utils
 
         public static async Task<CosmosItemResponse<T>> TryCreateItemAsync<T>(
             this CosmosContainer container, 
-            object partitionKey, 
             T item)
         {
-            var response = await container.CreateItemAsync<T>(partitionKey, item).ConfigureAwait(false);
+            var response = await container.CreateItemAsync<T>(item).ConfigureAwait(false);
             if (response.StatusCode == HttpStatusCode.Conflict)
             {
                 // Ignore-- document already exists.

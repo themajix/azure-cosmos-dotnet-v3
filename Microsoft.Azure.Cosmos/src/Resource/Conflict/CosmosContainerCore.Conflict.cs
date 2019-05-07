@@ -11,155 +11,163 @@ namespace Microsoft.Azure.Cosmos
     using Microsoft.Azure.Documents;
     using Newtonsoft.Json.Linq;
 
-    internal partial class CosmosContainerCore
+    internal class CosmosConflictsCore : CosmosConflicts
     {
         public override Task<CosmosResponseMessage> DeleteConflictAsync(
             object partitionKey,
             string id,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (partitionKey == null)
-            {
-                throw new ArgumentNullException(nameof(partitionKey));
-            }
+            throw new NotImplementedException();
 
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
+            ////if (partitionKey == null)
+            ////{
+            ////    throw new ArgumentNullException(nameof(partitionKey));
+            ////}
 
-            Uri conflictLink = this.ClientContext.CreateLink(
-                 parentLink: this.LinkUri.OriginalString,
-                 uriPathSegment: Paths.ConflictsPathSegment,
-                 id: id);
+            ////if (string.IsNullOrEmpty(id))
+            ////{
+            ////    throw new ArgumentNullException(nameof(id));
+            ////}
 
-            return this.ClientContext.ProcessResourceOperationStreamAsync(
-                resourceUri: conflictLink,
-                resourceType: ResourceType.Conflict,
-                operationType: OperationType.Delete,
-                requestOptions: null,
-                cosmosContainerCore: this,
-                partitionKey: partitionKey,
-                streamPayload: null,
-                requestEnricher: null,
-                cancellationToken: cancellationToken);
+            ////Uri conflictLink = this.ClientContext.CreateLink(
+            ////     parentLink: this.LinkUri.OriginalString,
+            ////     uriPathSegment: Paths.ConflictsPathSegment,
+            ////     id: id);
+
+            ////return this.ClientContext.ProcessResourceOperationStreamAsync(
+            ////    resourceUri: conflictLink,
+            ////    resourceType: ResourceType.Conflict,
+            ////    operationType: OperationType.Delete,
+            ////    requestOptions: null,
+            ////    cosmosContainerCore: this,
+            ////    partitionKey: partitionKey,
+            ////    streamPayload: null,
+            ////    requestEnricher: null,
+            ////    cancellationToken: cancellationToken);
         }
 
-        public override async Task<CosmosResponseMessage> ReadConflictSourceItemAsync(
+        public override Task<CosmosResponseMessage> ReadConflictSourceItemAsync(
             object partitionKey,
-            CosmosConflict cosmosConflict,
+            CosmosConflictSettings cosmosConflict,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (partitionKey == null)
-            {
-                throw new ArgumentNullException(nameof(partitionKey));
-            }
+            throw new NotImplementedException();
 
-            if (cosmosConflict == null)
-            {
-                throw new ArgumentNullException(nameof(cosmosConflict));
-            }
+            ////if (partitionKey == null)
+            ////{
+            ////    throw new ArgumentNullException(nameof(partitionKey));
+            ////}
 
-            // SourceResourceId is RID based on Conflicts, so we need to obtain the db and container rid
-            CosmosDatabaseCore databaseCore = (CosmosDatabaseCore) this.Database;
-            string databaseResourceId = await databaseCore.GetRID(cancellationToken);
-            string containerResourceId = await this.GetRID(cancellationToken);
+            ////if (cosmosConflict == null)
+            ////{
+            ////    throw new ArgumentNullException(nameof(cosmosConflict));
+            ////}
 
-            Uri dbLink = this.ClientContext.CreateLink(
-                parentLink: string.Empty,
-                uriPathSegment: Paths.DatabasesPathSegment,
-                id: databaseResourceId);
+            ////// SourceResourceId is RID based on Conflicts, so we need to obtain the db and container rid
+            ////CosmosDatabaseCore databaseCore = (CosmosDatabaseCore) this.Database;
+            ////string databaseResourceId = await databaseCore.GetRID(cancellationToken);
+            ////string containerResourceId = await this.GetRID(cancellationToken);
 
-            Uri containerLink = this.ClientContext.CreateLink(
-                parentLink: dbLink.OriginalString,
-                uriPathSegment: Paths.CollectionsPathSegment,
-                id: containerResourceId);
+            ////Uri dbLink = this.ClientContext.CreateLink(
+            ////    parentLink: string.Empty,
+            ////    uriPathSegment: Paths.DatabasesPathSegment,
+            ////    id: databaseResourceId);
+
+            ////Uri containerLink = this.ClientContext.CreateLink(
+            ////    parentLink: dbLink.OriginalString,
+            ////    uriPathSegment: Paths.CollectionsPathSegment,
+            ////    id: containerResourceId);
             
-            Uri itemLink = this.ClientContext.CreateLink(
-                parentLink: containerLink.OriginalString,
-                uriPathSegment: Paths.DocumentsPathSegment,
-                id: cosmosConflict.SourceResourceId);
+            ////Uri itemLink = this.ClientContext.CreateLink(
+            ////    parentLink: containerLink.OriginalString,
+            ////    uriPathSegment: Paths.DocumentsPathSegment,
+            ////    id: cosmosConflict.SourceResourceId);
 
-            return await this.ClientContext.ProcessResourceOperationStreamAsync(
-                resourceUri: itemLink,
-                resourceType: ResourceType.Document,
-                operationType: OperationType.Read,
-                requestOptions: null,
-                cosmosContainerCore: this,
-                partitionKey: partitionKey,
-                streamPayload: null,
-                requestEnricher: null,
-                cancellationToken: cancellationToken);
+            ////return await this.ClientContext.ProcessResourceOperationStreamAsync(
+            ////    resourceUri: itemLink,
+            ////    resourceType: ResourceType.Document,
+            ////    operationType: OperationType.Read,
+            ////    requestOptions: null,
+            ////    cosmosContainerCore: this,
+            ////    partitionKey: partitionKey,
+            ////    streamPayload: null,
+            ////    requestEnricher: null,
+            ////    cancellationToken: cancellationToken);
         }
 
-        public override CosmosFeedIterator<CosmosConflict> GetConflictsIterator(
+        public override CosmosFeedIterator<CosmosConflictSettings> GetConflictsIterator(
             int? maxItemCount = null,
             string continuationToken = null)
         {
-            return new CosmosDefaultResultSetIterator<CosmosConflict>(
-                maxItemCount,
-                continuationToken,
-                null,
-                this.ConflictsFeedRequestExecutor);
+            throw new NotImplementedException();
+
+            ////return new CosmosDefaultResultSetIterator<CosmosConflictSettings>(
+            ////    maxItemCount,
+            ////    continuationToken,
+            ////    null,
+            ////    this.ConflictsFeedRequestExecutor);
         }
 
         public override CosmosFeedIterator GetConflictsStreamIterator(
             int? maxItemCount = null,
             string continuationToken = null)
         {
-            return new CosmosResultSetIteratorCore(
-                maxItemCount,
-                continuationToken,
-                null,
-                this.ConflictsFeedStreamRequestExecutor);
+            throw new NotImplementedException();
+
+            ////return new CosmosResultSetIteratorCore(
+            ////    maxItemCount,
+            ////    continuationToken,
+            ////    null,
+            ////    this.ConflictsFeedStreamRequestExecutor);
         }
 
-        private Task<CosmosResponseMessage> ConflictsFeedStreamRequestExecutor(
-            int? maxItemCount,
-            string continuationToken,
-            CosmosRequestOptions options,
-            object state,
-            CancellationToken cancellationToken)
-        {
-            return this.ClientContext.ProcessResourceOperationAsync<CosmosResponseMessage>(
-                resourceUri: this.LinkUri,
-                resourceType: Documents.ResourceType.Conflict,
-                operationType: Documents.OperationType.ReadFeed,
-                requestOptions: options,
-                requestEnricher: request =>
-                {
-                    CosmosQueryRequestOptions.FillContinuationToken(request, continuationToken);
-                    CosmosQueryRequestOptions.FillMaxItemCount(request, maxItemCount);
-                },
-                responseCreator: response => response,
-                cosmosContainerCore: this,
-                partitionKey: null,
-                streamPayload: null,
-                cancellationToken: cancellationToken);
-        }
+        ////private Task<CosmosResponseMessage> ConflictsFeedStreamRequestExecutor(
+        ////    int? maxItemCount,
+        ////    string continuationToken,
+        ////    CosmosRequestOptions options,
+        ////    object state,
+        ////    CancellationToken cancellationToken)
+        ////{
+        ////    return this.ClientContext.ProcessResourceOperationAsync<CosmosResponseMessage>(
+        ////        resourceUri: this.LinkUri,
+        ////        resourceType: Documents.ResourceType.Conflict,
+        ////        operationType: Documents.OperationType.ReadFeed,
+        ////        requestOptions: options,
+        ////        requestEnricher: request =>
+        ////        {
+        ////            CosmosQueryRequestOptions.FillContinuationToken(request, continuationToken);
+        ////            CosmosQueryRequestOptions.FillMaxItemCount(request, maxItemCount);
+        ////        },
+        ////        responseCreator: response => response,
+        ////        cosmosContainerCore: this,
+        ////        partitionKey: null,
+        ////        streamPayload: null,
+        ////        cancellationToken: cancellationToken);
+        ////}
 
-        private Task<CosmosFeedResponse<CosmosConflict>> ConflictsFeedRequestExecutor(
-            int? maxItemCount,
-            string continuationToken,
-            CosmosRequestOptions options,
-            object state,
-            CancellationToken cancellationToken)
-        {
-            return this.ClientContext.ProcessResourceOperationAsync<CosmosFeedResponse<CosmosConflict>>(
-                resourceUri: this.LinkUri,
-                resourceType: Documents.ResourceType.Conflict,
-                operationType: Documents.OperationType.ReadFeed,
-                requestOptions: options,
-                cosmosContainerCore: this,
-                partitionKey: null,
-                streamPayload: null,
-                requestEnricher: request =>
-                {
-                    CosmosQueryRequestOptions.FillContinuationToken(request, continuationToken);
-                    CosmosQueryRequestOptions.FillMaxItemCount(request, maxItemCount);
-                },
-                responseCreator: response => this.ClientContext.ResponseFactory.CreateResultSetQueryResponse<CosmosConflict>(response),
-                cancellationToken: cancellationToken);
-        }
+        ////private Task<CosmosFeedResponse<CosmosConflictSettings>> ConflictsFeedRequestExecutor(
+        ////    int? maxItemCount,
+        ////    string continuationToken,
+        ////    CosmosRequestOptions options,
+        ////    object state,
+        ////    CancellationToken cancellationToken)
+        ////{
+        ////    return this.ClientContext.ProcessResourceOperationAsync<CosmosFeedResponse<CosmosConflictSettings>>(
+        ////        resourceUri: this.LinkUri,
+        ////        resourceType: Documents.ResourceType.Conflict,
+        ////        operationType: Documents.OperationType.ReadFeed,
+        ////        requestOptions: options,
+        ////        cosmosContainerCore: this,
+        ////        partitionKey: null,
+        ////        streamPayload: null,
+        ////        requestEnricher: request =>
+        ////        {
+        ////            CosmosQueryRequestOptions.FillContinuationToken(request, continuationToken);
+        ////            CosmosQueryRequestOptions.FillMaxItemCount(request, maxItemCount);
+        ////        },
+        ////        responseCreator: response => this.ClientContext.ResponseFactory.CreateResultSetQueryResponse<CosmosConflictSettings>(response),
+        ////        cancellationToken: cancellationToken);
+        ////}
     }
 }

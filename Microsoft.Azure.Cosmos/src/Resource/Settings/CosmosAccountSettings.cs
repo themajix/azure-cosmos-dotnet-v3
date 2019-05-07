@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Cosmos
         /// The ConsistencySetting.
         /// </value>
         [JsonProperty(PropertyName = Constants.Properties.UserConsistencyPolicy)]
-        public virtual CosmosConsistencySettings ConsistencySetting { get; internal set; }
+        public virtual CosmosAccountConsistency ConsistencySetting { get; internal set; }
 
         /// <summary>
         /// Gets or sets the Resource Id associated with the resource in the Azure Cosmos DB service.

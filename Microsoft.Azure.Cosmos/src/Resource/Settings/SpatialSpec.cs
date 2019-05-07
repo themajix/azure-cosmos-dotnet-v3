@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Cosmos
     /// <summary>
     /// Spatial index specification
     /// </summary>
-    public sealed class SpatialSpec
+    public class SpatialPath
     {
         [JsonProperty(PropertyName = Constants.Properties.Types, ItemConverterType = typeof(StringEnumConverter))]
         private Collection<SpatialType> spatialTypesInternal;
@@ -22,12 +22,12 @@ namespace Microsoft.Azure.Cosmos
         /// Path in JSON document to index
         /// </summary>
         [JsonProperty(PropertyName = Constants.Properties.Path)]
-        public string Path { get; set; }
+        public virtual string Path { get; set; }
 
         /// <summary>
         /// Path's spatial type
         /// </summary>
-        public Collection<SpatialType> SpatialTypes
+        public virtual Collection<SpatialType> SpatialTypes
         {
             get
             {
