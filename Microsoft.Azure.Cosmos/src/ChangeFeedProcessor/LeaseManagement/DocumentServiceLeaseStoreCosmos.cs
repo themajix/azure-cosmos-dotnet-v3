@@ -42,7 +42,6 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.LeaseManagement
             string markerDocId = this.GetStoreMarkerName();
             var containerDocument = new { id = markerDocId };
             await this.container.CreateItemAsync<dynamic>(
-                this.requestOptionsFactory.GetPartitionKey(markerDocId),
                 containerDocument
                 ).ConfigureAwait(false);
         }
@@ -52,7 +51,6 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.LeaseManagement
             string lockId = this.GetStoreLockName();
             var containerDocument = new LockDocument (){ Id = lockId, TimeToLive = (int)lockTime.TotalSeconds };
             var document = await this.container.TryCreateItemAsync<LockDocument>(
-                this.requestOptionsFactory.GetPartitionKey(lockId),
                 containerDocument).ConfigureAwait(false);
 
             if (document != null)

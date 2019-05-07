@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Microsoft.Azure.Cosmos.CosmosContainers">
+    <Position X="11" Y="3.75" Width="3.25" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="this[System.String]" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosClient">
+    <Position X="4.5" Y="1" Width="2.25" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="Databases" />
+      <Property Name="Configuration" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosDatabases">
+    <Position X="7.75" Y="1" Width="2.5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="this[System.String]" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosDatabase">
+    <Position X="10.75" Y="1" Width="2.75" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="Containers" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosContainer">
+    <Position X="7" Y="3.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosClientConfiguration">
+    <Position X="3.5" Y="3.25" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

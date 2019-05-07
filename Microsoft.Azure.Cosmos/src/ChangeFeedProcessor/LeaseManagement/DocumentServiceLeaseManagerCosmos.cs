@@ -68,7 +68,6 @@
             };
 
             bool created = await this.leaseContainer.TryCreateItemAsync<DocumentServiceLeaseCore>(
-                this.requestOptionsFactory.GetPartitionKey(documentServiceLease.Id),
                 documentServiceLease).ConfigureAwait(false) != null;
             if (created)
             {

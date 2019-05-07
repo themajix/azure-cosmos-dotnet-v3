@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Microsoft.Azure.Cosmos.CosmosResponseMessage">
+    <Position X="1.25" Y="1" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAiAEAQABAAEAAAAACACAAAAAIAAACAAAAAE=</HashCode>
+      <FileName>Handler\CosmosResponseMessage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosFeedIterator&lt;T&gt;">
+    <Position X="11.25" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resource\QueryResponses\CosmosFeedIterator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosItemResponse&lt;T&gt;">
+    <Position X="11.75" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resource\Item\CosmosItemResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosResponse&lt;T&gt;">
+    <Position X="17.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAIAAAAEAAEAAAAAAECAAAAAABIAAAIAAAAAA=</HashCode>
+      <FileName>Resource\CosmosResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosContainerResponse">
+    <Position X="13" Y="8.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resource\Container\CosmosContainerResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosDatabaseResponse">
+    <Position X="15" Y="4.75" Width="3" />
+    <InheritanceLine Type="Microsoft.Azure.Cosmos.CosmosResponse&lt;T&gt;" ManuallyRouted="true">
+      <Path>
+        <Point X="18.375" Y="3.594" />
+        <Point X="18.375" Y="3.959" />
+        <Point X="16.5" Y="3.959" />
+        <Point X="16.5" Y="4.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Resource\Database\CosmosDatabaseResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosFeedResponse&lt;T&gt;">
+    <Position X="17" Y="8.25" Width="2.75" />
+    <InheritanceLine Type="Microsoft.Azure.Cosmos.CosmosResponse&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="18.375" Y="3.594" />
+        <Point X="18.375" Y="7.875" />
+        <Point X="18.562" Y="7.875" />
+        <Point X="18.562" Y="8.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAACAAAAAQAAAAAACAEAIAAAAAAAAA=</HashCode>
+      <FileName>Resource\QueryResponses\CosmosFeedResponse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosStoredProcedureResponse">
+    <Position X="18.75" Y="4.75" Width="3.5" />
+    <InheritanceLine Type="Microsoft.Azure.Cosmos.CosmosResponse&lt;T&gt;" ManuallyRouted="true">
+      <Path>
+        <Point X="18.375" Y="3.594" />
+        <Point X="18.375" Y="4.039" />
+        <Point X="20.5" Y="4.039" />
+        <Point X="20.5" Y="4.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAQAAAAABAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Resource\StoredProcedure\CosmosStoredProcedureResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosTriggerResponse">
+    <Position X="21" Y="8.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resource\Trigger\CosmosTriggerResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosUserDefinedFunctionResponse">
+    <Position X="22.5" Y="4.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Resource\UserDefinedFunction\CosmosUserDefinedFunctionResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

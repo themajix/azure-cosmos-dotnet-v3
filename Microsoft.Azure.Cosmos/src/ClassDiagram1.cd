@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Microsoft.Azure.Cosmos.CosmosContainer">
+    <Position X="10.75" Y="1.25" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>YQBCAAACAECAAFAACAQAABgAgABAIIQAAwAIgAh6AAA=</HashCode>
+      <FileName>Resource\Conflict\CosmosContainer.Conflict.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosDatabase">
+    <Position X="7.5" Y="1.25" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAKEAAAAgAAAAAAAAAAAAAAAAAgAiAAAAAA=</HashCode>
+      <FileName>Resource\Database\CosmosDatabase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Containers" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosDatabases">
+    <Position X="4.25" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgACAAAAAASAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Resource\Database\CosmosDatabases.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="this[System.String]" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosClient">
+    <Position X="1.5" Y="1" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAwIAGAQAAAAAAAAgJAEAAAAAAAAgAACAAAAAAA=</HashCode>
+      <FileName>CosmosClient.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Databases" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosContainers">
+    <Position X="5.5" Y="4.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAECAAAACAAAAAAAgAAAAAAAAAQAAAAIAAA=</HashCode>
+      <FileName>Resource\Container\CosmosContainers.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="this[System.String]" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosClientConfiguration">
+    <Position X="1.25" Y="4" Width="3" />
+    <Members>
+      <Property Name="AccountKey" Hidden="true" />
+      <Property Name="ApiType" Hidden="true" />
+      <Property Name="ConnectionProtocol" Hidden="true" />
+      <Property Name="EnableCpuMonitor" Hidden="true" />
+      <Property Name="SendingRequestEventArgs" Hidden="true" />
+      <Property Name="StoreClientFactory" Hidden="true" />
+      <Property Name="TransportClientHandlerFactory" Hidden="true" />
+      <Property Name="UserAgentContainer" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Microsoft.Azure.Cosmos.CosmosClientConfiguration.ClientConfigurationJsonConverter" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CosmosClientConfiguration.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>TEiCMIEACgACoUgUAAQEAIAAQgAAAQAABAAIAACAABA=</HashCode>
+      <FileName>CosmosClientConfiguration.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CosmosJsonSerializer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.Azure.Cosmos.CosmosJsonSerializer">
+    <Position X="5.5" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAABAAAAAAAA=</HashCode>
+      <FileName>CosmosJsonSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

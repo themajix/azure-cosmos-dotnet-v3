@@ -74,8 +74,6 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.LeaseManagement
             try
             {
                 CosmosItemResponse<DocumentServiceLeaseCore> response = await this.container.ReplaceItemAsync<DocumentServiceLeaseCore>(
-                    partitionKey,
-                    itemId, 
                     lease, 
                     this.CreateIfMatchOptions(lease)).ConfigureAwait(false);
 

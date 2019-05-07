@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Cosmos
         /// The condition (ETag) associated with the request.
         /// </value>
         /// <remarks>
-        /// Most commonly used with the Delete* and Replace* methods of <see cref="CosmosContainer"/> such as <see cref="CosmosContainer.ReplaceItemAsync{T}(object, string, T, CosmosItemRequestOptions, System.Threading.CancellationToken)"/>
+        /// Most commonly used with the Delete* and Replace* methods of <see cref="CosmosContainer"/> such as <see cref="CosmosContainer.ReplaceItemAsync{T}(T, CosmosItemRequestOptions, System.Threading.CancellationToken)"/>
         /// but can be used with other methods like <see cref="CosmosContainer.ReadItemAsync{T}(object, string, CosmosItemRequestOptions, System.Threading.CancellationToken)"/> for caching scenarios.
         /// </remarks>
         public virtual AccessCondition AccessCondition { get; set; }
