@@ -170,7 +170,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
                 throw new ArgumentNullException(nameof(id));
             }
 
-            CosmosItemsCore.ValidatePartitionKey(partitionKey, requestOptions);
+            // CosmosItemsCore.ValidatePartitionKey(partitionKey, requestOptions);
 
             Stream parametersStream;
             if (input != null && !input.GetType().IsArray)
