@@ -9,7 +9,7 @@
 
     public class BaseScenario
     {
-        protected CosmosContainer containerItems;
+        protected CosmosContainer container;
 
         /// <summary>
         /// Execute it only once
@@ -25,7 +25,7 @@
             CosmosDatabase database = await client.Databases.CreateDatabaseAsync(gameDatabaseName);
             CosmosContainer container = await database.Containers.CreateContainerAsync(gameContainerName, gmaeContainerPkPath);
 
-            this.containerItems = container;
+            this.container = container;
         }
     }
 }

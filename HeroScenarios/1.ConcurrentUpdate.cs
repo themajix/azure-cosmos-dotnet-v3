@@ -23,7 +23,7 @@ namespace HeroScenarios
             if (string.IsNullOrWhiteSpace(gameId)) throw new ArgumentNullException(nameof(gameId));
             if (string.IsNullOrWhiteSpace(gameDay)) throw new ArgumentNullException(nameof(gameDay));
 
-            CosmosItemResponse<TwoPersonGame> gameReadResponse = await this.containerItems
+            CosmosItemResponse<TwoPersonGame> gameReadResponse = await this.container
                         .ReadItemAsync<TwoPersonGame>(gameDay, gameId, cancellationToken: cancellationToken);
             if (gameReadResponse.StatusCode == HttpStatusCode.NotFound)
             {
@@ -32,13 +32,13 @@ namespace HeroScenarios
 
                 try
                 {
-                    return await this.containerItems.CreateItemAsync<TwoPersonGame>(newGame, cancellationToken: cancellationToken);
+                    return await this.container.CreateItemAsync<TwoPersonGame>(newGame, cancellationToken: cancellationToken);
                 }
                 // Concurrent write conflict
                 catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
                 {
                     // Assume game never gets deleted :-)
-                    gameReadResponse = await this.containerItems.ReadItemAsync<TwoPersonGame>(gameDay, gameId, cancellationToken: cancellationToken);
+                    gameReadResponse = await this.container.ReadItemAsync<TwoPersonGame>(gameDay, gameId, cancellationToken: cancellationToken);
                 }
             }
 
@@ -57,7 +57,7 @@ namespace HeroScenarios
 
                 try
                 {
-                    CosmosItemResponse<TwoPersonGame> gameReplaceResponse = await this.containerItems
+                    CosmosItemResponse<TwoPersonGame> gameReplaceResponse = await this.container
                         .UpsertItemAsync<TwoPersonGame>(game, options, cancellationToken: cancellationToken);
                     return gameReplaceResponse.Resource;
                 }
@@ -66,7 +66,7 @@ namespace HeroScenarios
                           && ex.StatusCode == HttpStatusCode.PreconditionFailed) // Concurrent update
                 {
                     // Retry by reading again
-                    gameReadResponse = await this.containerItems.ReadItemAsync<TwoPersonGame>(gameId, gameId, cancellationToken: cancellationToken);
+                    gameReadResponse = await this.container.ReadItemAsync<TwoPersonGame>(gameId, gameId, cancellationToken: cancellationToken);
                 }
             }
         }

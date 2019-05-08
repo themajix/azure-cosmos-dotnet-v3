@@ -19,7 +19,7 @@ namespace HeroScenarios
             if (string.IsNullOrEmpty(day)) throw new ArgumentNullException(nameof(day));
 
             string query = $"select Id from r";
-            CosmosFeedIterator<string> resultSet = this.containerItems.CreateItemQuery<string>(query, day);
+            CosmosFeedIterator<string> resultSet = this.container.CreateItemQuery<string>(query, day);
             return await resultSet.FetchNextSetAsync(cancellationToken);
         }
     }

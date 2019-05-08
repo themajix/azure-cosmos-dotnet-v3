@@ -53,6 +53,7 @@
     <Compile Include="TwoPersonGame.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1. DatabaseAndContainerCreate.cs" />
     <None Include="App.config" />
     <None Include="Hierarchy.cd" />
     <None Include="PocoResponseTypes.cd" />

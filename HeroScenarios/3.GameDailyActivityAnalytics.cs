@@ -15,7 +15,7 @@
 
         public async Task StartAsync()
         {
-            this.changeFeedProcessor = this.containerItems
+            this.changeFeedProcessor = this.container
                 .CreateChangeFeedProcessorBuilder<TwoPersonGame>("ActivityAnalytics", this.ProcessChanges)
                 .WithInstanceName("DemoMachine")
                 .WithCosmosLeaseContainer(leaseContainer)
