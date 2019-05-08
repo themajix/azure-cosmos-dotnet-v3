@@ -10,6 +10,7 @@ namespace Microsoft.Azure.Cosmos
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Azure.Cosmos.Routing;
+    using Microsoft.Azure.Cosmos.Scripts;
     using Microsoft.Azure.Documents;
     using Microsoft.Azure.Documents.Routing;
 
@@ -39,9 +40,6 @@ namespace Microsoft.Azure.Cosmos
                 id: containerId);
 
             this.Database = database;
-            this.StoredProcedures = new CosmosStoredProceduresCore(this.ClientContext, this);
-            this.Triggers = new CosmosTriggers(this.ClientContext, this);
-            this.UserDefinedFunctions = new CosmosUserDefinedFunctions(this.ClientContext, this);
 
             this.cachedUriSegmentWithoutId = this.GetResourceSegmentUriWithoutId();
             this.queryClient = queryClient ?? new CosmosQueryClientCore(this.ClientContext, this);
@@ -51,13 +49,7 @@ namespace Microsoft.Azure.Cosmos
 
         public override CosmosDatabase Database { get; }
 
-        public override CosmosStoredProcedures StoredProcedures { get; }
-
         internal virtual Uri LinkUri { get; }
-
-        internal CosmosTriggers Triggers { get; }
-
-        internal CosmosUserDefinedFunctions UserDefinedFunctions { get; }
 
         internal virtual CosmosClientContext ClientContext { get; }
 

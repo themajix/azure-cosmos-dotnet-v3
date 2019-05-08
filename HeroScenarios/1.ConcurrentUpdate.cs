@@ -48,16 +48,12 @@ namespace HeroScenarios
             {
                 retryCount++;
 
-                TwoPersonGame game = gameReadResponse.Resource;
+                TwoPersonGame game = gameReadResponse;
                 game.User1Score += increment;
 
                 // Pre-condition
                 CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-                options.AccessCondition = new AccessCondition()
-                {
-                    Type = AccessConditionType.IfMatch,
-                    Condition = gameReadResponse.ETag,
-                };
+                options.IfMatchEtag = gameReadResponse.ETag;
 
                 try
                 {

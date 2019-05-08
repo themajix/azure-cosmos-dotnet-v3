@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Cosmos
     /// <summary>
     /// The Cosmos Client exception
     /// </summary>
-    public class CosmosException : Exception
+    public class CosmosException : AggregateException
     {
         private readonly CosmosResponseMessageHeaders Headers = null;
 

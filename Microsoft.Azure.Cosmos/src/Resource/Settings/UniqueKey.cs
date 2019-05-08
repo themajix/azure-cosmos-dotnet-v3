@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Cosmos
     /// For instance, if unique key policy defines a unique key with single property path, there could be only one document that has missing value for this property.
     /// </remarks>
     /// <seealso cref="UniqueKeyPolicy"/>
-    public sealed class UniqueKey 
+    public class UniqueKey 
     {
         /// <summary>
         /// Gets or sets the paths, a set of which must be unique for each document in the Azure Cosmos DB service.
@@ -31,6 +31,6 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </example>
         [JsonProperty(PropertyName = Constants.Properties.Paths)]
-        public Collection<string> Paths { get; set; } = new Collection<string>();
+        public virtual Collection<string> Paths { get; set; } = new Collection<string>();
     }
 }

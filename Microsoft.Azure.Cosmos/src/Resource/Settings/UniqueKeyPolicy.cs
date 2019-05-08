@@ -61,12 +61,12 @@ namespace Microsoft.Azure.Cosmos
     /// }
     /// ]]>
     /// </example>
-    public sealed class UniqueKeyPolicy 
+    public class UniqueKeyPolicy 
     {
         /// <summary>
         /// Gets or sets collection of <see cref="UniqueKey"/> that guarantee uniqueness of documents in collection in the Azure Cosmos DB service.
         /// </summary>
         [JsonProperty(PropertyName = Constants.Properties.UniqueKeys)]
-        public Collection<UniqueKey> UniqueKeys { get; set; } = new Collection<UniqueKey>();
+        public virtual Collection<UniqueKey> UniqueKeys { get; set; } = new Collection<UniqueKey>();
     }
 }

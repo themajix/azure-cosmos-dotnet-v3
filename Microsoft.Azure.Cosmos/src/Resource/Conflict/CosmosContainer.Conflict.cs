@@ -7,7 +7,10 @@ namespace Microsoft.Azure.Cosmos
     using System.Threading;
     using System.Threading.Tasks;
 
-    public abstract partial class CosmosContainer
+    /// <summary>
+    /// Cosmos conflicts
+    /// </summary>
+    public abstract class CosmosConflicts
     {
         /// <summary>
         /// Delete a conflict from the Azure Cosmos service as an asynchronous operation.

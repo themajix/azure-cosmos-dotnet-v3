@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Company>Microsoft Corporation</Company>
+    <Product>Microsoft(R) Azure Cosmos</Product>
+    <Description>This client library enables client applications to connect to Azure Cosmos via the SQL API. Azure Cosmos is a globally distributed, multi-model database service. For more information, refer to http://azure.microsoft.com/services/cosmos-db/. </Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <ClientVersion>3.0.0.10-preview</ClientVersion>
+<<<<<<< HEAD
+    <DirectVersion>3.0.0.25-preview</DirectVersion>
+=======
+    <DirectVersion>3.0.0.22-preview</DirectVersion>	
+>>>>>>> origin/release
+    <Version Condition=" '$(IsNightly)' == '1' ">$(ClientVersion)-nightly$(CurrentDate)</Version>
+    <Version Condition=" '$(IsNightly)' == '0' Or '$(IsNightly)' == '' ">$(ClientVersion)</Version>
+    <FileVersion>$(VersionPrefix)</FileVersion>
+    <Authors>Microsoft</Authors>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Microsoft.Azure.Cosmos.Client</AssemblyName>
+    <Title>Microsoft Azure Cosmos DB Client library</Title>
+    <PackageId>Microsoft.Azure.Cosmos</PackageId>
+    <PackageTags>microsoft;azure;cosmos;cosmosdb;documentdb;docdb;nosql;azureofficial;dotnetcore;netcore;netstandard</PackageTags>
+    <PackageReleaseNotes>The change log for this SDK is made available at https://github.com/Azure/azure-cosmos-dotnet-v3/blob/master/changelog.md at the time of release.</PackageReleaseNotes>
+    <PackageLicenseUrl>https://aka.ms/netcoregaeula</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Azure/azure-cosmos-dotnet-v3</PackageProjectUrl>
+    <PackageIconUrl>http://go.microsoft.com/fwlink/?LinkID=288890</PackageIconUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ShippingScope>External</ShippingScope>
+    <SigningType>Product</SigningType>
+    <DebugType>portable</DebugType>
+    <IncludeSymbols>false</IncludeSymbols>
+    <IncludeSource>false</IncludeSource>
+    <CurrentDate>$([System.DateTime]::Now.ToString(yyyyMMdd))</CurrentDate>
+    <RootNamespace>Microsoft.Azure.Cosmos</RootNamespace>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(SignAssembly)' == 'true' ">
+    <PackageReference Include="Microsoft.Azure.Cosmos.Direct" Version="$(DirectVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(SignAssembly)' != 'true' ">
+    <PackageReference Include="Microsoft.Azure.Cosmos.Direct.MyGet" Version="$(DirectVersion)" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="RuntimePerfCounters.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);DOCDBCLIENT;NETSTANDARD20</DefineConstants>
+    <DefineConstants Condition=" '$(SignAssembly)' == 'true' ">$(DefineConstants);SignAssembly</DefineConstants>
+  </PropertyGroup> 
+</Project>

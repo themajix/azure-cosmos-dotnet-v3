@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Cosmos
     /// <summary> 
     /// Specifies a path within a JSON document to be included in the Azure Cosmos DB service.
     /// </summary>
-    public sealed class IncludedPath
+    public class IncludedPath
     {
         /// <summary>
         /// Gets or sets the path to be indexed in the Azure Cosmos DB service.
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Cosmos
         /// Some valid examples: /"prop"/?, /"prop"/**, /"prop"/"subprop"/?, /"prop"/[]/?
         /// </remarks>
         [JsonProperty(PropertyName = Constants.Properties.Path)]
-        public string Path { get; set; }
+        public virtual string Path { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of <see cref="Index"/> objects to be applied for this included path in the Azure Cosmos DB service.
