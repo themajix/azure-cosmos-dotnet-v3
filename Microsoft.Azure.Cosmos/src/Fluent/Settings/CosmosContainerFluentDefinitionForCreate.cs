@@ -1,6 +1,7 @@
 ﻿//------------------------------------------------------------
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //------------------------------------------------------------
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Cosmos.Fluent
@@ -40,7 +41,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// Creates a container with the current fluent definition.
         /// </summary>
         /// <param name="throughput">Desired throughput for the container</param>
-        public virtual async Task<ContainerResponse> CreateAsync(int? throughput = null)
+        public virtual async Task<ContainerResponse> CreateAsync(int? throughput = null, CancellationToken cancellationToken = default)
         {
             CosmosContainerSettings settings = this.Build();
 

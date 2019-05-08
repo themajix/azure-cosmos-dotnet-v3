@@ -8,7 +8,8 @@ namespace HeroScenarios
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
-	using System.Threading.Tasks;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Microsoft.Azure.Cosmos;
 
     public static class DatabaseAndContainerCreate
@@ -31,11 +32,15 @@ namespace HeroScenarios
 				CosmosClient client,
 				string databaseName,
 				string containerName,
-				string partitionKey)
+				string partitionKey,
+                CancellationToken cancellation)
         {
 			// Default create experiences 
-			CosmosDatabase database = await client.Databases.CreateDatabaseIfNotExistsAsync(databaseName);
-            CosmosContainer container = await database.Containers.CreateContainerIfNotExistsAsync(containerName, partitionKey);
+			CosmosDatabase database = await client.Databases
+					.CreateDatabaseIfNotExistsAsync(databaseName, cancellationToken: cancellation);
+
+            CosmosContainer container = await database.Containers
+					.CreateContainerIfNotExistsAsync(containerName, partitionKey, cancellationToken: cancellation);
 
             // Advanced scenario: Indexing tuning (optimize space)
             container = await database.Containers.DefineContainer(containerName, partitionKey)
@@ -49,8 +54,12 @@ namespace HeroScenarios
                         .Path("/querypath")
                         .Attach()
                     .Attach()
-                .CreateAsync();
+                .CreateAsync(cancellationToken: cancellation);
 
+            // Read container through 
+			int? containerThroughput = await container.ReadProvisionedThroughputAsync(cancellation);
+
+			// [] based access 
             return client.Databases[databaseName].Containers[containerName];
         }
     }
