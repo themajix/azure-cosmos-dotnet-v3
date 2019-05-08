@@ -133,9 +133,9 @@
   <span style=" color: blue;">public</span> <span style=" color: blue;">class</span> CosmosConflictSettings
   {
     <span style=" color: blue;">public</span> CosmosConflictSettings();
-    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
-    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">OperationKind</span> OperationKind { <span style=" color: blue;">get</span>; <span style=" color: blue;">set</span>; }
-    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">T</span> GetResource&lt;<span style=" color: #2B91AF;">T</span>&gt;(<span style=" color: #2B91AF;">CosmosJsonSerializer</span> cosmosJsonSerializer=<span style=" color: blue;">null</span>);
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">string</span> Id { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">OperationKind</span> OperationKind { <span style=" color: blue;">get</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: #2B91AF;">T</span> GetResource&lt;<span style=" color: #2B91AF;">T</span>&gt;();
   }
   <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> CosmosContainer
   {
@@ -374,13 +374,13 @@
   <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> FeedIterator
   {
     <span style=" color: blue;">protected</span> FeedIterator();
-    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> HasMoreResults { <span style=" color: blue;">get</span>; <span style=" color: blue;">protected</span> <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> HasMoreResults { <span style=" color: blue;">get</span>; }
     <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;CosmosResponseMessage&gt;</span> FetchNextSetAsync(<span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
   }
   <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> FeedIterator&lt;<span style=" color: #2B91AF;">T</span>&gt;
   {
     <span style=" color: blue;">protected</span> FeedIterator();
-    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> HasMoreResults { <span style=" color: blue;">get</span>; <span style=" color: blue;">protected</span> <span style=" color: blue;">set</span>; }
+    <span style=" color: blue;">public</span> <span style=" color: blue;">virtual</span> <span style=" color: blue;">bool</span> HasMoreResults { <span style=" color: blue;">get</span>; }
     <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: #2B91AF;">Task&lt;FeedResponse&lt;T&gt;&gt;</span> FetchNextSetAsync(<span style=" color: #2B91AF;">CancellationToken</span> cancellationToken=<span style=" color: blue;">default</span>(<span style=" color: #2B91AF;">CancellationToken</span>));
   }
   <span style=" color: blue;">public</span> <span style=" color: blue;">abstract</span> <span style=" color: blue;">class</span> FeedResponse&lt;<span style=" color: #2B91AF;">T</span>&gt; : <span style=" color: #2B91AF;">IEnumerable</span>, <span style=" color: #2B91AF;">IEnumerable&lt;T&gt;</span>
