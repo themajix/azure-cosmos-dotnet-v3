@@ -3,11 +3,6 @@
   <Class Name="Microsoft.Azure.Cosmos.CosmosResponseMessage">
     <Position X="5" Y="2" Width="3" />
     <TypeIdentifier />
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Microsoft.Azure.Cosmos.CosmosFeedIterator">
-    <Position X="1.75" Y="2" Width="1.75" />
-    <TypeIdentifier />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

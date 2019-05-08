@@ -14,12 +14,12 @@ namespace Microsoft.Azure.Cosmos
     /// The user contract for the various feed responses that serialized the responses to a type.
     /// To follow the .NET standard for typed responses any exceptions should be thrown to the user.
     /// </summary>
-    public abstract class CosmosFeedResponse<T> : CosmosResponse<IEnumerable<T>>, IEnumerable<T>
+    public abstract class FeedResponse<T> : CosmosResponse<IEnumerable<T>>, IEnumerable<T>
     {
         /// <summary>
         /// Create an empty cosmos feed response for mock testing
         /// </summary>
-        public CosmosFeedResponse()
+        public FeedResponse()
         {
 
         }
@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="httpStatusCode">The status code of the response</param>
         /// <param name="headers">The headers of the response</param>
         /// <param name="resource">The object from the response</param>
-        internal CosmosFeedResponse(
+        internal FeedResponse(
             HttpStatusCode httpStatusCode,
             CosmosResponseMessageHeaders headers,
             IEnumerable<T> resource):base(

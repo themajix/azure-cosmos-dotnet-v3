@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<CosmosConflictSettings> GetConflictsIterator(
+        public abstract FeedIterator<CosmosConflictSettings> GetConflictsIterator(
             int? maxItemCount = null,
             string continuationToken = null);
 
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator GetConflictsStreamIterator(
+        public abstract FeedIterator GetConflictsStreamIterator(
             int? maxItemCount = null,
             string continuationToken = null);
     }

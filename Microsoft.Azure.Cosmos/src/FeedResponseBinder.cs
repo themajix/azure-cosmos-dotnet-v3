@@ -20,11 +20,11 @@ namespace Microsoft.Azure.Cosmos
         //conversion from dynamic to T.
 
         //This method is invoked via expression as part of dynamic binding of cast operator.
-        public static FeedResponse<T> Convert<T>(FeedResponse<dynamic> dynamicFeed)
+        public static FeedResponseCore<T> Convert<T>(FeedResponseCore<dynamic> dynamicFeed)
         {
             if (typeof(T) == typeof(object))
             {
-                return (FeedResponse<T>)(object)dynamicFeed;
+                return (FeedResponseCore<T>)(object)dynamicFeed;
             }
             IList<T> result = new List<T>();
 
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Cosmos
                 result.Add(item);
             }
 
-            return new FeedResponse<T>(
+            return new FeedResponseCore<T>(
                 result,
                 dynamicFeed.Count,
                 dynamicFeed.Headers,
@@ -46,14 +46,14 @@ namespace Microsoft.Azure.Cosmos
         /// <summary>
         /// DEVNOTE: Need to refactor to use CosmosJsonSerializer
         /// </summary>
-        public static FeedResponse<T> ConvertCosmosElementFeed<T>(
-            FeedResponse<CosmosElement> dynamicFeed,
+        public static FeedResponseCore<T> ConvertCosmosElementFeed<T>(
+            FeedResponseCore<CosmosElement> dynamicFeed,
             ResourceType resourceType,
             JsonSerializerSettings settings)
         {
             if (dynamicFeed.Count == 0)
             {
-                return new FeedResponse<T>(
+                return new FeedResponseCore<T>(
                 new List<T>(),
                 dynamicFeed.Count,
                 dynamicFeed.Headers,
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Cosmos
             }
 
 
-            return new FeedResponse<T>(
+            return new FeedResponseCore<T>(
                 typedResults,
                 dynamicFeed.Count,
                 dynamicFeed.Headers,

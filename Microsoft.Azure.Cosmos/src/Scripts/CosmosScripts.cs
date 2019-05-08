@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<CosmosStoredProcedureSettings> GetStoredProcedureIterator(
+        public abstract FeedIterator<CosmosStoredProcedureSettings> GetStoredProcedureIterator(
             int? maxItemCount = null,
             string continuationToken = null);
 
@@ -368,7 +368,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<CosmosTriggerSettings> GetTriggerIterator(
+        public abstract FeedIterator<CosmosTriggerSettings> GetTriggerIterator(
             int? maxItemCount = null,
             string continuationToken = null);
 
@@ -553,7 +553,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<CosmosUserDefinedFunctionSettings> GetUserDefinedFunctionIterator(
+        public abstract FeedIterator<CosmosUserDefinedFunctionSettings> GetUserDefinedFunctionIterator(
             int? maxItemCount = null,
             string continuationToken = null);
 

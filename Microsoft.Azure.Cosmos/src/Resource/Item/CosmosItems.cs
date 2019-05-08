@@ -482,7 +482,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<T> GetItemIterator<T>(
+        public abstract FeedIterator<T> GetItemIterator<T>(
             int? maxItemCount = null,
             string continuationToken = null);
 
@@ -515,7 +515,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator GetItemStreamIterator(
+        public abstract FeedIterator GetItemStreamIterator(
             int? maxItemCount = null,
             string continuationToken = null,
             CosmosItemRequestOptions requestOptions = null);
@@ -562,7 +562,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator CreateItemQueryAsStream(
+        public abstract FeedIterator CreateItemQueryAsStream(
             CosmosSqlQueryDefinition sqlQueryDefinition,
             int maxConcurrency,
             object partitionKey = null,
@@ -611,7 +611,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator CreateItemQueryAsStream(
+        public abstract FeedIterator CreateItemQueryAsStream(
             string sqlQueryText,
             int maxConcurrency,
             object partitionKey = null,
@@ -653,7 +653,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<T> CreateItemQuery<T>(
+        public abstract FeedIterator<T> CreateItemQuery<T>(
             CosmosSqlQueryDefinition sqlQueryDefinition,
             object partitionKey,
             int? maxItemCount = null,
@@ -693,7 +693,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<T> CreateItemQuery<T>(
+        public abstract FeedIterator<T> CreateItemQuery<T>(
             string sqlQueryText,
             object partitionKey,
             int? maxItemCount = null,
@@ -734,7 +734,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<T> CreateItemQuery<T>(
+        public abstract FeedIterator<T> CreateItemQuery<T>(
             CosmosSqlQueryDefinition sqlQueryDefinition,
             int maxConcurrency,
             int? maxItemCount = null,
@@ -774,7 +774,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract CosmosFeedIterator<T> CreateItemQuery<T>(
+        public abstract FeedIterator<T> CreateItemQuery<T>(
             string sqlQueryText,
             int maxConcurrency,
             int? maxItemCount = null,

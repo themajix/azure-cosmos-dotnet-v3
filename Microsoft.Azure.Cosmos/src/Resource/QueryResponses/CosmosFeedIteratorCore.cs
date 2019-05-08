@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Cosmos
     /// <summary>
     /// Cosmos result set stream iterator. This is used to get the query responses with a Stream content
     /// </summary>
-    internal class CosmosResultSetIteratorCore : CosmosFeedIterator
+    internal class CosmosResultSetIteratorCore : FeedIterator
     {
         internal delegate Task<CosmosResponseMessage> NextResultSetDelegate(
             int? maxItemCount,
@@ -93,9 +93,9 @@ namespace Microsoft.Azure.Cosmos
     /// Cosmos Result set iterator that keeps track of the continuation token when retrieving results form a query.
     /// </summary>
     /// <typeparam name="T">The response object type that can be deserialized</typeparam>
-    internal class CosmosDefaultResultSetIterator<T> : CosmosFeedIterator<T>
+    internal class CosmosDefaultResultSetIterator<T> : FeedIterator<T>
     {
-        internal delegate Task<CosmosFeedResponse<T>> NextResultSetDelegate(
+        internal delegate Task<FeedResponse<T>> NextResultSetDelegate(
             int? maxItemCount,
             string continuationToken,
             CosmosRequestOptions options,
@@ -149,14 +149,14 @@ namespace Microsoft.Azure.Cosmos
         /// </summary>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>A query response from cosmos service</returns>
-        public override Task<CosmosFeedResponse<T>> FetchNextSetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override Task<FeedResponse<T>> FetchNextSetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             return this.nextResultSetDelegate(this.MaxItemCount, this.continuationToken, this.queryOptions, this.state, cancellationToken)
                 .ContinueWith(task =>
                 {
-                    CosmosFeedResponse<T> response = task.Result;
+                    FeedResponse<T> response = task.Result;
                     this.HasMoreResults = response.HasMoreResults;
                     this.continuationToken = response.InternalContinuationToken;
                     

@@ -362,10 +362,10 @@ namespace Microsoft.Azure.Cosmos.Query
         /// </summary>
         /// <param name="token">The cancellation token.</param>
         /// <returns>A task to await on that in turn returns a FeedResponse of results.</returns>
-        public async Task<FeedResponse<CosmosElement>> ExecuteNextFeedResponseAsync(CancellationToken token)
+        public async Task<FeedResponseCore<CosmosElement>> ExecuteNextFeedResponseAsync(CancellationToken token)
         {
             CosmosQueryResponse feedResponse = await this.ExecuteNextAsync(token);
-            return new FeedResponse<CosmosElement>(
+            return new FeedResponseCore<CosmosElement>(
                 result: feedResponse.CosmosElements,
                 count: feedResponse.Count,
                 responseHeaders: feedResponse.Headers.CosmosMessageHeaders,
