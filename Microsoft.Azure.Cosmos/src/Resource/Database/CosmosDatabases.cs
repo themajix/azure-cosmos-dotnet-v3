@@ -51,8 +51,8 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="throughput">(Optional) The throughput provisioned for a collection in measurement of Requests-per-Unit in the Azure Cosmos DB service.</param>
         /// <param name="requestOptions">(Optional) A set of options that can be set.</param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
-        /// <returns>A <see cref="Task"/> containing a <see cref="CosmosDatabaseResponse"/> which wraps a <see cref="CosmosDatabaseSettings"/> containing the resource record.</returns>
-        public abstract Task<CosmosDatabaseResponse> CreateDatabaseAsync(
+        /// <returns>A <see cref="Task"/> containing a <see cref="DatabaseResponse"/> which wraps a <see cref="CosmosDatabaseSettings"/> containing the resource record.</returns>
+        public abstract Task<DatabaseResponse> CreateDatabaseAsync(
                 string id,
                 int? throughput = null,
                 CosmosRequestOptions requestOptions = null,
@@ -74,8 +74,8 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="throughput">(Optional) The throughput provisioned for a collection in measurement of Requests-per-Unit in the Azure Cosmos DB service.</param>
         /// <param name="requestOptions">(Optional) A set of additional options that can be set.</param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
-        /// <returns>A <see cref="Task"/> containing a <see cref="CosmosDatabaseResponse"/> which wraps a <see cref="CosmosDatabaseSettings"/> containing the resource record.</returns>
-        public abstract Task<CosmosDatabaseResponse> CreateDatabaseIfNotExistsAsync(
+        /// <returns>A <see cref="Task"/> containing a <see cref="DatabaseResponse"/> which wraps a <see cref="CosmosDatabaseSettings"/> containing the resource record.</returns>
+        public abstract Task<DatabaseResponse> CreateDatabaseIfNotExistsAsync(
             string id,
             int? throughput = null,
             CosmosRequestOptions requestOptions = null,
@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="throughput">(Optional) The throughput provisioned for a collection in measurement of Requests-per-Unit in the Azure Cosmos DB service.</param>
         /// <param name="requestOptions">(Optional) A set of options that can be set.</param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
-        /// <returns>A <see cref="Task"/> containing a <see cref="CosmosDatabaseResponse"/> which wraps a <see cref="CosmosDatabaseSettings"/> containing the resource record.</returns>
+        /// <returns>A <see cref="Task"/> containing a <see cref="DatabaseResponse"/> which wraps a <see cref="CosmosDatabaseSettings"/> containing the resource record.</returns>
         public abstract Task<CosmosResponseMessage> CreateDatabaseStreamAsync(
                Stream streamPayload,
                int? throughput = null,

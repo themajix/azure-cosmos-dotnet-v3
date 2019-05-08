@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Cosmos
 
         internal virtual CosmosClientContext ClientContext { get; }
 
-        public override Task<CosmosContainerResponse> ReadContainerAsync(
+        public override Task<ContainerResponse> ReadContainerAsync(
             CosmosContainerRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Cosmos
             return this.ClientContext.ResponseFactory.CreateContainerResponse(this, response);
         }
 
-        public override Task<CosmosContainerResponse> ReplaceContainerAsync(
+        public override Task<ContainerResponse> ReplaceContainerAsync(
             CosmosContainerSettings containerSettings,
             CosmosContainerRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Cosmos
             return this.ClientContext.ResponseFactory.CreateContainerResponse(this, response);
         }
 
-        public override Task<CosmosContainerResponse> DeleteContainerAsync(
+        public override Task<ContainerResponse> DeleteContainerAsync(
             CosmosContainerRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {

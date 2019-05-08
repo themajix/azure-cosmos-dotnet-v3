@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="item">A JSON serializable object that must contain an id property. <see cref="CosmosJsonSerializer"/> to implement a custom serializer</param>
         /// <param name="requestOptions">(Optional) The options for the item request <see cref="CosmosItemRequestOptions"/></param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
-        /// <returns>The <see cref="CosmosItemResponse{T}"/> that was created contained within a <see cref="System.Threading.Tasks.Task"/> object representing the service response for the asynchronous operation.</returns>
+        /// <returns>The <see cref="ItemResponse{T}"/> that was created contained within a <see cref="System.Threading.Tasks.Task"/> object representing the service response for the asynchronous operation.</returns>
         /// <exception cref="System.AggregateException">Represents a consolidation of failures that occurred during async processing. Look within InnerExceptions to find the actual exception(s)</exception>
         /// <exception cref="CosmosException">This exception can encapsulate many different types of errors. To determine the specific error always look at the StatusCode property. Some common codes you may get when creating a Document are:
         /// <list type="table">
@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract Task<CosmosItemResponse<T>> CreateItemAsync<T>(
+        public abstract Task<ItemResponse<T>> CreateItemAsync<T>(
             T item,
             CosmosItemRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken));
@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="requestOptions">(Optional) The options for the item request <see cref="CosmosItemRequestOptions"/></param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>
-        /// A <see cref="Task"/> containing a <see cref="CosmosItemResponse{T}"/> which wraps the read resource record.
+        /// A <see cref="Task"/> containing a <see cref="ItemResponse{T}"/> which wraps the read resource record.
         /// </returns>
         /// <exception cref="CosmosException">This exception can encapsulate many different types of errors. To determine the specific error always look at the StatusCode property. Some common codes you may get when creating a Document are:
         /// <list type="table">
@@ -189,7 +189,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract Task<CosmosItemResponse<T>> ReadItemAsync<T>(
+        public abstract Task<ItemResponse<T>> ReadItemAsync<T>(
             object partitionKey,
             string id,
             CosmosItemRequestOptions requestOptions = null,
@@ -244,7 +244,7 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="item">A JSON serializable object that must contain an id property. <see cref="CosmosJsonSerializer"/> to implement a custom serializer</param>
         /// <param name="requestOptions">(Optional) The options for the item request <see cref="CosmosItemRequestOptions"/></param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
-        /// <returns>The <see cref="CosmosItemResponse{T}"/> that was upserted contained within a <see cref="System.Threading.Tasks.Task"/> object representing the service response for the asynchronous operation.</returns>
+        /// <returns>The <see cref="ItemResponse{T}"/> that was upserted contained within a <see cref="System.Threading.Tasks.Task"/> object representing the service response for the asynchronous operation.</returns>
         /// <exception cref="System.AggregateException">Represents a consolidation of failures that occurred during async processing. Look within InnerExceptions to find the actual exception(s)</exception>
         /// <exception cref="CosmosException">This exception can encapsulate many different types of errors. To determine the specific error always look at the StatusCode property. Some common codes you may get when creating a Document are:
         /// <list type="table">
@@ -283,7 +283,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract Task<CosmosItemResponse<T>> UpsertItemAsync<T>(
+        public abstract Task<ItemResponse<T>> UpsertItemAsync<T>(
             T item,
             CosmosItemRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken));
@@ -340,7 +340,7 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="requestOptions">(Optional) The options for the item request <see cref="CosmosItemRequestOptions"/></param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>
-        /// A <see cref="Task"/> containing a <see cref="CosmosItemResponse{T}"/> which wraps the updated resource record.
+        /// A <see cref="Task"/> containing a <see cref="ItemResponse{T}"/> which wraps the updated resource record.
         /// </returns>
         /// <exception cref="ArgumentNullException">If either <paramref name="item"/> is not set.</exception>
         /// <exception cref="CosmosException">
@@ -381,7 +381,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract Task<CosmosItemResponse<T>> ReplaceItemAsync<T>(
+        public abstract Task<ItemResponse<T>> ReplaceItemAsync<T>(
             T item,
             CosmosItemRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken));
@@ -427,7 +427,7 @@ namespace Microsoft.Azure.Cosmos
         /// <param name="id">The cosmos item id</param>
         /// <param name="requestOptions">(Optional) The options for the item request <see cref="CosmosItemRequestOptions"/></param>
         /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
-        /// <returns>A <see cref="Task"/> containing a <see cref="CosmosItemResponse{T}"/> which will contain information about the request issued.</returns>
+        /// <returns>A <see cref="Task"/> containing a <see cref="ItemResponse{T}"/> which will contain information about the request issued.</returns>
         /// <exception cref="CosmosException">
         /// This exception can encapsulate many different types of errors. To determine the specific error always look at the StatusCode property. Some common codes you may get when creating a Document are:
         /// <list type="table">
@@ -451,7 +451,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract Task<CosmosItemResponse<T>> DeleteItemAsync<T>(
+        public abstract Task<ItemResponse<T>> DeleteItemAsync<T>(
             object partitionKey,
             string id,
             CosmosItemRequestOptions requestOptions = null,

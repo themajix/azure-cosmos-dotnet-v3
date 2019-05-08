@@ -23,7 +23,7 @@ namespace HeroScenarios
             if (string.IsNullOrWhiteSpace(gameId)) throw new ArgumentNullException(nameof(gameId));
             if (string.IsNullOrWhiteSpace(gameDay)) throw new ArgumentNullException(nameof(gameDay));
 
-            CosmosItemResponse<TwoPersonGame> gameReadResponse = await this.container
+            ItemResponse<TwoPersonGame> gameReadResponse = await this.container
                         .ReadItemAsync<TwoPersonGame>(gameDay, gameId, cancellationToken: cancellationToken);
             if (gameReadResponse.StatusCode == HttpStatusCode.NotFound)
             {
@@ -57,7 +57,7 @@ namespace HeroScenarios
 
                 try
                 {
-                    CosmosItemResponse<TwoPersonGame> gameReplaceResponse = await this.container
+                    ItemResponse<TwoPersonGame> gameReplaceResponse = await this.container
                         .UpsertItemAsync<TwoPersonGame>(game, options, cancellationToken: cancellationToken);
                     return gameReplaceResponse.Resource;
                 }

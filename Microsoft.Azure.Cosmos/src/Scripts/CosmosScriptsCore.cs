@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             this.container = container;
         }
 
-        public override Task<CosmosStoredProcedureResponse> CreateStoredProcedureAsync(
+        public override Task<StoredProcedureResponse> CreateStoredProcedureAsync(
                     string id,
                     string body,
                     CosmosRequestOptions requestOptions = null,
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
                 this.StoredProcedureFeedRequestExecutor);
         }
 
-        public override Task<CosmosStoredProcedureResponse> ReadStoredProcedureAsync(
+        public override Task<StoredProcedureResponse> ReadStoredProcedureAsync(
             string id,
             CosmosRequestOptions requestOptions = null,
             CancellationToken cancellation = default(CancellationToken))
@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateStoredProcedureResponse(response);
         }
 
-        public override Task<CosmosStoredProcedureResponse> ReplaceStoredProcedureAsync(
+        public override Task<StoredProcedureResponse> ReplaceStoredProcedureAsync(
             string id,
             string body,
             CosmosRequestOptions requestOptions = null,
@@ -131,7 +131,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateStoredProcedureResponse(response);
         }
 
-        public override Task<CosmosStoredProcedureResponse> DeleteStoredProcedureAsync(
+        public override Task<StoredProcedureResponse> DeleteStoredProcedureAsync(
             string id,
             CosmosRequestOptions requestOptions = null,
             CancellationToken cancellation = default(CancellationToken))
@@ -158,7 +158,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateStoredProcedureResponse(response);
         }
 
-        public override Task<CosmosStoredProcedureExecuteResponse<TOutput>> ExecuteStoredProcedureAsync<TInput, TOutput>(
+        public override Task<StoredProcedureExecuteResponse<TOutput>> ExecuteStoredProcedureAsync<TInput, TOutput>(
             object partitionKey,
             string id,
             TInput input,
@@ -199,7 +199,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateStoredProcedureExecuteResponse<TOutput>(response);
         }
 
-        public override Task<CosmosTriggerResponse> CreateTriggerAsync(
+        public override Task<TriggerResponse> CreateTriggerAsync(
             CosmosTriggerSettings triggerSettings, 
             CosmosRequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
@@ -242,7 +242,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
                 this.ContainerFeedRequestExecutor);
         }
 
-        public override Task<CosmosTriggerResponse> ReadTriggerAsync(
+        public override Task<TriggerResponse> ReadTriggerAsync(
             string id,
             CosmosRequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
@@ -269,7 +269,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateTriggerResponse(response);
         }
 
-        public override Task<CosmosTriggerResponse> ReplaceTriggerAsync(
+        public override Task<TriggerResponse> ReplaceTriggerAsync(
             CosmosTriggerSettings triggerSettings, 
             CosmosRequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
@@ -307,7 +307,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateTriggerResponse(response);
         }
 
-        public override Task<CosmosTriggerResponse> DeleteTriggerAsync(
+        public override Task<TriggerResponse> DeleteTriggerAsync(
             string id,
             CosmosRequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
@@ -334,7 +334,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateTriggerResponse(response);
         }
 
-        public override Task<CosmosUserDefinedFunctionResponse> CreateUserDefinedFunctionAsync(
+        public override Task<UserDefinedFunctionResponse> CreateUserDefinedFunctionAsync(
             CosmosUserDefinedFunctionSettings userDefinedFunctionSettings, 
             CosmosRequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
@@ -377,7 +377,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
                 this.UserDefinedFunctionFeedRequestExecutor);
         }
 
-        public override Task<CosmosUserDefinedFunctionResponse> ReadUserDefinedFunctionAsync(
+        public override Task<UserDefinedFunctionResponse> ReadUserDefinedFunctionAsync(
             string id, 
             CosmosRequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
@@ -404,7 +404,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateUserDefinedFunctionResponse(response);
         }
 
-        public override Task<CosmosUserDefinedFunctionResponse> ReplaceUserDefinedFunctionAsync(
+        public override Task<UserDefinedFunctionResponse> ReplaceUserDefinedFunctionAsync(
             CosmosUserDefinedFunctionSettings userDefinedFunctionSettings, 
             CosmosRequestOptions requestOptions = null,
             CancellationToken cancellation = default(CancellationToken))
@@ -442,7 +442,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateUserDefinedFunctionResponse(response);
         }
 
-        public override Task<CosmosUserDefinedFunctionResponse> DeleteUserDefinedFunctionAsync(
+        public override Task<UserDefinedFunctionResponse> DeleteUserDefinedFunctionAsync(
             string id, 
             CosmosRequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))

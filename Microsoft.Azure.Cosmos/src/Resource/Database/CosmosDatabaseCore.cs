@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Cosmos
 
         internal virtual Uri LinkUri { get; }
 
-        public override Task<CosmosDatabaseResponse> ReadDatabaseAsync(
+        public override Task<DatabaseResponse> ReadDatabaseAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Cosmos
             return this.clientContext.ResponseFactory.CreateDatabaseResponse(this, response);
         }
 
-        public override Task<CosmosDatabaseResponse> DeleteDatabaseAsync(
+        public override Task<DatabaseResponse> DeleteDatabaseAsync(
                     CosmosRequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Cosmos
             return this.ReadDatabaseAsync(cancellationToken: cancellationToken)
                 .ContinueWith(task =>
                 {
-                    CosmosDatabaseResponse response = task.Result;
+                    DatabaseResponse response = task.Result;
                     return response.Resource.ResourceId;
                 }, cancellationToken);
         }
