@@ -15,6 +15,11 @@ namespace Scenarios
         private readonly CosmosContainer cosmosContainer;
         private const uint ConcurrencyRetires = 3;
 
+        public ConcurrentUpdate(CosmosContainer container)
+        {
+            this.cosmosContainer = container;
+        }
+
         public async Task<TwoPersonGame> IncrementUser1ScoreAsync(
             string gameDay, 
             string gameId, 

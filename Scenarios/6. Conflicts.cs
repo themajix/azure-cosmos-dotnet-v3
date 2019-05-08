@@ -17,6 +17,11 @@ namespace Scenarios
         private const string ContainerName = "DemoContainer";
         private const string ContainerPartitionKey = "/pk";
 
+        public ConflictsHandler(CosmosContainer cosmosContainer)
+        {
+            this.cosmosContainer = cosmosContainer;
+        }
+
         public async Task<CosmosContainer> AutoResolveContainerAsync(CancellationToken cancellationToken)
         {
             CosmosDatabase database = null;
