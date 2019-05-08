@@ -34,29 +34,25 @@ namespace Microsoft.Azure.Cosmos
         /// </para>
         /// </remarks>
         [JsonProperty(PropertyName = Documents.Constants.Properties.Id)]
-        public virtual string Id { get; set; }
+        public virtual string Id { get; internal set; }
 
         /// <summary>
         /// Gets or sets the operation that resulted in the conflict in the Azure Cosmos DB service.
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty(PropertyName = Documents.Constants.Properties.OperationType)]
-        public virtual OperationKind OperationKind { get; set; }
+        public virtual OperationKind OperationKind { get; internal set; }
 
         /// <summary>
         /// Gets the content of the Conflict resource in the Azure Cosmos DB service.
         /// </summary>
         /// <typeparam name="T">The type to use to deserialize the content.</typeparam>
-        /// <param name="cosmosJsonSerializer">(Optional) <see cref="CosmosJsonSerializer"/> to use while parsing the content.</param>
         /// <returns></returns>
-        public virtual T GetResource<T>(CosmosJsonSerializer cosmosJsonSerializer = null)
+        public virtual T GetResource<T>()
         {
             if (!string.IsNullOrEmpty(this.Content))
             {
-                if (cosmosJsonSerializer == null)
-                {
-                    cosmosJsonSerializer = new CosmosDefaultJsonSerializer();
-                }
+                var cosmosJsonSerializer = new CosmosDefaultJsonSerializer();
 
                 using (MemoryStream stream = new MemoryStream())
                 {
