@@ -45,7 +45,6 @@ namespace Scenarios.Controllers
             {
                 var result = new JsonResult(ex.Message);
                 result.StatusCode = (int)ex.StatusCode;
-                result.ContentType = "text/plain";
 
                 return result;
             }
