@@ -11,8 +11,8 @@ namespace Microsoft.Azure.Cosmos
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Azure.Cosmos.Fluent;
     using Microsoft.Azure.Documents;
-    using Microsoft.Azure.Cosmos;
 
     /// <summary>
     /// Operations for creating new containers, and reading/querying all containers
@@ -156,6 +156,23 @@ namespace Microsoft.Azure.Cosmos
                 continuationToken,
                 requestOptions,
                 this.ContainerStreamFeedRequestExecutor);
+        }
+
+        public override CosmosContainerFluentDefinitionForCreate DefineContainer(
+            string name,
+            string partitionKeyPath)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (string.IsNullOrEmpty(partitionKeyPath))
+            {
+                throw new ArgumentNullException(nameof(partitionKeyPath));
+            }
+
+            return new CosmosContainerFluentDefinitionForCreate(this, name, partitionKeyPath);
         }
 
         internal void ValidateContainerSettings(CosmosContainerSettings containerSettings)
