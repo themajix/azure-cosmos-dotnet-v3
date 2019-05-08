@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.LeaseManagement
         public override async Task<bool> ReleaseInitializationLockAsync()
         {
             string lockId = this.GetStoreLockName();
-            var requestOptions = new CosmosItemRequestOptions()
+            var requestOptions = new ItemRequestOptions()
             {
                 IfMatchEtag = this.lockETag,
             };

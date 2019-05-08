@@ -52,7 +52,7 @@ namespace HeroScenarios
                 game.User1Score += increment;
 
                 // Pre-condition
-                CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+                ItemRequestOptions options = new ItemRequestOptions();
                 options.IfMatchEtag = gameReadResponse.ETag;
 
                 try

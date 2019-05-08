@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Utils
             this CosmosContainer container,
             object partitionKey,
             string itemId,
-            CosmosItemRequestOptions cosmosItemRequestOptions = null)
+            ItemRequestOptions cosmosItemRequestOptions = null)
         {
             var response = await container.DeleteItemAsync<T>(partitionKey, itemId, cosmosItemRequestOptions).ConfigureAwait(false);
             if (response.StatusCode == HttpStatusCode.NotFound)

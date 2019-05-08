@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         public override Task<StoredProcedureResponse> CreateStoredProcedureAsync(
                     string id,
                     string body,
-                    CosmosRequestOptions requestOptions = null,
+                    RequestOptions requestOptions = null,
                     CancellationToken cancellation = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(id))
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<StoredProcedureResponse> ReadStoredProcedureAsync(
             string id,
-            CosmosRequestOptions requestOptions = null,
+            RequestOptions requestOptions = null,
             CancellationToken cancellation = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(id))
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         public override Task<StoredProcedureResponse> ReplaceStoredProcedureAsync(
             string id,
             string body,
-            CosmosRequestOptions requestOptions = null,
+            RequestOptions requestOptions = null,
             CancellationToken cancellation = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(id))
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<StoredProcedureResponse> DeleteStoredProcedureAsync(
             string id,
-            CosmosRequestOptions requestOptions = null,
+            RequestOptions requestOptions = null,
             CancellationToken cancellation = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(id))
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             object partitionKey,
             string id,
             TInput input,
-            CosmosStoredProcedureRequestOptions requestOptions = null,
+            StoredProcedureRequestOptions requestOptions = null,
             CancellationToken cancellation = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(id))
@@ -201,7 +201,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<TriggerResponse> CreateTriggerAsync(
             CosmosTriggerSettings triggerSettings, 
-            CosmosRequestOptions requestOptions = null, 
+            RequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
         {
             if (triggerSettings == null)
@@ -244,7 +244,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<TriggerResponse> ReadTriggerAsync(
             string id,
-            CosmosRequestOptions requestOptions = null, 
+            RequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(id))
@@ -271,7 +271,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<TriggerResponse> ReplaceTriggerAsync(
             CosmosTriggerSettings triggerSettings, 
-            CosmosRequestOptions requestOptions = null, 
+            RequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
         {
             if (triggerSettings == null)
@@ -309,7 +309,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<TriggerResponse> DeleteTriggerAsync(
             string id,
-            CosmosRequestOptions requestOptions = null, 
+            RequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(id))
@@ -336,7 +336,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<UserDefinedFunctionResponse> CreateUserDefinedFunctionAsync(
             CosmosUserDefinedFunctionSettings userDefinedFunctionSettings, 
-            CosmosRequestOptions requestOptions = null, 
+            RequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
         {
             if (userDefinedFunctionSettings == null)
@@ -379,7 +379,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<UserDefinedFunctionResponse> ReadUserDefinedFunctionAsync(
             string id, 
-            CosmosRequestOptions requestOptions = null, 
+            RequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(id))
@@ -406,7 +406,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<UserDefinedFunctionResponse> ReplaceUserDefinedFunctionAsync(
             CosmosUserDefinedFunctionSettings userDefinedFunctionSettings, 
-            CosmosRequestOptions requestOptions = null,
+            RequestOptions requestOptions = null,
             CancellationToken cancellation = default(CancellationToken))
         {
             if (userDefinedFunctionSettings == null)
@@ -444,7 +444,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
 
         public override Task<UserDefinedFunctionResponse> DeleteUserDefinedFunctionAsync(
             string id, 
-            CosmosRequestOptions requestOptions = null, 
+            RequestOptions requestOptions = null, 
             CancellationToken cancellation = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(id))
@@ -472,7 +472,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         private Task<FeedResponse<CosmosTriggerSettings>> ContainerFeedRequestExecutor(
             int? maxItemCount,
             string continuationToken,
-            CosmosRequestOptions options,
+            RequestOptions options,
             object state,
             CancellationToken cancellation)
         {
@@ -488,7 +488,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         private Task<FeedResponse<CosmosStoredProcedureSettings>> StoredProcedureFeedRequestExecutor(
             int? maxItemCount,
             string continuationToken,
-            CosmosRequestOptions options,
+            RequestOptions options,
             object state,
             CancellationToken cancellation)
         {
@@ -504,7 +504,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         private Task<FeedResponse<CosmosUserDefinedFunctionSettings>> UserDefinedFunctionFeedRequestExecutor(
             int? maxItemCount,
             string continuationToken,
-            CosmosRequestOptions options,
+            RequestOptions options,
             object state,
             CancellationToken cancellation)
         {
@@ -523,7 +523,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             OperationType operationType,
             object partitionKey,
             Stream streamPayload,
-            CosmosRequestOptions requestOptions,
+            RequestOptions requestOptions,
             CancellationToken cancellation)
         {
             return this.container.ClientContext.ProcessResourceOperationStreamAsync(
@@ -543,7 +543,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             string continuationToken,
             ResourceType resourceType,
             object state,
-            CosmosRequestOptions options,
+            RequestOptions options,
             CancellationToken cancellation)
         {
             Debug.Assert(state == null);
@@ -558,8 +558,8 @@ namespace Microsoft.Azure.Cosmos.Scripts
                 streamPayload: null,
                 requestEnricher: request =>
                 {
-                    CosmosQueryRequestOptions.FillContinuationToken(request, continuationToken);
-                    CosmosQueryRequestOptions.FillMaxItemCount(request, maxItemCount);
+                    QueryRequestOptions.FillContinuationToken(request, continuationToken);
+                    QueryRequestOptions.FillMaxItemCount(request, maxItemCount);
                 },
                 responseCreator: response => this.container.ClientContext.ResponseFactory.CreateResultSetQueryResponse<T>(response),
                 cancellationToken: cancellation);

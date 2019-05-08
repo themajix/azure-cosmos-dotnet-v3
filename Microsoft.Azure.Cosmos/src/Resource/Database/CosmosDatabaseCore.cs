@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Cosmos
         internal virtual Uri LinkUri { get; }
 
         public override Task<DatabaseResponse> ReadDatabaseAsync(
-                    CosmosRequestOptions requestOptions = null,
+                    RequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
             Task<CosmosResponseMessage> response = this.ReadDatabaseStreamAsync(
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Cosmos
         }
 
         public override Task<DatabaseResponse> DeleteDatabaseAsync(
-                    CosmosRequestOptions requestOptions = null,
+                    RequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
             Task<CosmosResponseMessage> response = this.DeleteDatabaseStreamAsync(
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Cosmos
         }
 
         public override Task<CosmosResponseMessage> ReadDatabaseStreamAsync(
-                    CosmosRequestOptions requestOptions = null,
+                    RequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
             return this.ProcessAsync(
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Cosmos
         }
 
         public override Task<CosmosResponseMessage> DeleteDatabaseStreamAsync(
-                    CosmosRequestOptions requestOptions = null,
+                    RequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
             return this.ProcessAsync(
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Cosmos
 
         private Task<CosmosResponseMessage> ProcessAsync(
             OperationType operationType,
-            CosmosRequestOptions requestOptions = null,
+            RequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             return this.clientContext.ProcessResourceOperationStreamAsync(
