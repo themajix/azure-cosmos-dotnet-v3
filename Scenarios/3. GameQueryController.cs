@@ -66,15 +66,8 @@ namespace Scenarios.Controllers
             result.Content = new StreamContent(queryResponse.Content);
 
             // Add session & continuations back 
-            if (queryResponse.Headers.TryGetValue(GamesQueryController.SessionHeader, out string sessionToken))
-            {
-                result.Headers.Add(GamesQueryController.SessionHeader, sessionToken);
-            }
-
-            if (queryResponse.Headers.TryGetValue(GamesQueryController.ContinuationHeader, out string nextContinuation))
-            {
-                result.Headers.Add(GamesQueryController.ContinuationHeader, nextContinuation);
-            }
+            result.Headers.Add(GamesQueryController.SessionHeader, queryResponse.Headers.Session);
+            result.Headers.Add(GamesQueryController.ContinuationHeader, queryResponse.Headers.Continuation);
 
             return result;
         }

@@ -4,15 +4,9 @@
 
 namespace Scenarios.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Net.Http;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using HeroScenarios;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Azure.Cosmos;
     using Microsoft.Extensions.Primitives;
@@ -44,10 +38,7 @@ namespace Scenarios.Controllers
                     .CreateItemAsync<TwoPersonGame>(newgame, itemRequestOptions, cancellationToken);
 
                 // Add session token back 
-                if (gameCreateResponse.Headers.TryGetValue(GamesTypedController.SessionHeader, out string sessionToken))
-                {
-                    Response.Headers.Add(GamesTypedController.SessionHeader, sessionToken);
-                }
+                Response.Headers.Add(GamesTypedController.SessionHeader, gameCreateResponse.Headers.Session);
                 return new JsonResult(gameCreateResponse.Resource);
             }
             catch(CosmosException ex)

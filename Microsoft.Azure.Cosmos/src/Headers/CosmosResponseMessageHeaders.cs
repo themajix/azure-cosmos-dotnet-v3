@@ -68,6 +68,11 @@ namespace Microsoft.Azure.Cosmos
         public virtual string Continuation { get; internal set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public virtual string Session { get; internal set; }
+
+        /// <summary>
         /// Gets the Content Type for the current content in the <see cref="CosmosResponseMessage"/>.
         /// </summary>
         [CosmosKnownHeaderAttribute(HeaderName = HttpConstants.HttpHeaders.ContentType)]

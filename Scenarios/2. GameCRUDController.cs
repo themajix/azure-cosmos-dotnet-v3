@@ -41,16 +41,12 @@ namespace Scenarios.Controllers
                 CosmosResponseMessage gameCreateResponse = await cosmosContainer
                     .CreateItemStreamAsync(day, Request.Body, itemRequestOptions, cancellationToken);
 
-
                 var result = new HttpResponseMessage();
                 result.StatusCode = gameCreateResponse.StatusCode;
                 result.Content = new StreamContent(gameCreateResponse.Content);
 
                 // Add session token back 
-                if (gameCreateResponse.Headers.TryGetValue(GamesController.SessionHeader, out string sessionToken))
-                {
-                    result.Headers.Add(GamesController.SessionHeader, sessionToken);
-                }
+                result.Headers.Add(GamesController.SessionHeader, gameCreateResponse.Headers.Session);
 
                 return result;
             }
@@ -77,10 +73,7 @@ namespace Scenarios.Controllers
             result.Content = new StreamContent(gameReadResponse.Content);
 
             // Add session token back 
-            if (gameReadResponse.Headers.TryGetValue(GamesController.SessionHeader, out string sessionToken))
-            {
-                result.Headers.Add(GamesController.SessionHeader, sessionToken);
-            }
+            result.Headers.Add(GamesController.SessionHeader, gameReadResponse.Headers.Session);
 
             return result;
         }
