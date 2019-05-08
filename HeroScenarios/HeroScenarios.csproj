@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="1. DatabaseAndContainerCreate.cs" />
+    <Compile Include="1. StreamCRUDController.cs" />
     <None Include="App.config" />
     <None Include="Hierarchy.cd" />
     <None Include="PocoResponseTypes.cd" />
@@ -64,6 +65,11 @@
       <Project>{36f6f6a8-cec8-4261-9948-903495bc3c25}</Project>
       <Name>Microsoft.Azure.Cosmos</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc">
+      <Version>5.2.7</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

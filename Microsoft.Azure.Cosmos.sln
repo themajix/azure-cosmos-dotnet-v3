@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.Cosmos.Perf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeroScenarios", "HeroScenarios\HeroScenarios.csproj", "{D1AC3249-E259-4C12-971E-EC6EA9561EF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scenarios", "Scenarios\Scenarios.csproj", "{3D630AF4-0F32-4CED-8151-24240B82A624}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cover|Any CPU = Cover|Any CPU
@@ -97,6 +99,18 @@ Global
 		{D1AC3249-E259-4C12-971E-EC6EA9561EF4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D1AC3249-E259-4C12-971E-EC6EA9561EF4}.Release|x64.ActiveCfg = Release|Any CPU
 		{D1AC3249-E259-4C12-971E-EC6EA9561EF4}.Release|x64.Build.0 = Release|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Cover|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Cover|Any CPU.Build.0 = Debug|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Cover|x64.ActiveCfg = Debug|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Cover|x64.Build.0 = Debug|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Debug|x64.Build.0 = Debug|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Release|x64.ActiveCfg = Release|Any CPU
+		{3D630AF4-0F32-4CED-8151-24240B82A624}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

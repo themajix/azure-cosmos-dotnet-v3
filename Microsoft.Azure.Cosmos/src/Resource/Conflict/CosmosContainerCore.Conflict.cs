@@ -13,6 +13,11 @@ namespace Microsoft.Azure.Cosmos
 
     internal class CosmosConflictsCore : CosmosConflicts
     {
+        public CosmosConflictsCore(CosmosClientContext conext)
+        {
+
+        }
+
         public override Task<CosmosResponseMessage> DeleteConflictAsync(
             object partitionKey,
             string id,
@@ -47,7 +52,7 @@ namespace Microsoft.Azure.Cosmos
             ////    cancellationToken: cancellationToken);
         }
 
-        public override Task<CosmosResponseMessage> ReadConflictSourceItemAsync(
+        public override Task<ItemResponse<T>> ReadConflictSourceItemAsync<T>(
             object partitionKey,
             CosmosConflictSettings cosmosConflict,
             CancellationToken cancellationToken = default(CancellationToken))

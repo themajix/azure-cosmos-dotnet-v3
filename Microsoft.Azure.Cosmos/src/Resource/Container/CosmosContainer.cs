@@ -32,6 +32,12 @@ namespace Microsoft.Azure.Cosmos
         /// </summary>
         public abstract CosmosDatabase Database { get; }
 
+
+        /// <summary>
+        /// Returns the conficts for container
+        /// </summary>
+        public abstract CosmosConflicts Conflicts { get; }
+
         /// <summary>
         /// Reads a <see cref="CosmosContainerSettings"/> from the Azure Cosmos service as an asynchronous operation.
         /// </summary>

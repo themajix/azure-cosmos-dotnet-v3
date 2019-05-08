@@ -1,11 +1,11 @@
 ﻿//------------------------------------------------------------
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //------------------------------------------------------------
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Microsoft.Azure.Cosmos.Fluent
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// <see cref="CosmosContainer"/> fluent definition for creation flows.
     /// </summary>
@@ -38,9 +38,21 @@ namespace Microsoft.Azure.Cosmos.Fluent
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual ConflictResolutionFluentDefinition ConflictPolicy()
+        {
+            return new ConflictResolutionFluentDefinition(
+                this,
+                (uniqueKey) => this.AddUniqueKey(uniqueKey));
+        }
+
+        /// <summary>
         /// Creates a container with the current fluent definition.
         /// </summary>
         /// <param name="throughput">Desired throughput for the container</param>
+        /// <param name="cancellationToken">cancellation token</param>
         public virtual async Task<ContainerResponse> CreateAsync(int? throughput = null, CancellationToken cancellationToken = default)
         {
             CosmosContainerSettings settings = this.Build();
