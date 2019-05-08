@@ -5,9 +5,7 @@
 namespace Microsoft.Azure.Cosmos
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.Linq;
-    using Microsoft.Azure.Cosmos.Internal;
     using Microsoft.Azure.Documents;
     using Microsoft.Azure.Documents.Client;
 
