@@ -145,7 +145,7 @@ namespace Microsoft.Azure.Cosmos
         /// Gets the current region. <see cref="CosmosRegions"/> to get a list of regions that
         /// are currently supported. Please update to a latest SDK version if a preferred Azure region is not listed.
         /// </summary>
-        /// <seealso cref="Fluent.CosmosClientBuilder.UseCurrentRegion(string)"/>
+        /// <seealso cref="Fluent.CosmosClientBuilder.WithAppRegion(string)"/>
         public virtual string CurrentRegion { get; internal set; }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Microsoft.Azure.Cosmos
         /// This setting is only applicable in Gateway mode.
         /// </remarks>
         /// <value>Default value is 50.</value>
-        /// <seealso cref="Fluent.CosmosClientBuilder.UseConnectionModeGateway(int?)"/>
+        /// <seealso cref="Fluent.CosmosClientBuilder.WithConnectionModeGateway(int?)"/>
         public virtual int MaxConnectionLimit
         {
             get => this.maxConnectionLimit;
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.Cosmos
         /// The number specifies the time to wait for response to come back from network peer.
         /// </summary>
         /// <value>Default value is 1 minute.</value>
-        /// <seealso cref="Fluent.CosmosClientBuilder.UseRequestTimeout(TimeSpan)"/>
+        /// <seealso cref="Fluent.CosmosClientBuilder.WithRequestTimeout(TimeSpan)"/>
         public virtual TimeSpan RequestTimeout { get; internal set; }
 
         /// <summary>
@@ -217,14 +217,14 @@ namespace Microsoft.Azure.Cosmos
         /// <remarks>
         /// For more information, see <see href="https://docs.microsoft.com/en-us/azure/documentdb/documentdb-performance-tips#direct-connection">Connection policy: Use direct connection mode</see>.
         /// </remarks>
-        /// <seealso cref="Fluent.CosmosClientBuilder.UseConnectionModeDirect"/>
-        /// <seealso cref="Fluent.CosmosClientBuilder.UseConnectionModeGateway(int?)"/>
+        /// <seealso cref="Fluent.CosmosClientBuilder.WithConnectionModeDirect"/>
+        /// <seealso cref="Fluent.CosmosClientBuilder.WithConnectionModeGateway(int?)"/>
         public virtual ConnectionMode ConnectionMode { get; internal set; }
 
         /// <summary>
         /// The number of times to retry on throttled requests.
         /// </summary>
-        /// <seealso cref="Fluent.CosmosClientBuilder.UseThrottlingRetryOptions(TimeSpan, int)"/>
+        /// <seealso cref="Fluent.CosmosClientBuilder.WithThrottlingRetryOptions(TimeSpan, int)"/>
         public virtual int? MaxRetryAttemptsOnThrottledRequests { get; internal set; }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace Microsoft.Azure.Cosmos
         /// <remarks>
         /// The minimum interval is seconds. Any interval that is smaller will be ignored.
         /// </remarks>
-        /// <seealso cref="Fluent.CosmosClientBuilder.UseThrottlingRetryOptions(TimeSpan, int)"/>
+        /// <seealso cref="Fluent.CosmosClientBuilder.WithThrottlingRetryOptions(TimeSpan, int)"/>
         public virtual TimeSpan? MaxRetryWaitTimeOnThrottledRequests { get; internal set; }
 
         /// <summary>

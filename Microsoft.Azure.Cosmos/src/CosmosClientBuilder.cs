@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// <remarks>
         /// Setting this property after sending any request won't have any effect.
         /// </remarks>
-        public virtual CosmosClientBuilder UseUserAgentSuffix(string userAgentSuffix)
+        public virtual CosmosClientBuilder WithApplicationName(string userAgentSuffix)
         {
             this.cosmosClientConfiguration.UserAgentSuffix = userAgentSuffix;
             return this;
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// </code>
         /// </example>
         /// <seealso cref="CosmosClientOptions.CurrentRegion"/>
-        public virtual CosmosClientBuilder UseCurrentRegion(string cosmosRegion)
+        public virtual CosmosClientBuilder WithAppRegion(string cosmosRegion)
         {
             this.cosmosClientConfiguration.CurrentRegion = cosmosRegion;
             return this;
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// </summary>
         /// <value>Default value is 60 seconds.</value>
         /// <seealso cref="CosmosClientOptions.RequestTimeout"/>
-        public virtual CosmosClientBuilder UseRequestTimeout(TimeSpan requestTimeout)
+        public virtual CosmosClientBuilder WithRequestTimeout(TimeSpan requestTimeout)
         {
             this.cosmosClientConfiguration.RequestTimeout = requestTimeout;
             return this;
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// For more information, see <see href="https://docs.microsoft.com/en-us/azure/documentdb/documentdb-performance-tips#direct-connection">Connection policy: Use direct connection mode</see>.
         /// </remarks>
         /// <seealso cref="CosmosClientOptions.ConnectionMode"/>
-        public virtual CosmosClientBuilder UseConnectionModeDirect()
+        public virtual CosmosClientBuilder WithConnectionModeDirect()
         {
             this.cosmosClientConfiguration.ConnectionMode = ConnectionMode.Direct;
             this.cosmosClientConfiguration.ConnectionProtocol = Protocol.Tcp;
@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// </remarks>
         /// <seealso cref="CosmosClientOptions.ConnectionMode"/>
         /// <seealso cref="CosmosClientOptions.MaxConnectionLimit"/>
-        public virtual CosmosClientBuilder UseConnectionModeGateway(int? maxConnectionLimit = null)
+        public virtual CosmosClientBuilder WithConnectionModeGateway(int? maxConnectionLimit = null)
         {
             this.cosmosClientConfiguration.ConnectionMode = ConnectionMode.Gateway;
             this.cosmosClientConfiguration.ConnectionProtocol = Protocol.Https;
@@ -205,7 +205,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// </para>
         /// <seealso cref="CosmosClientOptions.MaxRetryWaitTimeOnThrottledRequests"/>
         /// <seealso cref="CosmosClientOptions.MaxRetryAttemptsOnThrottledRequests"/>
-        public virtual CosmosClientBuilder UseThrottlingRetryOptions(TimeSpan maxRetryWaitTimeOnThrottledRequests, int maxRetryAttemptsOnThrottledRequests)
+        public virtual CosmosClientBuilder WithThrottlingRetryOptions(TimeSpan maxRetryWaitTimeOnThrottledRequests, int maxRetryAttemptsOnThrottledRequests)
         {
             this.cosmosClientConfiguration.MaxRetryWaitTimeOnThrottledRequests = maxRetryWaitTimeOnThrottledRequests;
             this.cosmosClientConfiguration.MaxRetryAttemptsOnThrottledRequests = maxRetryAttemptsOnThrottledRequests;
@@ -219,7 +219,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// <returns>The <see cref="CosmosClientBuilder"/> object</returns>
         /// <seealso cref="CosmosJsonSerializer"/>
         /// <seealso cref="CosmosClientOptions.CosmosJsonSerializer"/>
-        public virtual CosmosClientBuilder UseCustomJsonSerializer(
+        public virtual CosmosClientBuilder WithCustomJsonSerializer(
             CosmosJsonSerializer cosmosJsonSerializer)
         {
             this.cosmosClientConfiguration.CosmosJsonSerializer = cosmosJsonSerializer;
@@ -229,7 +229,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// <summary>
         /// The event handler to be invoked before the request is sent.
         /// </summary>
-        internal CosmosClientBuilder UseSendingRequestEventArgs(EventHandler<SendingRequestEventArgs> sendingRequestEventArgs)
+        internal CosmosClientBuilder WithSendingRequestEventArgs(EventHandler<SendingRequestEventArgs> sendingRequestEventArgs)
         {
             this.cosmosClientConfiguration.SendingRequestEventArgs = sendingRequestEventArgs;
             return this;
@@ -238,7 +238,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// <summary>
         /// (Optional) transport interceptor factory
         /// </summary>
-        internal CosmosClientBuilder UseTransportClientHandlerFactory(Func<TransportClient, TransportClient> transportClientHandlerFactory)
+        internal CosmosClientBuilder WithTransportClientHandlerFactory(Func<TransportClient, TransportClient> transportClientHandlerFactory)
         {
             this.cosmosClientConfiguration.TransportClientHandlerFactory = transportClientHandlerFactory;
             return this;
@@ -247,7 +247,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// <summary>
         /// ApiType for the account
         /// </summary>
-        internal CosmosClientBuilder UseApiType(ApiType apiType)
+        internal CosmosClientBuilder WithApiType(ApiType apiType)
         {
             this.cosmosClientConfiguration.ApiType = apiType;
             return this;
@@ -260,7 +260,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// This method enables transport client sharing among multiple cosmos client instances inside a single process.
         /// </remarks>
         /// <param name="storeClientFactory">Instance of store client factory to use to create transport client for an instance of cosmos client.</param>
-        internal CosmosClientBuilder UseStoreClientFactory(IStoreClientFactory storeClientFactory)
+        internal CosmosClientBuilder WithStoreClientFactory(IStoreClientFactory storeClientFactory)
         {
             this.cosmosClientConfiguration.StoreClientFactory = storeClientFactory;
             return this;
@@ -269,7 +269,7 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// <summary>
         /// Disables CPU monitoring for transport client which will inhibit troubleshooting of timeout exceptions.
         /// </summary>
-        internal CosmosClientBuilder DisableCpuMonitor()
+        internal CosmosClientBuilder WithCpuMonitorDisabled()
         {
             this.cosmosClientConfiguration.EnableCpuMonitor = false;
             return this;
