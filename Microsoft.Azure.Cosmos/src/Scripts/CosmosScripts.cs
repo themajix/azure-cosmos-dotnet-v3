@@ -1,8 +1,4 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
-
-namespace Microsoft.Azure.Cosmos.Scripts
+﻿namespace Microsoft.Azure.Cosmos.Scripts
 {
     using System;
     using System.Threading;
@@ -19,12 +15,11 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// <summary>
         /// Creates a stored procedure as an asynchronous operation in the Azure Cosmos DB service.
         /// </summary>
-        /// <param name="id">The identifier of the Stored Procedure to create.</param>
-        /// <param name="body">The JavaScript function that is the body of the stored procedure</param>
+        /// <param name="storedProcedureSettings">The Stored Procedure to create</param>
         /// <param name="requestOptions">(Optional) The options for the stored procedure request <see cref="RequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>The <see cref="CosmosStoredProcedureSettings"/> that was created contained within a <see cref="Task"/> object representing the service response for the asynchronous operation.</returns>
-        /// <exception cref="ArgumentNullException">If either <paramref name="id"/> or <paramref name="body"/> is not set.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="storedProcedureSettings"/> is not set.</exception>
         /// <exception cref="System.AggregateException">Represents a consolidation of failures that occurred during async processing. Look within InnerExceptions to find the actual exception(s)</exception>
         /// <exception cref="CosmosException">This exception can encapsulate many different types of errors. To determine the specific error always look at the StatusCode property. Some common codes you may get when creating a Document are:
         /// <list type="table">
@@ -70,9 +65,8 @@ namespace Microsoft.Azure.Cosmos.Scripts
         ///    }";
         ///    
         /// CosmosScripts scripts = this.container.GetScripts();
-        /// CosmosStoredProcedure cosmosStoredProcedure = await scripts.CreateStoredProceducreAsync(
-        ///         id: "appendString",
-        ///         body: sprocBody);
+        /// CosmosStoredProcedureSettings storedProcedure = new CosmosStoredProcedureSettings(id, sprocBody);
+        /// CosmosStoredProcedure cosmosStoredProcedure = await scripts.CreateStoredProcedureAsync(storedProcedure);
         /// 
         /// // Execute the stored procedure
         /// CosmosItemResponse<string> sprocResponse = await scripts.ExecuteStoredProcedureAsync<string, string>(testPartitionId, "appendString", "Item as a string: ");
@@ -81,16 +75,16 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// </code>
         /// </example>
         public abstract Task<StoredProcedureResponse> CreateStoredProcedureAsync(
-                    string id,
-                    string body,
+                    CosmosStoredProcedureSettings storedProcedureSettings,
                     RequestOptions requestOptions = null,
-                    CancellationToken cancellation = default(CancellationToken));
+                    CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets an iterator to go through all the stored procedures for the container
         /// </summary>
         /// <param name="maxItemCount">(Optional) The max item count to return as part of the query</param>
         /// <param name="continuationToken">(Optional) The continuation token in the Azure Cosmos DB service.</param>
+        /// <returns>An iterator to read through the existing stored procedures.</returns>
         /// <example>
         /// Get an iterator for all the stored procedures under the cosmos container
         /// <code language="c#">
@@ -116,7 +110,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// </summary>
         /// <param name="id">The identifier of the Stored Procedure to read.</param>
         /// <param name="requestOptions">(Optional) The options for the stored procedure request <see cref="StoredProcedureRequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>
         /// A <see cref="Task"/> containing a <see cref="CosmosStoredProcedureSettings"/>.
         /// </returns>
@@ -134,7 +128,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         ///     </item>
         /// </list>
         /// </exception>
-        ///  <example>
+        /// <example>
         ///  This reads an existing stored procedure.
         /// <code language="c#">
         /// <![CDATA[
@@ -146,19 +140,18 @@ namespace Microsoft.Azure.Cosmos.Scripts
         public abstract Task<StoredProcedureResponse> ReadStoredProcedureAsync(
             string id,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Replaces a <see cref="CosmosStoredProcedureSettings"/> in the Azure Cosmos service as an asynchronous operation.
         /// </summary>
-        /// <param name="id">The identifier of the Stored Procedure to replace.</param>
-        /// <param name="body">The JavaScript function to replace the existing resource with.</param>
+        /// <param name="storedProcedureSettings">The Stored Procedure to replace</param>
         /// <param name="requestOptions">(Optional) The options for the stored procedure request <see cref="StoredProcedureRequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>
         /// A <see cref="Task"/> containing a <see cref="CosmosStoredProcedureSettings"/>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">If <paramref name="id"/>, <paramref name="body"/> are not set.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="storedProcedureSettings"/> is not set.</exception>
         /// <exception cref="CosmosException">This exception can encapsulate many different types of errors. To determine the specific error always look at the StatusCode property. Some common codes you may get when creating a Document are:
         /// <list type="table">
         ///     <listheader>
@@ -190,17 +183,16 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// </code>
         /// </example>
         public abstract Task<StoredProcedureResponse> ReplaceStoredProcedureAsync(
-            string id,
-            string body,
+            CosmosStoredProcedureSettings storedProcedureSettings,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Delete a <see cref="CosmosStoredProcedureSettings"/> from the Azure Cosmos DB service as an asynchronous operation.
         /// </summary>
         /// <param name="id">The identifier of the Stored Procedure to delete.</param>
         /// <param name="requestOptions">(Optional) The options for the stored procedure request <see cref="StoredProcedureRequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>A <see cref="Task"/> containing a <see cref="CosmosResponseMessage"/> which will contain the response to the request issued.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="id"/> are not set.</exception>
         /// <exception cref="CosmosException">This exception can encapsulate many different types of errors. To determine the specific error always look at the StatusCode property. Some common codes you may get when creating a Document are:
@@ -225,7 +217,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         public abstract Task<StoredProcedureResponse> DeleteStoredProcedureAsync(
             string id,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Executes a stored procedure against a container as an asynchronous operation in the Azure Cosmos service.
@@ -236,7 +228,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// <param name="id">The identifier of the Stored Procedure to execute.</param>
         /// <param name="input">The JSON serializable input parameters.</param>
         /// <param name="requestOptions">(Optional) The options for the stored procedure request <see cref="StoredProcedureRequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>The task object representing the service response for the asynchronous operation which would contain any response set in the stored procedure.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="id"/> or <paramref name="partitionKey"/>  are not set.</exception>
         /// <example>
@@ -279,14 +271,14 @@ namespace Microsoft.Azure.Cosmos.Scripts
             string id,
             TInput input,
             StoredProcedureRequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Creates a trigger as an asynchronous operation in the Azure Cosmos DB service.
         /// </summary>
         /// <param name="triggerSettings">The <see cref="CosmosTriggerSettings"/> object.</param>
         /// <param name="requestOptions">(Optional) The options for the stored procedure request <see cref="RequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>A task object representing the service response for the asynchronous operation.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="triggerSettings"/> is not set.</exception>
         /// <exception cref="System.AggregateException">Represents a consolidation of failures that occurred during async processing. Look within InnerExceptions to find the actual exception(s)</exception>
@@ -345,11 +337,12 @@ namespace Microsoft.Azure.Cosmos.Scripts
         public abstract Task<TriggerResponse> CreateTriggerAsync(
             CosmosTriggerSettings triggerSettings,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets an iterator to go through all the triggers for the container
         /// </summary>
+        /// <returns>An iterator to read through the existing triggers.</returns>
         /// <param name="maxItemCount">(Optional) The max item count to return as part of the query</param>
         /// <param name="continuationToken">(Optional) The continuation token in the Azure Cosmos DB service.</param>
         /// <example>
@@ -377,7 +370,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// </summary>
         /// <param name="id">The id of the trigger to read.</param>
         /// <param name="requestOptions">(Optional) The options for the trigger request <see cref="RequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>
         /// A <see cref="Task"/> containing a <see cref="TriggerResponse"/> which wraps a <see cref="CosmosTriggerSettings"/> containing the read resource record.
         /// </returns>
@@ -396,7 +389,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// <code language="c#">
         /// <![CDATA[
         /// CosmosScripts scripts = this.container.GetScripts();
-        /// CosmosTriggerResponse response = await scripts.ReadTriggerAsync("ExistingId");
+        /// TriggerResponse response = await scripts.ReadTriggerAsync("ExistingId");
         /// CosmosTriggerSettings settings = response;
         /// ]]>
         /// </code>
@@ -404,14 +397,14 @@ namespace Microsoft.Azure.Cosmos.Scripts
         public abstract Task<TriggerResponse> ReadTriggerAsync(
             string id,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Replaces a <see cref="CosmosTriggerSettings"/> in the Azure Cosmos service as an asynchronous operation.
         /// </summary>
         /// <param name="triggerSettings">The <see cref="CosmosTriggerSettings"/> object.</param>
         /// <param name="requestOptions">(Optional) The options for the trigger request <see cref="RequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>
         /// A <see cref="Task"/> containing a <see cref="TriggerResponse"/> which wraps a <see cref="CosmosTriggerSettings"/> containing the updated resource record.
         /// </returns>
@@ -438,42 +431,42 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// };
         /// 
         /// CosmosScripts scripts = this.container.GetScripts();
-        /// CosmosTriggerResponse response = await scripts.ReplaceTriggerAsync(CosmosTriggerSettings);
+        /// TriggerResponse response = await scripts.ReplaceTriggerAsync(CosmosTriggerSettings);
         /// ]]>
         /// </code>
         /// </example>
         public abstract Task<TriggerResponse> ReplaceTriggerAsync(
                     CosmosTriggerSettings triggerSettings,
                     RequestOptions requestOptions = null,
-                    CancellationToken cancellation = default(CancellationToken));
+                    CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Delete a <see cref="CosmosTriggerSettings"/> from the Azure Cosmos service as an asynchronous operation.
         /// </summary>
         /// <param name="id">The id of the trigger to delete.</param>
         /// <param name="requestOptions">(Optional) The options for the trigger request <see cref="RequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>A <see cref="Task"/> containing a <see cref="TriggerResponse"/> which wraps a <see cref="CosmosTriggerSettings"/> which will contain information about the request issued.</returns>
         /// /// <example>
         /// This examples gets a reference to an existing trigger and deletes it.
         /// <code language="c#">
         /// <![CDATA[
         /// CosmosScripts scripts = this.container.GetScripts();
-        /// CosmosTriggerResponse response = await scripts.DeleteTriggerAsync("existingId");
+        /// TriggerResponse response = await scripts.DeleteTriggerAsync("existingId");
         /// ]]>
         /// </code>
         /// </example>
         public abstract Task<TriggerResponse> DeleteTriggerAsync(
             string id,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Creates a user defined function as an asynchronous operation in the Azure Cosmos DB service.
         /// </summary>
         /// <param name="userDefinedFunctionSettings">The <see cref="CosmosUserDefinedFunctionSettings"/> object.</param>
         /// <param name="requestOptions">(Optional) The options for the user defined function request <see cref="RequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>A task object representing the service response for the asynchronous operation.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="userDefinedFunctionSettings"/> is not set.</exception>
         /// <exception cref="System.AggregateException">Represents a consolidation of failures that occurred during async processing. Look within InnerExceptions to find the actual exception(s)</exception>
@@ -530,13 +523,14 @@ namespace Microsoft.Azure.Cosmos.Scripts
         public abstract Task<UserDefinedFunctionResponse> CreateUserDefinedFunctionAsync(
             CosmosUserDefinedFunctionSettings userDefinedFunctionSettings,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets an iterator to go through all the user defined functions for the container
         /// </summary>
         /// <param name="maxItemCount">(Optional) The max item count to return as part of the query</param>
         /// <param name="continuationToken">(Optional) The continuation token in the Azure Cosmos DB service.</param>
+        /// <returns>An iterator to read through the existing user defined functions.</returns>
         /// <example>
         /// Get an iterator for all the triggers under the cosmos container
         /// <code language="c#">
@@ -562,7 +556,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// </summary>
         /// <param name="id">The id of the user defined function to read</param>
         /// <param name="requestOptions">(Optional) The options for the user defined function request <see cref="RequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>
         /// A <see cref="Task"/> containing a <see cref="UserDefinedFunctionResponse"/> which wraps a <see cref="CosmosUserDefinedFunctionSettings"/> containing the read resource record.
         /// </returns>
@@ -584,7 +578,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// <code language="c#">
         /// <![CDATA[
         /// CosmosScripts scripts = this.container.GetScripts();
-        /// CosmosUserDefinedFunctionResponse response = await scripts.ReadUserDefinedFunctionAsync("ExistingId");
+        /// UserDefinedFunctionResponse response = await scripts.ReadUserDefinedFunctionAsync("ExistingId");
         /// CosmosUserDefinedFunctionSettings settings = response;
         /// ]]>
         /// </code>
@@ -592,14 +586,14 @@ namespace Microsoft.Azure.Cosmos.Scripts
         public abstract Task<UserDefinedFunctionResponse> ReadUserDefinedFunctionAsync(
             string id,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Replaces a <see cref="CosmosUserDefinedFunctionSettings"/> in the Azure Cosmos DB service as an asynchronous operation.
         /// </summary>
         /// <param name="userDefinedFunctionSettings">The <see cref="CosmosUserDefinedFunctionSettings"/> object.</param>
         /// <param name="requestOptions">(Optional) The options for the user defined function request <see cref="RequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>
         /// A <see cref="Task"/> containing a <see cref="UserDefinedFunctionResponse"/> which wraps a <see cref="CosmosUserDefinedFunctionSettings"/> containing the updated resource record.
         /// </returns>
@@ -615,7 +609,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
         ///     Body = "function(amt) { return amt * 0.15; }",
         /// };
         /// 
-        /// CosmosUserDefinedFunctionResponse response = await scripts.ReplaceUserDefinedFunctionAsync(settings);
+        /// UserDefinedFunctionResponse response = await scripts.ReplaceUserDefinedFunctionAsync(settings);
         /// CosmosUserDefinedFunctionSettings settings = response;
         /// ]]>
         /// </code>
@@ -623,27 +617,27 @@ namespace Microsoft.Azure.Cosmos.Scripts
         public abstract Task<UserDefinedFunctionResponse> ReplaceUserDefinedFunctionAsync(
             CosmosUserDefinedFunctionSettings userDefinedFunctionSettings,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Delete a <see cref="CosmosUserDefinedFunctionSettings"/> from the Azure Cosmos DB service as an asynchronous operation.
         /// </summary>
         /// <param name="id">The id of the user defined function to delete.</param>
         /// <param name="requestOptions">(Optional) The options for the user defined function request <see cref="RequestOptions"/></param>
-        /// <param name="cancellation">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
+        /// <param name="cancellationToken">(Optional) <see cref="CancellationToken"/> representing request cancellation.</param>
         /// <returns>A <see cref="Task"/> containing a <see cref="UserDefinedFunctionResponse"/> which wraps a <see cref="CosmosUserDefinedFunctionSettings"/> which will contain information about the request issued.</returns>
         /// <example>
         /// This examples gets a reference to an existing user defined function and deletes it.
         /// <code language="c#">
         /// <![CDATA[
         /// CosmosScripts scripts = this.container.GetScripts();
-        /// CosmosUserDefinedFunctionResponse response = await this.cosmosContainer.DeleteUserDefinedFunctionAsync("existingId");
+        /// UserDefinedFunctionResponse response = await this.cosmosContainer.DeleteUserDefinedFunctionAsync("existingId");
         /// ]]>
         /// </code>
         /// </example>
         public abstract Task<UserDefinedFunctionResponse> DeleteUserDefinedFunctionAsync(
             string id,
             RequestOptions requestOptions = null,
-            CancellationToken cancellation = default(CancellationToken));
+            CancellationToken cancellationToken = default(CancellationToken));
     }
 }
