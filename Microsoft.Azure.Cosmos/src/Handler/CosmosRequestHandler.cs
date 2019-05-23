@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Cosmos
         /// <summary>
         /// Defines a next handler to be called in the chain.
         /// </summary>
-        public CosmosRequestHandler InnerHandler { get; set; }
+        internal CosmosRequestHandler InnerHandler { get; set; }
 
         /// <summary>
         /// Processes the current <see cref="CosmosRequestMessage"/> in the current handler and sends the current <see cref="CosmosRequestMessage"/> to the next handler in the chain.
