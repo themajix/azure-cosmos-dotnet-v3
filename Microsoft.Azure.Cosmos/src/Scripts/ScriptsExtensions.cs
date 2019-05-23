@@ -4,6 +4,8 @@
 
 namespace Microsoft.Azure.Cosmos.Scripts
 {
+    using System;
+
     /// <summary>
     /// Extensions to interact with Scripts.
     /// </summary>
@@ -19,7 +21,8 @@ namespace Microsoft.Azure.Cosmos.Scripts
         /// <returns></returns>
         public static CosmosScripts GetScripts(this CosmosContainer cosmosContainer)
         {
-            return new CosmosScriptsCore((CosmosContainerCore) cosmosContainer);
+            throw new NotImplementedException();
+            // return new CosmosScriptsCore((CosmosContainerCore) cosmosContainer);
         }
     }
 }

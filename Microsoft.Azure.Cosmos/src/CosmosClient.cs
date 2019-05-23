@@ -198,7 +198,7 @@ namespace Microsoft.Azure.Cosmos
         /// <summary>
         /// The <see cref="Cosmos.CosmosClientOptions"/> used initialize CosmosClient
         /// </summary>
-        public virtual CosmosClientOptions Configuration { get; private set; }
+        public virtual CosmosClientOptions ClientOptions { get; private set; }
 
         internal CosmosOffers Offers => this.offerSet.Value;
         internal DocumentClient DocumentClient { get; set; }
@@ -217,22 +217,22 @@ namespace Microsoft.Azure.Cosmos
         /// </returns>
         public virtual Task<CosmosAccountSettings> GetAccountSettingsAsync()
         {
-            return ((IDocumentClientInternal)this.DocumentClient).GetDatabaseAccountInternalAsync(this.Configuration.AccountEndPoint);
+            return ((IDocumentClientInternal)this.DocumentClient).GetDatabaseAccountInternalAsync(this.ClientOptions.AccountEndPoint);
         }
 
         internal void Init(
             CosmosClientOptions configuration,
             DocumentClient documentClient)
         {
-            this.Configuration = configuration;
+            this.ClientOptions = configuration;
             this.DocumentClient = documentClient;
-            this.CosmosJsonSerializer = new CosmosJsonSerializerWrapper(this.Configuration.CosmosJsonSerializer);
+            this.CosmosJsonSerializer = new CosmosJsonSerializerWrapper(this.ClientOptions.CosmosJsonSerializer);
 
             //Request pipeline 
             ClientPipelineBuilder clientPipelineBuilder = new ClientPipelineBuilder(
                 this,
                 this.DocumentClient.ResetSessionTokenRetryPolicy,
-                this.Configuration.CustomHandlers
+                this.ClientOptions.CustomHandlers
             );
 
             // DocumentClient is not initialized with any consistency overrides so default is backend consistency
@@ -242,7 +242,7 @@ namespace Microsoft.Azure.Cosmos
 
             CosmosClientContext clientContext = new CosmosClientContextCore(
                 this,
-                this.Configuration,
+                this.ClientOptions,
                 this.CosmosJsonSerializer,
                 this.ResponseFactory,
                 this.RequestHandler,
