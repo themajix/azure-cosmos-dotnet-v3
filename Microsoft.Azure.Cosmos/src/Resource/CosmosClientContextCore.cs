@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Cosmos
     {
         internal CosmosClientContextCore(
             CosmosClient client,
-            CosmosClientConfiguration clientConfiguration,
+            CosmosClientOptions clientConfiguration,
             CosmosJsonSerializer cosmosJsonSerializer,
             CosmosResponseFactory cosmosResponseFactory,
             CosmosRequestHandler requestHandler,
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Cosmos
 
         internal override CosmosRequestHandler RequestHandler { get; }
 
-        internal override CosmosClientConfiguration ClientConfiguration { get; }
+        internal override CosmosClientOptions ClientConfiguration { get; }
 
         /// <summary>
         /// Generates the URI link for the resource
