@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Cosmos
                 id: containerId);
 
             this.Database = database;
-            this.ConflictsInternal = new CosmosConflictsCore(clientContext);
+            // this.ConflictsInternal = new CosmosConflictsCore(clientContext);
 
             this.cachedUriSegmentWithoutId = this.GetResourceSegmentUriWithoutId();
             this.queryClient = queryClient ?? new CosmosQueryClientCore(this.ClientContext, this);
