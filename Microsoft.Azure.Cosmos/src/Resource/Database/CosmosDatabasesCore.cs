@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Cosmos
             return await database.ReadDatabaseAsync(cancellationToken: cancellationToken);
         }
 
-        public override FeedIterator<CosmosDatabaseSettings> GetDatabaseIterator(
+        public override FeedIterator<CosmosDatabaseSettings> GetDatabasesIterator(
             int? maxItemCount = null,
             string continuationToken = null)
         {

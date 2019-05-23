@@ -247,7 +247,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             IList<ToDoActivity> deleteList = await this.CreateRandomItems(3, randomPartitionKey: true);
             HashSet<string> itemIds = deleteList.Select(x => x.id).ToHashSet<string>();
             CosmosFeedIterator<ToDoActivity> setIterator =
-                this.Container.GetItemIterator<ToDoActivity>();
+                this.Container.GetItemsIterator<ToDoActivity>();
             while (setIterator.HasMoreResults)
             {
                 foreach (ToDoActivity toDoActivity in await setIterator.FetchNextSetAsync(this.cancellationToken))
@@ -780,7 +780,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
 
                 //Reading all items on fixed container.
                 setIterator = fixedContainer
-                    .GetItemIterator<dynamic>(maxItemCount: 10);
+                    .GetItemsIterator<dynamic>(maxItemCount: 10);
                 while (setIterator.HasMoreResults)
                 {
                     CosmosFeedResponse<dynamic> queryResponse = await setIterator.FetchNextSetAsync();

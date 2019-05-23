@@ -482,7 +482,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract FeedIterator<T> GetItemIterator<T>(
+        public abstract FeedIterator<T> GetItemsIterator<T>(
             int? maxItemCount = null,
             string continuationToken = null);
 
@@ -515,7 +515,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract FeedIterator GetItemStreamIterator(
+        public abstract FeedIterator GetItemsStreamIterator(
             int? maxItemCount = null,
             string continuationToken = null,
             ItemRequestOptions requestOptions = null);

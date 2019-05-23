@@ -121,7 +121,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             CosmosTriggerSettings cosmosTrigger = await CreateRandomTrigger();
 
             HashSet<string> settings = new HashSet<string>();
-            CosmosFeedIterator<CosmosTriggerSettings> iter = this.scripts.GetTriggerIterator(); ;
+            CosmosFeedIterator<CosmosTriggerSettings> iter = this.scripts.GetTriggersIterator(); ;
             while (iter.HasMoreResults)
             {
                 foreach (CosmosTriggerSettings storedProcedureSettingsEntry in await iter.FetchNextSetAsync())

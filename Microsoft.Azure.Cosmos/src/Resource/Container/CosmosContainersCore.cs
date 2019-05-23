@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Cosmos
             return this.CreateContainerIfNotExistsAsync(settings, throughput, requestOptions, cancellationToken);
         }
 
-        public override FeedIterator<CosmosContainerSettings> GetContainerIterator(
+        public override FeedIterator<CosmosContainerSettings> GetContainersIterator(
             int? maxItemCount = null,
             string continuationToken = null)
         {

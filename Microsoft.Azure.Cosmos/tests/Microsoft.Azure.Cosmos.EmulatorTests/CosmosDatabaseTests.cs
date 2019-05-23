@@ -256,7 +256,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
                 }
 
                 CosmosFeedIterator<CosmosDatabaseSettings> setIterator =
-                    this.cosmosClient.Databases.GetDatabaseIterator();
+                    this.cosmosClient.Databases.GetDatabasesIterator();
                 while (setIterator.HasMoreResults)
                 {
                     CosmosFeedResponse<CosmosDatabaseSettings> iterator =

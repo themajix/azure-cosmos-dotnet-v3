@@ -142,7 +142,7 @@ namespace Microsoft.Azure.Cosmos.SDK.EmulatorTests
             }
 
             List<string> readSprocIds = new List<string>();
-            CosmosFeedIterator<CosmosStoredProcedureSettings> iter = this.scripts.GetStoredProcedureIterator();
+            CosmosFeedIterator<CosmosStoredProcedureSettings> iter = this.scripts.GetStoredProceduresIterator();
             while (iter.HasMoreResults)
             {
                 CosmosFeedResponse<CosmosStoredProcedureSettings> currentResultSet = await iter.FetchNextSetAsync();

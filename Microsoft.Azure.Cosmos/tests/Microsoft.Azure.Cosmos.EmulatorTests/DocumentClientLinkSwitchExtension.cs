@@ -13,6 +13,8 @@ namespace Microsoft.Azure.Cosmos.Services.Management.Tests
     using Microsoft.Azure.Documents;
     using Microsoft.Azure.Documents.Client;
 
+    using RequestOptions = Microsoft.Azure.Documents.Client.RequestOptions;
+
     /// <summary>
     /// Provides a document client extension to augment the named based routing API.
     /// </summary>

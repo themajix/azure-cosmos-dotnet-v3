@@ -230,7 +230,7 @@ namespace Microsoft.Azure.Cosmos
         /// ]]>
         /// </code>
         /// </example>
-        public abstract FeedIterator<CosmosContainerSettings> GetContainerIterator(
+        public abstract FeedIterator<CosmosContainerSettings> GetContainersIterator(
             int? maxItemCount = null,
             string continuationToken = null);
 

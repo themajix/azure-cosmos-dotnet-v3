@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateStoredProcedureResponse(response);
         }
 
-        public override FeedIterator<CosmosStoredProcedureSettings> GetStoredProcedureIterator(
+        public override FeedIterator<CosmosStoredProcedureSettings> GetStoredProceduresIterator(
             int? maxItemCount = null,
             string continuationToken = null)
         {
@@ -231,7 +231,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateTriggerResponse(response);
         }
 
-        public override FeedIterator<CosmosTriggerSettings> GetTriggerIterator(
+        public override FeedIterator<CosmosTriggerSettings> GetTriggersIterator(
             int? maxItemCount = null, 
             string continuationToken = null)
         {
@@ -366,7 +366,7 @@ namespace Microsoft.Azure.Cosmos.Scripts
             return this.container.ClientContext.ResponseFactory.CreateUserDefinedFunctionResponse(response);
         }
 
-        public override FeedIterator<CosmosUserDefinedFunctionSettings> GetUserDefinedFunctionIterator(
+        public override FeedIterator<CosmosUserDefinedFunctionSettings> GetUserDefinedFunctionsIterator(
             int? maxItemCount = null, 
             string continuationToken = null)
         {
