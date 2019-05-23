@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Cosmos
         /// Obtains a list of all header names.
         /// </summary>
         /// <returns>An array with all the header names.</returns>
-        public virtual string[] AllKeys()
+        internal virtual string[] AllKeys()
         {
             return this.messageHeaders.Value.AllKeys();
         }
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Cosmos
         /// <typeparam name="T">Type of the header value.</typeparam>
         /// <param name="headerName">Header name.</param>
         /// <returns></returns>
-        public virtual T GetHeaderValue<T>(string headerName)
+        internal virtual T GetHeaderValue<T>(string headerName)
         {
             return this.messageHeaders.Value.GetHeaderValue<T>(headerName);
         }
