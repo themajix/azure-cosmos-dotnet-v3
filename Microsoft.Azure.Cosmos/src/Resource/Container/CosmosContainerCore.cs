@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Cosmos
             ContainerRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Task<CosmosResponseMessage> response = this.ReadContainerStreamAsync(
+            Task<CosmosResponseMessage> response = this.ReadContainerAsStreamAsync(
                 requestOptions: requestOptions,
                 cancellationToken: cancellationToken);
 
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Cosmos
         {
             this.ClientContext.ValidateResource(containerSettings.Id);
 
-            Task<CosmosResponseMessage> response = this.ReplaceContainerStreamAsync(
+            Task<CosmosResponseMessage> response = this.ReplaceContainerAsStreamAsync(
                 streamPayload: CosmosResource.ToStream(containerSettings),
                 requestOptions: requestOptions,
                 cancellationToken: cancellationToken);
@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Cosmos
             ContainerRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Task<CosmosResponseMessage> response = this.DeleteContainerStreamAsync(
+            Task<CosmosResponseMessage> response = this.DeleteContainerAsStreamAsync(
                 requestOptions: requestOptions,
                 cancellationToken: cancellationToken);
 
@@ -118,34 +118,34 @@ namespace Microsoft.Azure.Cosmos
             }
         }
 
-        public override Task<CosmosResponseMessage> DeleteContainerStreamAsync(
+        public override Task<CosmosResponseMessage> DeleteContainerAsStreamAsync(
             ContainerRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.ProcessStreamAsync(
+            return this.ProcessAsStreamAsync(
                streamPayload: null,
                operationType: OperationType.Delete,
                requestOptions: requestOptions,
                cancellationToken: cancellationToken);
         }
 
-        public override Task<CosmosResponseMessage> ReplaceContainerStreamAsync(
+        public override Task<CosmosResponseMessage> ReplaceContainerAsStreamAsync(
             Stream streamPayload,
             ContainerRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.ProcessStreamAsync(
+            return this.ProcessAsStreamAsync(
                 streamPayload: streamPayload,
                 operationType: OperationType.Replace,
                 requestOptions: requestOptions,
                 cancellationToken: cancellationToken);
         }
 
-        public override Task<CosmosResponseMessage> ReadContainerStreamAsync(
+        public override Task<CosmosResponseMessage> ReadContainerAsStreamAsync(
             ContainerRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.ProcessStreamAsync(
+            return this.ProcessAsStreamAsync(
                 streamPayload: null,
                 operationType: OperationType.Read,
                 requestOptions: requestOptions,
@@ -240,13 +240,13 @@ namespace Microsoft.Azure.Cosmos
                 .Unwrap();
         }
 
-        private Task<CosmosResponseMessage> ProcessStreamAsync(
+        private Task<CosmosResponseMessage> ProcessAsStreamAsync(
             Stream streamPayload,
             OperationType operationType,
             ContainerRequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.ClientContext.ProcessResourceOperationStreamAsync(
+            return this.ClientContext.ProcessResourceOperationAsStreamAsync(
               resourceUri: this.LinkUri,
               resourceType: ResourceType.Collection,
               operationType: operationType,

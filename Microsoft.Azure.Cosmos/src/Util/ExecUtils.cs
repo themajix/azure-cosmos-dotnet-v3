@@ -193,7 +193,7 @@ namespace Microsoft.Azure.Cosmos
                 cancellationToken: cancellationToken);
         }
 
-        internal static async Task<CosmosResponseMessage> ProcessResourceOperationStreamAsync(
+        internal static async Task<CosmosResponseMessage> ProcessResourceOperationAsStreamAsync(
             CosmosRequestHandler requestHandler,
             Uri resourceUri,
             ResourceType resourceType,

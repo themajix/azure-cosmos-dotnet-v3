@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Cosmos
             if ((int)responseMessage.StatusCode < 400)
             {
                 INameValueCollection headers = GatewayStoreClient.ExtractResponseHeaders(responseMessage);
-                MediaStream mediaStream = new MediaStream(responseMessage, await responseMessage.Content.ReadAsStreamAsync());
+                MediaStream mediaStream = new MediaStream(responseMessage, await responseMessage.Content.ReadAsAsStreamAsync());
                 return new DocumentServiceResponse(mediaStream, headers, responseMessage.StatusCode);
             }
             else

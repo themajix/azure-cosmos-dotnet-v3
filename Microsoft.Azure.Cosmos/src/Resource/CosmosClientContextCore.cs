@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Cosmos
             this.DocumentClient.ValidateResource(resourceId);
         }
 
-        internal override Task<CosmosResponseMessage> ProcessResourceOperationStreamAsync(
+        internal override Task<CosmosResponseMessage> ProcessResourceOperationAsStreamAsync(
             Uri resourceUri,
             ResourceType resourceType,
             OperationType operationType,
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Cosmos
             Action<CosmosRequestMessage> requestEnricher,
             CancellationToken cancellationToken)
         {
-            return ExecUtils.ProcessResourceOperationStreamAsync(
+            return ExecUtils.ProcessResourceOperationAsStreamAsync(
                 requestHandler: this.RequestHandler,
                 cosmosContainerCore: cosmosContainerCore,
                 resourceUri: resourceUri,

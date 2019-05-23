@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Cosmos
             Action<CosmosRequestMessage> requestEnricher,
             CancellationToken cancellationToken)
         {
-            CosmosResponseMessage message = await this.clientContext.ProcessResourceOperationStreamAsync(
+            CosmosResponseMessage message = await this.clientContext.ProcessResourceOperationAsStreamAsync(
                 resourceUri: resourceUri,
                 resourceType: resourceType,
                 operationType: operationType,

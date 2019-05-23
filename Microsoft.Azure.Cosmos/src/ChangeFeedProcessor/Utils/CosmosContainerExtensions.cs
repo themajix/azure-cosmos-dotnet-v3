@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Cosmos.ChangeFeed.Utils
             object partitionKey,
             string itemId)
         {
-            var response = await container.ReadItemStreamAsync(
+            var response = await container.ReadItemAsStreamAsync(
                         partitionKey,
                         itemId)
                         .ConfigureAwait(false);

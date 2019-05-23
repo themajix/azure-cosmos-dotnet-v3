@@ -478,7 +478,7 @@
             RequestOptions requestOptions,
             CancellationToken cancellationToken)
         {
-            return this.clientContext.ProcessResourceOperationStreamAsync(
+            return this.clientContext.ProcessResourceOperationAsStreamAsync(
                 resourceUri: resourceUri,
                 resourceType: resourceType,
                 operationType: operationType,

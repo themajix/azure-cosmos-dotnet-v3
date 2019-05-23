@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Cosmos
             // If service rejects the initial payload like header is to large it will return an HTML error instead of JSON.
             if (string.Equals(responseMessage.Content?.Headers?.ContentType?.MediaType, "application/json", StringComparison.OrdinalIgnoreCase))
             {
-                Stream readStream = await responseMessage.Content.ReadAsStreamAsync();
+                Stream readStream = await responseMessage.Content.ReadAsAsStreamAsync();
                 Error error = Resource.LoadFrom<Error>(readStream);
                 return new DocumentClientException(
                     error,

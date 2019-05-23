@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Cosmos
                     RequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
-            Task<CosmosResponseMessage> response = this.ReadDatabaseStreamAsync(
+            Task<CosmosResponseMessage> response = this.ReadDatabaseAsStreamAsync(
                         requestOptions: requestOptions,
                         cancellationToken: cancellationToken);
 
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Cosmos
                     RequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
-            Task<CosmosResponseMessage> response = this.DeleteDatabaseStreamAsync(
+            Task<CosmosResponseMessage> response = this.DeleteDatabaseAsStreamAsync(
                         requestOptions: requestOptions,
                         cancellationToken: cancellationToken);
 
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Cosmos
             }
         }
 
-        public override Task<CosmosResponseMessage> ReadDatabaseStreamAsync(
+        public override Task<CosmosResponseMessage> ReadDatabaseAsStreamAsync(
                     RequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Cosmos
                 cancellationToken);
         }
 
-        public override Task<CosmosResponseMessage> DeleteDatabaseStreamAsync(
+        public override Task<CosmosResponseMessage> DeleteDatabaseAsStreamAsync(
                     RequestOptions requestOptions = null,
                     CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -136,7 +136,7 @@ namespace Microsoft.Azure.Cosmos
             RequestOptions requestOptions = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.clientContext.ProcessResourceOperationStreamAsync(
+            return this.clientContext.ProcessResourceOperationAsStreamAsync(
                 resourceUri: this.LinkUri,
                 resourceType: ResourceType.Database,
                 operationType: operationType,
