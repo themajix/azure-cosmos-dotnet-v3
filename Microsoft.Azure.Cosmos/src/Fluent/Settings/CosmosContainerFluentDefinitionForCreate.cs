@@ -1,9 +1,9 @@
 ﻿//------------------------------------------------------------
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //------------------------------------------------------------
+
 namespace Microsoft.Azure.Cosmos.Fluent
 {
-    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -11,18 +11,21 @@ namespace Microsoft.Azure.Cosmos.Fluent
     /// </summary>
     public class CosmosContainerFluentDefinitionForCreate : CosmosContainerFluentDefinition<CosmosContainerFluentDefinitionForCreate>
     {
-        private UniqueKeyPolicy uniqueKeyPolicy;
         private readonly CosmosContainers cosmosContainers;
+        private UniqueKeyPolicy uniqueKeyPolicy;
 
         /// <summary>
         /// Creates an instance for unit-testing
         /// </summary>
-        public CosmosContainerFluentDefinitionForCreate() {}
+        public CosmosContainerFluentDefinitionForCreate()
+        {
+        }
 
         internal CosmosContainerFluentDefinitionForCreate(
             CosmosContainers cosmosContainers,
             string name,
-            string partitionKeyPath = null) : base(name, partitionKeyPath)
+            string partitionKeyPath = null)
+            : base(name, partitionKeyPath)
         {
             this.cosmosContainers = cosmosContainers;
         }
@@ -30,20 +33,10 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// <summary>
         /// Defines a Unique Key policy for this Azure Cosmos container.
         /// </summary>
-        public virtual UniqueKeyFluentDefinition UniqueKey()
+        /// <returns>An instance of <see cref="UniqueKeyFluentDefinition"/>.</returns>
+        public virtual UniqueKeyFluentDefinition WithUniqueKey()
         {
             return new UniqueKeyFluentDefinition(
-                this,
-                (uniqueKey) => this.AddUniqueKey(uniqueKey));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public virtual ConflictResolutionFluentDefinition ConflictPolicy()
-        {
-            return new ConflictResolutionFluentDefinition(
                 this,
                 (uniqueKey) => this.AddUniqueKey(uniqueKey));
         }
@@ -52,15 +45,18 @@ namespace Microsoft.Azure.Cosmos.Fluent
         /// Creates a container with the current fluent definition.
         /// </summary>
         /// <param name="throughput">Desired throughput for the container</param>
-        /// <param name="cancellationToken">cancellation token</param>
-        public virtual async Task<ContainerResponse> CreateAsync(int? throughput = null, CancellationToken cancellationToken = default)
+        /// <returns>An asynchronous Task representing the creation of a <see cref="CosmosContainer"/> based on the Fluent definition.</returns>
+        public virtual async Task<ContainerResponse> CreateAsync(int? throughput = null)
         {
             CosmosContainerSettings settings = this.Build();
 
             return await this.cosmosContainers.CreateContainerAsync(settings, throughput);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Applies the current Fluent definition and creates a container configuration.
+        /// </summary>
+        /// <returns>Builds the current Fluent configuration into an instance of <see cref="CosmosContainerSettings"/>.</returns>
         public virtual new CosmosContainerSettings Build()
         {
             CosmosContainerSettings settings = base.Build();
