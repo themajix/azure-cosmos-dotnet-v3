@@ -5,7 +5,7 @@
 * Exception less code-path for 429
 * Added support for spatial classes
 * Added item cross partition query stream
-* Fixed JSON parsing exception when headers are to large
+* Fixed JSON parsing exception when headers are too large
 
 ## Changes in [3.0.0.1-preview](https://www.nuget.org/packages/Microsoft.Azure.Cosmos/3.0.0.1-preview) : ##
 
